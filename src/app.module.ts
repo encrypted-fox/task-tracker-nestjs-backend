@@ -4,11 +4,13 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DBUser } from './users/users.entity';
 import { ConfigModule } from '@nestjs/config';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
     AuthModule, 
     UsersModule,
+    TasksModule,
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as unknown as 'postgres' | 'mysql',
       host: process.env.DB_HOST,

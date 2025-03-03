@@ -18,10 +18,11 @@ export class AuthService {
 
     const user = await this.usersService.findOne(username);
 
-    const users = await this.usersService.findAll()
+    if (!user) {
+      throw new UnauthorizedException();
+    }
 
-    const hash = await bcrypt.hash(password, process.env.BCRYPT_SECRET);
-    const isMatch = await bcrypt.compare(password, hash);
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       throw new UnauthorizedException();
@@ -49,10 +50,9 @@ export class AuthService {
     const hash = await bcrypt.hash(password, process.env.BCRYPT_SECRET);
 
     const user = { username, password: hash, email, isActive: true }
-    
     const newUser = await this.usersService.create(user)
 
-    const token = await this.jwtService.signAsync(newUser);
+    const token = await this.jwtService.signAsync({...newUser});
 
     delete newUser.isActive
     delete newUser.password

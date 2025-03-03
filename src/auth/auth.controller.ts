@@ -26,7 +26,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  register(@Body() registerDto) {
+  register(@Body() registerDto: {username: string, password: string, repeatPassword: string, email: string}) {
     if (registerDto.password === registerDto.repeatPassword)
     
     return this.authService.register(registerDto.username, registerDto.password, registerDto.email);
