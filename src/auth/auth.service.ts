@@ -1,8 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthUser } from 'src/users/users.interface';
+import { PartialUser } from 'src/users/users.interface';
 import * as bcrypt from 'bcrypt';
+import { formatISO } from 'date-fns';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +15,9 @@ export class AuthService {
   async signIn(
     username: string,
     password: string,
-  ): Promise<AuthUser> {
+  ): Promise<PartialUser> {
 
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findBy({ username });
 
     if (!user) {
       throw new UnauthorizedException();
@@ -33,7 +34,7 @@ export class AuthService {
     delete user.isActive
     delete user.password
 
-    const resp: AuthUser = {...user, token}
+    const resp: PartialUser = {...user, token}
 
     return resp;
   }
@@ -42,14 +43,14 @@ export class AuthService {
     username: string,
     password: string,
     email: string
-  ): Promise<AuthUser> {
-    if (await this.usersService.findOne(username)) {
+  ): Promise<PartialUser> {
+    if (await this.usersService.findBy({ username })) {
       throw new UnauthorizedException()
     }
 
     const hash = await bcrypt.hash(password, process.env.BCRYPT_SECRET);
 
-    const user = { username, password: hash, email, isActive: true }
+    const user = { username, password: hash, email, isActive: true, createdAt: formatISO(new Date()) }
     const newUser = await this.usersService.create(user)
 
     const token = await this.jwtService.signAsync({...newUser});

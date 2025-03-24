@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from 'src/exported';
-import { DBUser } from 'src/users/users.entity';
+import { User } from 'src/users/users.entity';
 
 @Controller('api/auth')
 export class AuthController {
@@ -19,7 +19,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: DBUser) {
+  signIn(@Body() signInDto: User) {
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
 
