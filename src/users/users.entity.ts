@@ -1,8 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class DBUser {
-  @PrimaryColumn({ unique: true })
+export class User {
+  @PrimaryGeneratedColumn()
+  id?: number;
+
+  @Column({ unique: true })
   username: string;
   
   @Column()
@@ -34,4 +37,13 @@ export class DBUser {
 
   @Column({nullable: true})
   roles?: string;
+
+  @Column()
+  createdAt: string;
+
+  @Column({ nullable: true })
+  updatedAt?: string;
+
+  @Column({ nullable: true })
+  deletedAt?: string;
 }

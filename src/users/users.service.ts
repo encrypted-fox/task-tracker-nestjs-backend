@@ -1,34 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DBUser } from './users.entity';
+import { User } from './users.entity';
 import { Repository, UpdateResult } from 'typeorm';
+import { formatISO } from 'date-fns';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(DBUser)
-    private usersRepository: Repository<DBUser>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<DBUser[]> {
+  findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  findOne(username: string): Promise<DBUser | null> {
-    return this.usersRepository.findOneBy({ username });
+  findOne(id: number): Promise<User | null> {
+    return this.usersRepository.findOneBy({ id });
   }
 
-  create(user: DBUser): Promise<DBUser> {
+  findBy(entity: any): Promise<User | null> {
+    return this.usersRepository.findOneBy(entity);
+  }
+
+  create(user: User): Promise<User> {
     const newUser = this.usersRepository.create(user)
 
     return this.usersRepository.save(newUser)
   }
 
-  update(username: string, newUser: DBUser): Promise<UpdateResult> {
-    return this.usersRepository.update({ username }, newUser);
+  update(id: number, newUser: User): Promise<UpdateResult> {
+    const updatedDate = formatISO(new Date());
+    
+    return this.usersRepository.update({ id }, {...newUser, updatedAt: updatedDate});
   }
 
-  remove(username: string): Promise<UpdateResult> {
-    return this.usersRepository.update({ username }, { isActive: false });
+  remove(id: number): Promise<UpdateResult> {
+    const updatedDate = formatISO(new Date());
+    
+    return this.usersRepository.update({ id }, { isActive: false, updatedAt: updatedDate, deletedAt: updatedDate });
   }
 }
