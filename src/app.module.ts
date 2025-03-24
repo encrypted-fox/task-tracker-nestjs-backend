@@ -2,9 +2,14 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DBUser } from './users/users.entity';
+import { User } from './users/users.entity';
 import { ConfigModule } from '@nestjs/config';
 import { TasksModule } from './tasks/tasks.module';
+import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import * as path from 'path';
+import { Project } from './projects/projects.entity';
+import { Board } from './boards/boards.entity';
+import { Task } from './tasks/tasks.entity';
 
 @Module({
   imports: [
@@ -18,10 +23,21 @@ import { TasksModule } from './tasks/tasks.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [DBUser],
+      entities: [User, Task, Board, Project],
       synchronize: true,
     }),
-    ConfigModule.forRoot()
+    ConfigModule.forRoot(),
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: path.join(__dirname, '/i18n/'),
+        watch: true,
+      },
+      resolvers: [
+        { use: QueryResolver, options: ['locale'] },
+        AcceptLanguageResolver,
+      ],
+    }),
   ],
 })
 export class AppModule {}
