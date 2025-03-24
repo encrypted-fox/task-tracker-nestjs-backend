@@ -1,0 +1,10 @@
+{
+  "id": "ID",
+  "title": "Title",
+  "description": "Description",
+  "attachments": "Files",
+  "creator": "Creator",
+  "createdAt": "Created date",
+  "updatedAt": "Updated date",
+  "deletedAt": "Deleted date"
+}

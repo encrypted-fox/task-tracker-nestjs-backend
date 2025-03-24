@@ -1,0 +1,15 @@
+{
+  "id": "ID",
+  "title": "Title",
+  "description": "Description",
+  "time": "Time",
+  "column": "Column",
+  "priority": "Priority",
+  "attachments": "Files",
+  "board": "Board",
+  "project": "Project",
+  "creator": "Creator",
+  "createdAt": "Created date",
+  "updatedAt": "Updated date",
+  "deletedAt": "Deleted date"
+}

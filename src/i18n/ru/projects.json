@@ -1,0 +1,10 @@
+{
+  "id": "Номер",
+  "title": "Название",
+  "description": "Описание",
+  "attachments": "Файлы",
+  "creator": "Создатель",
+  "createdAt": "Дата создания",
+  "updatedAt": "Дата изменения",
+  "deletedAt": "Дата удаления"
+}
