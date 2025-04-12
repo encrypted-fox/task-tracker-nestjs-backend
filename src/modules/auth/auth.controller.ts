@@ -1,4 +1,3 @@
-
 import {
   Body,
   Controller,
@@ -6,7 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Request
+  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from 'src/exported';
@@ -26,10 +25,21 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  register(@Body() registerDto: {username: string, password: string, repeatPassword: string, email: string}) {
+  register(
+    @Body()
+    registerDto: {
+      username: string;
+      password: string;
+      repeatPassword: string;
+      email: string;
+    },
+  ) {
     if (registerDto.password === registerDto.repeatPassword)
-    
-    return this.authService.register(registerDto.username, registerDto.password, registerDto.email);
+      return this.authService.register(
+        registerDto.username,
+        registerDto.password,
+        registerDto.email,
+      );
   }
 
   @Get('profile')
