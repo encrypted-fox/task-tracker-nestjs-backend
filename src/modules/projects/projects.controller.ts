@@ -1,9 +1,20 @@
-import { Controller, HttpCode, HttpStatus, Get, UseGuards, Post, Body, Patch, Param, Delete } from "@nestjs/common"
-import { I18n, I18nContext } from "nestjs-i18n";
-import { AuthGuard } from "src/auth/auth.guard";
-import { Project } from "./projects.entity";
-import { UsersService } from "src/users/users.service";
-import { ProjectsService } from "src/projects/projects.service";
+import {
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Get,
+  UseGuards,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { ProjectDTO } from './projects.entity';
+import { UsersService } from 'src/modules/users/users.service';
+import { ProjectsService } from 'src/modules/projects/projects.service';
 
 @Controller('api/projects')
 export class ProjectsController {
@@ -14,111 +25,122 @@ export class ProjectsController {
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @Get('')
-  async getAllProjects(@I18n() i18n: I18nContext) {
-    const projects = await this.projectsService.findAll()
+  @Get('list')
+  async getProjectsList(@I18n() i18n: I18nContext) {
+    const projects = await this.projectsService.findAll();
 
-    const formattedProjects = []
+    const formattedProjects = [];
 
     for (let i = 0; i < projects.length; i++) {
-      formattedProjects.push(await this.formatProjectItem(projects[i]))
+      formattedProjects.push(await this.formatProjectItem(projects[i]));
     }
 
-    return { 
+    return {
       header: this.formatProjectHeader(i18n),
-      table: this.formatProjectTable(), 
+      table: this.formatProjectTable(),
       data: formattedProjects,
       count: projects.length,
-      
+
       // todo sorting
       sort: {
         name: 'creator',
-        direction: 'up'
-      } 
-    }
+        direction: 'up',
+      },
+    };
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get('')
+  async getAllProjects() {
+    const projects = await this.projectsService.findAll();
+
+    return {
+      projects,
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getProject(@Param('id') id: number, @I18n() i18n: I18nContext) {
-    return await this.projectsService.findOne(id)
+  async getProject(@Param('id') id: number) {
+    return await this.projectsService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createProject(@I18n() i18n: I18nContext, @Body() project: Project) {
-    const newProject = await this.projectsService.create(project)
+  async createProject(@I18n() i18n: I18nContext, @Body() project: ProjectDTO) {
+    const newProject = await this.projectsService.create(project);
 
-    return { 
+    return {
       data: this.formatProjectItem(newProject),
-    }
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateProject(@Param('id') id: number, @Body() project: Project) {
-    const newProject = (await this.projectsService.update(id, project)).raw[0]
+  async updateProject(@Param('id') id: number, @Body() project: ProjectDTO) {
+    const newProject = (await this.projectsService.update(id, project)).raw[0];
 
-    return { 
+    return {
       data: this.formatProjectItem(newProject),
-    }
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteProject(@Param('id') id: number, @Body() project: Project) {
-    const newProject = await this.projectsService.remove(id)
+  async deleteProject(@Param('id') id: number) {
+    await this.projectsService.remove(id);
 
-    return
+    return;
   }
 
   formatProjectHeader(@I18n() i18n: I18nContext) {
     return [
       {
-        label: i18n.t('projects.id'),
+        label: i18n.t('crud.id'),
         name: 'id',
-        style: 'width: 100px;'
+        style: 'width: 100px;',
       },
       {
-        label: i18n.t('projects.title'),
+        label: i18n.t('crud.title'),
         name: 'title',
-        style: 'width: 175px;'
+        style: 'width: 175px;',
       },
       {
-        label: i18n.t('projects.description'),
+        label: i18n.t('crud.description'),
         name: 'description',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('projects.attachments'),
+        label: i18n.t('crud.attachments'),
         name: 'attachments',
-        style: 'width: 100px;'
+        style: 'width: 100px;',
       },
       {
-        label: i18n.t('projects.creator'),
+        label: i18n.t('crud.creator'),
         name: 'creator',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('projects.createdAt'),
+        label: i18n.t('crud.createdAt'),
         name: 'createdAt',
-        style: 'width: 200px;'
+        style: 'width: 200px;',
       },
       {
-        label: i18n.t('projects.updatedAt'),
+        label: i18n.t('crud.updatedAt'),
         name: 'updatedAt',
-        style: 'width: 200px;'
+        style: 'width: 200px;',
       },
       {
-        label: i18n.t('projects.deletedAt'),
+        label: i18n.t('crud.deletedAt'),
         name: 'deletedAt',
-        style: 'width: 200px;'
+        style: 'width: 200px;',
       },
-    ]
+    ];
   }
 
   formatProjectTable() {
@@ -127,32 +149,32 @@ export class ProjectsController {
         outerStyle: 'width: 100px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'badge badge-secondary'
+        innerClass: 'badge badge-secondary',
       },
       title: {
         outerStyle: 'width: 175px;',
         innerStyle: 'font-weight: bold; text-decoration: underline;',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       description: {
         outerStyle: 'width: 250px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       attachments: {
         iconAppend: 'attachment',
         outerStyle: 'width: 100px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       creator: {
         outerStyle: 'width: 250px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'link',
+        innerClass: 'link text-ellipsis',
       },
       createdAt: {
         outerStyle: 'width: 200px;',
@@ -172,13 +194,12 @@ export class ProjectsController {
         outerClass: '',
         innerClass: 'text-primary text-ellipsis',
       },
-    }
+    };
   }
 
-  async formatProjectItem(project: Project) {
+  async formatProjectItem(project: ProjectDTO) {
+    const user = await this.usersService.findOne(project.creator);
 
-    const user = await this.usersService.findOne(project.creator)
-    
     return {
       id: project.id,
       parts: {
@@ -186,13 +207,13 @@ export class ProjectsController {
           label: `#${project.id}`,
         },
         title: {
-          label: project.title,
+          label: project?.title,
         },
         description: {
           label: project.description,
         },
         attachments: {
-          label: project.attachments,
+          label: project.attachments?.length,
         },
         creator: {
           label: `${user.lastName} ${user.firstName} ${user.middleName}`,
@@ -208,7 +229,7 @@ export class ProjectsController {
         deletedAt: {
           label: project.deletedAt,
         },
-      }
-    }
+      },
+    };
   }
 }
