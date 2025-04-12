@@ -1,16 +1,29 @@
-import { Controller, HttpCode, HttpStatus, Get, UseGuards, Post, Body, Patch, Param, Delete } from "@nestjs/common"
-import { I18n, I18nContext } from "nestjs-i18n";
-import { AuthGuard } from "src/auth/auth.guard";
-import { Task } from "./tasks.entity";
-import { UsersService } from "src/users/users.service";
-import { BoardsService } from "src/boards/boards.service";
-import { ProjectsService } from "src/projects/projects.service";
-import { TasksService } from "./tasks.service";
+import {
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Get,
+  UseGuards,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { TaskDTO } from './tasks.entity';
+import { UsersService } from 'src/modules/users/users.service';
+import { ColumnsService } from '../columns/columns.service';
+import { BoardsService } from 'src/modules/boards/boards.service';
+import { ProjectsService } from 'src/modules/projects/projects.service';
+import { TasksService } from './tasks.service';
 
 @Controller('api/tasks')
 export class TasksController {
   constructor(
     private projectsService: ProjectsService,
+    private columnsService: ColumnsService,
     private boardsService: BoardsService,
     private tasksService: TasksService,
     private usersService: UsersService,
@@ -20,134 +33,134 @@ export class TasksController {
   @HttpCode(HttpStatus.OK)
   @Get('')
   async getAllTasks(@I18n() i18n: I18nContext) {
-    const tasks = await this.tasksService.findAll()
+    const tasks = await this.tasksService.findAll();
 
-    const formattedTasks = []
+    const formattedTasks = [];
 
     for (let i = 0; i < tasks.length; i++) {
-      formattedTasks.push(await this.formatTaskItem(tasks[i]))
+      formattedTasks.push(await this.formatTaskItem(tasks[i]));
     }
 
-    return { 
+    return {
       header: this.formatTaskHeader(i18n),
-      table: this.formatTaskTable(), 
+      table: this.formatTaskTable(),
       data: formattedTasks,
       count: tasks.length,
 
       // todo sorting
       sort: {
         name: 'creator',
-        direction: 'up'
-      } 
-    }
+        direction: 'up',
+      },
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getTask(@Param('id') id: number, @I18n() i18n: I18nContext) {
-    return await this.tasksService.findOne(id)
+  async getTask(@Param('id') id: number) {
+    return await this.tasksService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createTask(@I18n() i18n: I18nContext, @Body() task: Task) {
-    const newTask = await this.tasksService.create(task)
+  async createTask(@I18n() i18n: I18nContext, @Body() task: TaskDTO) {
+    const newTask = await this.tasksService.create(task);
 
-    return { 
+    return {
       data: this.formatTaskItem(newTask),
-    }
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateTask(@Param('id') id: number, @Body() task: Task) {
-    const newTask = (await this.tasksService.update(id, task)).raw[0]
+  async updateTask(@Param('id') id: number, @Body() task: TaskDTO) {
+    const newTask = (await this.tasksService.update(id, task)).raw[0];
 
-    return { 
+    return {
       data: this.formatTaskItem(newTask),
-    }
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteTask(@Param('id') id: number, @Body() task: Task) {
-    const newTask = (await this.tasksService.remove(id))
+  async deleteTask(@Param('id') id: number) {
+    await this.tasksService.remove(id);
 
-    return
+    return;
   }
 
   formatTaskHeader(@I18n() i18n: I18nContext) {
     return [
       {
-        label: i18n.t('tasks.id'),
+        label: i18n.t('crud.id'),
         name: 'id',
-        style: 'width: 100px;'
+        style: 'width: 100px;',
       },
       {
-        label: i18n.t('tasks.title'),
+        label: i18n.t('crud.title'),
         name: 'title',
-        style: 'width: 175px;'
+        style: 'width: 175px;',
       },
       {
-        label: i18n.t('tasks.description'),
+        label: i18n.t('crud.description'),
         name: 'description',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('tasks.time'),
-        name: 'time',
-        style: 'width: 200px;'
+        label: i18n.t('crud.estimate'),
+        name: 'estimate',
+        style: 'width: 200px;',
       },
       {
-        label: i18n.t('tasks.column'),
+        label: i18n.t('crud.column'),
         name: 'column',
-        style: 'width: 175px;'
+        style: 'width: 175px;',
       },
       {
-        label: i18n.t('tasks.priority'),
+        label: i18n.t('crud.priority'),
         name: 'priority',
-        style: 'width: 140px;'
+        style: 'width: 140px;',
       },
       {
-        label: i18n.t('tasks.attachments'),
+        label: i18n.t('crud.attachments'),
         name: 'attachments',
-        style: 'width: 100px;'
+        style: 'width: 100px;',
       },
       {
-        label: i18n.t('tasks.board'),
+        label: i18n.t('crud.board'),
         name: 'board',
-        style: 'width: 140px;'
+        style: 'width: 140px;',
       },
       {
-        label: i18n.t('tasks.project'),
+        label: i18n.t('crud.project'),
         name: 'project',
-        style: 'width: 140px;'
+        style: 'width: 140px;',
       },
       {
-        label: i18n.t('tasks.creator'),
+        label: i18n.t('crud.creator'),
         name: 'creator',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('tasks.createdAt'),
+        label: i18n.t('crud.createdAt'),
         name: 'createdAt',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('tasks.updatedAt'),
+        label: i18n.t('crud.updatedAt'),
         name: 'updatedAt',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('tasks.deletedAt'),
+        label: i18n.t('crud.deletedAt'),
         name: 'deletedAt',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
-    ]
+    ];
   }
 
   formatTaskTable() {
@@ -156,63 +169,63 @@ export class TasksController {
         outerStyle: 'width: 100px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'badge badge-secondary'
+        innerClass: 'badge badge-secondary',
       },
       title: {
         outerStyle: 'width: 175px;',
         innerStyle: 'font-weight: bold; text-decoration: underline;',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       description: {
         outerStyle: 'width: 250px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
-      time: {
+      estimate: {
         outerStyle: 'width: 200px;',
         innerStyle: '',
         outerClass: '',
         innerClass: 'text-primary text-ellipsis',
-        iconPrepend: 'time',
+        iconPrepend: 'estimate',
       },
       column: {
         outerStyle: 'width: 175px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'badge badge-secondary'
+        innerClass: 'badge badge-secondary',
       },
       priority: {
         outerStyle: 'width: 140px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'badge badge-success'
+        innerClass: 'badge badge-success',
       },
       attachments: {
         iconAppend: 'attachment',
         outerStyle: 'width: 100px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       board: {
         outerStyle: 'width: 140px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'link'
+        innerClass: 'link text-ellipsis',
       },
       project: {
         outerStyle: 'width: 140px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'link'
+        innerClass: 'link text-ellipsis',
       },
       creator: {
         outerStyle: 'width: 250px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'link',
+        innerClass: 'link text-ellipsis',
       },
       createdAt: {
         outerStyle: 'width: 250px;',
@@ -232,14 +245,15 @@ export class TasksController {
         outerClass: '',
         innerClass: 'text-primary text-ellipsis',
       },
-    }
+    };
   }
 
-  async formatTaskItem(task: Task) {
-    const board = await this.boardsService.findOne(task.board)
-    const project = await this.projectsService.findOne(task.board)
-    const user = await this.usersService.findOne(task.creator)
-    
+  async formatTaskItem(task: TaskDTO) {
+    const column = await this.columnsService.findOne(task.column);
+    const board = await this.boardsService.findOne(task.board);
+    const project = await this.projectsService.findOne(task.project);
+    const user = await this.usersService.findOne(task.creator);
+
     return {
       id: task.id,
       parts: {
@@ -252,11 +266,12 @@ export class TasksController {
         description: {
           label: task.description,
         },
-        time: {
-          label: task.time,
+        estimate: {
+          label: task.estimate,
         },
         column: {
-          label: task.column,
+          label: column?.title,
+          url: `columns/${task.column}`,
         },
         priority: {
           label: task.priority,
@@ -275,7 +290,6 @@ export class TasksController {
         creator: {
           label: `${user.lastName} ${user.firstName} ${user.middleName}`,
           url: `users/${task.creator}`,
-          img: user.avatar,
         },
         createdAt: {
           label: task.createdAt,
@@ -286,7 +300,7 @@ export class TasksController {
         deletedAt: {
           label: task.deletedAt,
         },
-      }
-    }
+      },
+    };
   }
 }
