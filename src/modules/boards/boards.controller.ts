@@ -1,10 +1,21 @@
-import { Controller, HttpCode, HttpStatus, Get, UseGuards, Post, Body, Patch, Param, Delete } from "@nestjs/common"
-import { I18n, I18nContext } from "nestjs-i18n";
-import { AuthGuard } from "src/auth/auth.guard";
-import { Board } from "./boards.entity";
-import { UsersService } from "src/users/users.service";
-import { BoardsService } from "src/boards/boards.service";
-import { ProjectsService } from "src/projects/projects.service";
+import {
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Get,
+  UseGuards,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { BoardDTO } from './boards.entity';
+import { UsersService } from 'src/modules/users/users.service';
+import { BoardsService } from 'src/modules/boards/boards.service';
+import { ProjectsService } from 'src/modules/projects/projects.service';
 
 @Controller('api/boards')
 export class BoardsController {
@@ -17,111 +28,122 @@ export class BoardsController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllBoards(@I18n() i18n: I18nContext) {
-    const boards = await this.boardsService.findAll()
+  async getBoardsList(@I18n() i18n: I18nContext) {
+    const boards = await this.boardsService.findAll();
 
-    const formattedBoards = boards.map(item => this.formatBoardItem(item))
+    const formattedBoards = boards.map((item) => this.formatBoardItem(item));
 
-    return { 
+    return {
       header: this.formatBoardHeader(i18n),
-      table: this.formatBoardTable(), 
+      table: this.formatBoardTable(),
       data: formattedBoards,
       count: boards.length,
-      
+
       // todo sorting
       sort: {
         name: 'creator',
-        direction: 'up'
-      } 
-    }
+        direction: 'up',
+      },
+    };
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get('')
+  async getAllBoards() {
+    const boards = await this.boardsService.findAll();
+
+    return {
+      boards,
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getBoard(@Param('id') id: number, @I18n() i18n: I18nContext) {
-    return await this.boardsService.findOne(id)
+  async getBoard(@Param('id') id: number) {
+    return await this.boardsService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createBoard(@I18n() i18n: I18nContext, @Body() board: Board) {
-    const newBoard = await this.boardsService.create(board)
+  async createBoard(@I18n() i18n: I18nContext, @Body() board: BoardDTO) {
+    const newBoard = await this.boardsService.create(board);
 
-    return { 
+    return {
       data: this.formatBoardItem(newBoard),
-    }
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateBoard(@Param('id') id: number, @Body() board: Board) {
-    const newBoard = (await this.boardsService.update(id, board)).raw[0]
+  async updateBoard(@Param('id') id: number, @Body() board: BoardDTO) {
+    const newBoard = (await this.boardsService.update(id, board)).raw[0];
 
-    return { 
+    return {
       data: this.formatBoardItem(newBoard),
-    }
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteBoard(@Param('id') id: number, @Body() board: Board) {
-    const newBoard = (await this.boardsService.remove(id))
+  async deleteBoard(@Param('id') id: number) {
+    await this.boardsService.remove(id);
 
-    return
+    return;
   }
 
   formatBoardHeader(@I18n() i18n: I18nContext) {
     return [
       {
-        label: i18n.t('boards.id'),
+        label: i18n.t('crud.id'),
         name: 'id',
-        style: 'width: 100px;'
+        style: 'width: 100px;',
       },
       {
-        label: i18n.t('boards.title'),
+        label: i18n.t('crud.title'),
         name: 'title',
-        style: 'width: 175px;'
+        style: 'width: 175px;',
       },
       {
-        label: i18n.t('boards.description'),
+        label: i18n.t('crud.description'),
         name: 'description',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('boards.attachments'),
+        label: i18n.t('crud.attachments'),
         name: 'attachments',
-        style: 'width: 100px;'
+        style: 'width: 100px;',
       },
       {
-        label: i18n.t('boards.project'),
+        label: i18n.t('crud.project'),
         name: 'project',
-        style: 'width: 140px;'
+        style: 'width: 140px;',
       },
       {
-        label: i18n.t('boards.creator'),
+        label: i18n.t('crud.creator'),
         name: 'creator',
-        style: 'width: 250px;'
+        style: 'width: 250px;',
       },
       {
-        label: i18n.t('boards.createdAt'),
+        label: i18n.t('crud.createdAt'),
         name: 'createdAt',
-        style: 'width: 200px;'
+        style: 'width: 200px;',
       },
       {
-        label: i18n.t('boards.updatedAt'),
+        label: i18n.t('crud.updatedAt'),
         name: 'updatedAt',
-        style: 'width: 200px;'
+        style: 'width: 200px;',
       },
       {
-        label: i18n.t('boards.deletedAt'),
+        label: i18n.t('crud.deletedAt'),
         name: 'deletedAt',
-        style: 'width: 200px;'
+        style: 'width: 200px;',
       },
-    ]
+    ];
   }
 
   formatBoardTable() {
@@ -130,38 +152,38 @@ export class BoardsController {
         outerStyle: 'width: 100px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'badge badge-secondary'
+        innerClass: 'badge badge-secondary',
       },
       title: {
         outerStyle: 'width: 175px;',
         innerStyle: 'font-weight: bold; text-decoration: underline;',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       description: {
         outerStyle: 'width: 250px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       attachments: {
         iconAppend: 'attachment',
         outerStyle: 'width: 100px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'text-primary text-ellipsis'
+        innerClass: 'text-primary text-ellipsis',
       },
       project: {
         outerStyle: 'width: 140px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'link'
+        innerClass: 'link text-ellipsis',
       },
       creator: {
         outerStyle: 'width: 250px;',
         innerStyle: '',
         outerClass: '',
-        innerClass: 'link',
+        innerClass: 'link text-ellipsis',
       },
       createdAt: {
         outerStyle: 'width: 200px;',
@@ -181,14 +203,13 @@ export class BoardsController {
         outerClass: '',
         innerClass: 'text-primary text-ellipsis',
       },
-    }
+    };
   }
 
-  async formatBoardItem(board: Board) {
+  async formatBoardItem(board: BoardDTO) {
+    const user = await this.usersService.findOne(board.creator);
+    const project = await this.projectsService.findOne(board.project);
 
-    const user = await this.usersService.findOne(board.creator)
-    const project = await this.projectsService.findOne(board.project)
-    
     return {
       id: board.id,
       parts: {
@@ -196,16 +217,13 @@ export class BoardsController {
           label: `#${board.id}`,
         },
         title: {
-          label: board.title,
+          label: board?.title,
         },
         description: {
           label: board.description,
         },
-        attachments: {
-          label: board.attachments,
-        },
         project: {
-          label: project.title,
+          label: project?.title,
           url: `projects/${project.id}`,
         },
         creator: {
@@ -222,7 +240,7 @@ export class BoardsController {
         deletedAt: {
           label: board.deletedAt,
         },
-      }
-    }
+      },
+    };
   }
 }

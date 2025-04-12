@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from 'src/modules/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Board } from './boards.entity';
+import { BoardDTO } from './boards.entity';
 import { BoardsService } from './boards.service';
 import { BoardsController } from './boards.controller';
-import { ProjectsModule } from 'src/projects/projects.module';
+import { ProjectsModule } from 'src/modules/projects/projects.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Board]), UsersModule, ProjectsModule],
+  imports: [TypeOrmModule.forFeature([BoardDTO]), UsersModule, ProjectsModule],
   providers: [BoardsService],
   exports: [BoardsService],
   controllers: [BoardsController],
