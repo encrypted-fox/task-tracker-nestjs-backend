@@ -1,19 +1,23 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/users.entity';
-import { ConfigModule } from '@nestjs/config';
 import { TasksModule } from './tasks/tasks.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { TeamDTO } from './teams/teams.entity';
+import { UserDTO } from './users/users.entity';
+import { ProjectDTO } from './projects/projects.entity';
+import { BoardDTO } from './boards/boards.entity';
+import { ColumnDTO } from './columns/columns.entity';
+import { TaskDTO } from './tasks/tasks.entity';
+
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'path';
-import { Project } from './projects/projects.entity';
-import { Board } from './boards/boards.entity';
-import { Task } from './tasks/tasks.entity';
 
 @Module({
   imports: [
-    AuthModule, 
+    AuthModule,
     UsersModule,
     TasksModule,
     TypeOrmModule.forRoot({
@@ -23,7 +27,7 @@ import { Task } from './tasks/tasks.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Task, Board, Project],
+      entities: [UserDTO, TeamDTO, TaskDTO, ColumnDTO, BoardDTO, ProjectDTO],
       synchronize: true,
     }),
     ConfigModule.forRoot(),
