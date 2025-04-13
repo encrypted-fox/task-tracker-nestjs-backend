@@ -12,11 +12,12 @@ import {
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
-import { ColumnDTO } from './columns.entity';
+import { ColumnEntity } from './columns.entity';
 import { UsersService } from 'src/modules/users/users.service';
 import { ColumnsService } from 'src/modules/columns/columns.service';
 import { BoardsService } from '../boards/boards.service';
 import { ProjectsService } from '../projects/projects.service';
+import { PriorityEntity } from '../priorities/priorities.entity';
 
 @Controller('api/columns')
 export class ColumnsController {
@@ -56,50 +57,42 @@ export class ColumnsController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllColumns() {
-    const columns = await this.columnsService.findAll();
-
-    return {
-      columns,
-    };
+  async getAllColumns(): Promise<ColumnEntity[]> {
+    return await this.columnsService.findAll();
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getColumn(@Param('id') id: number) {
+  async getColumn(@Param('id') id: number): Promise<ColumnEntity> {
     return await this.columnsService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createColumn(@I18n() i18n: I18nContext, @Body() column: ColumnDTO) {
-    const newColumn = await this.columnsService.create(column);
-
-    return {
-      data: this.formatColumnItem(newColumn),
-    };
+  async createColumn(
+    @I18n() i18n: I18nContext,
+    @Body() column: ColumnEntity,
+  ): Promise<ColumnEntity> {
+    return await this.columnsService.create(column);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateColumn(@Param('id') id: number, @Body() column: ColumnDTO) {
-    const newColumn = (await this.columnsService.update(id, column)).raw[0];
-
-    return {
-      data: this.formatColumnItem(newColumn),
-    };
+  async updateColumn(
+    @Param('id') id: number,
+    @Body() column: ColumnEntity,
+  ): Promise<ColumnEntity> {
+    return (await this.columnsService.update(id, column)).raw[0];
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteColumn(@Param('id') id: number) {
+  async deleteColumn(@Param('id') id: number): Promise<void> {
     await this.columnsService.remove(id);
-
-    return;
   }
 
   formatColumnHeader(@I18n() i18n: I18nContext) {
@@ -200,7 +193,7 @@ export class ColumnsController {
     };
   }
 
-  async formatColumnItem(column: ColumnDTO) {
+  async formatColumnItem(column: ColumnEntity) {
     const board = await this.boardsService.findOne(column.board);
     const project = await this.projectsService.findOne(column.project);
     const user = await this.usersService.findOne(column.creator);
