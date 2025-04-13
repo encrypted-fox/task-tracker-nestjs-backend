@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
-import { TaskDTO } from './tasks.entity';
+import { TaskEntity } from './tasks.entity';
 import { UsersService } from 'src/modules/users/users.service';
 import { ColumnsService } from '../columns/columns.service';
 import { BoardsService } from 'src/modules/boards/boards.service';
@@ -31,8 +31,8 @@ export class TasksController {
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @Get('')
-  async getAllTasks(@I18n() i18n: I18nContext) {
+  @Get('list')
+  async getTasksList(@I18n() i18n: I18nContext) {
     const tasks = await this.tasksService.findAll();
 
     const formattedTasks = [];
@@ -57,40 +57,43 @@ export class TasksController {
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Get('list')
+  async getAllTasks(): Promise<TaskEntity[]> {
+    return await this.tasksService.findAll();
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getTask(@Param('id') id: number) {
+  async getTask(@Param('id') id: number): Promise<TaskEntity> {
     return await this.tasksService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createTask(@I18n() i18n: I18nContext, @Body() task: TaskDTO) {
-    const newTask = await this.tasksService.create(task);
-
-    return {
-      data: this.formatTaskItem(newTask),
-    };
+  async createTask(
+    @I18n() i18n: I18nContext,
+    @Body() task: TaskEntity,
+  ): Promise<TaskEntity> {
+    return await this.tasksService.create(task);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateTask(@Param('id') id: number, @Body() task: TaskDTO) {
-    const newTask = (await this.tasksService.update(id, task)).raw[0];
-
-    return {
-      data: this.formatTaskItem(newTask),
-    };
+  async updateTask(
+    @Param('id') id: number,
+    @Body() task: TaskEntity,
+  ): Promise<TaskEntity> {
+    return (await this.tasksService.update(id, task)).raw[0];
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteTask(@Param('id') id: number) {
+  async deleteTask(@Param('id') id: number): Promise<void> {
     await this.tasksService.remove(id);
-
-    return;
   }
 
   formatTaskHeader(@I18n() i18n: I18nContext) {
@@ -248,7 +251,7 @@ export class TasksController {
     };
   }
 
-  async formatTaskItem(task: TaskDTO) {
+  async formatTaskItem(task: TaskEntity) {
     const column = await this.columnsService.findOne(task.column);
     const board = await this.boardsService.findOne(task.board);
     const project = await this.projectsService.findOne(task.project);

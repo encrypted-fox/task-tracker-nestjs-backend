@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class TaskDTO {
+export class TaskEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
@@ -11,11 +11,11 @@ export class TaskDTO {
   @Column({ nullable: true })
   estimate?: string;
   @Column({ nullable: true, array: true })
-  attachments?: string;
+  attachments?: string[];
   @Column({ nullable: true })
   priority?: number;
   @Column({ nullable: true, array: true })
-  tags?: string;
+  tags?: string[];
   @Column({ nullable: true })
   column?: number;
   @Column({ nullable: true })
@@ -25,11 +25,11 @@ export class TaskDTO {
   @Column()
   creator: number;
   @Column({ nullable: true, array: true })
-  visibilityType?: number;
+  visibilityType?: number[];
   @Column({ nullable: true })
   visibilityValue?: string;
   @Column({ nullable: true, array: true })
-  relatedUsers?: number;
+  relatedUsers?: number[];
   @Column()
   createdAt: string;
   @Column({ nullable: true })
