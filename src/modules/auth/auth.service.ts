@@ -3,7 +3,6 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { PartialUser } from 'src/modules/users/users.interface';
 import * as bcrypt from 'bcrypt';
-import { formatISO } from 'date-fns';
 
 @Injectable()
 export class AuthService {
@@ -47,7 +46,6 @@ export class AuthService {
       username,
       password: hash,
       email,
-      createdAt: formatISO(new Date()),
     };
     const newUser = await this.usersService.create(user);
 
