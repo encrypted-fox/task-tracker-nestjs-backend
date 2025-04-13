@@ -1,15 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Request,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from 'src/exported';
-import { UserDTO } from 'src/modules/users/users.entity';
+import { UserEntity } from 'src/modules/users/users.entity';
+import { PartialUser } from '../users/users.interface';
 
 @Controller('api/auth')
 export class AuthController {
@@ -18,8 +11,8 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: UserDTO) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  signIn(@Body() request: UserEntity): Promise<PartialUser> {
+    return this.authService.signIn(request.username, request.password);
   }
 
   @Public()
@@ -27,23 +20,18 @@ export class AuthController {
   @Post('register')
   register(
     @Body()
-    registerDto: {
+    request: {
       username: string;
       password: string;
       repeatPassword: string;
       email: string;
     },
-  ) {
-    if (registerDto.password === registerDto.repeatPassword)
+  ): Promise<PartialUser> {
+    if (request.password === request.repeatPassword)
       return this.authService.register(
-        registerDto.username,
-        registerDto.password,
-        registerDto.email,
+        request.username,
+        request.password,
+        request.email,
       );
-  }
-
-  @Get('profile')
-  getProfile(@Request() req: any) {
-    return req.user;
   }
 }
