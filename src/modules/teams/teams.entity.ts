@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class TeamDTO {
+export class TeamEntity {
   @PrimaryGeneratedColumn()
   id?: number;
   @Column({ unique: true })
