@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class BoardDTO {
+export class BoardEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
@@ -9,13 +9,13 @@ export class BoardDTO {
   @Column({ nullable: true })
   description?: string;
   @Column({ nullable: true, array: true })
-  attachments?: string;
+  attachments?: string[];
   @Column()
   project: number;
   @Column()
   creator: number;
   @Column({ nullable: true, array: true })
-  visibilityType?: number;
+  visibilityType?: number[];
   @Column({ nullable: true })
   visibilityValue?: string;
   @Column()

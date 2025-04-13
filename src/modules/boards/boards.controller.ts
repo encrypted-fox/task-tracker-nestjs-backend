@@ -12,10 +12,12 @@ import {
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
-import { BoardDTO } from './boards.entity';
+import { BoardEntity } from './boards.entity';
 import { UsersService } from 'src/modules/users/users.service';
 import { BoardsService } from 'src/modules/boards/boards.service';
 import { ProjectsService } from 'src/modules/projects/projects.service';
+import { PartialUser } from '../users/users.interface';
+import { ColumnEntity } from '../columns/columns.entity';
 
 @Controller('api/boards')
 export class BoardsController {
@@ -50,50 +52,42 @@ export class BoardsController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllBoards() {
-    const boards = await this.boardsService.findAll();
-
-    return {
-      boards,
-    };
+  async getAllBoards(): Promise<BoardEntity[]> {
+    return await this.boardsService.findAll();
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getBoard(@Param('id') id: number) {
+  async getBoard(@Param('id') id: number): Promise<BoardEntity> {
     return await this.boardsService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createBoard(@I18n() i18n: I18nContext, @Body() board: BoardDTO) {
-    const newBoard = await this.boardsService.create(board);
-
-    return {
-      data: this.formatBoardItem(newBoard),
-    };
+  async createBoard(
+    @I18n() i18n: I18nContext,
+    @Body() board: BoardEntity,
+  ): Promise<BoardEntity> {
+    return await this.boardsService.create(board);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateBoard(@Param('id') id: number, @Body() board: BoardDTO) {
-    const newBoard = (await this.boardsService.update(id, board)).raw[0];
-
-    return {
-      data: this.formatBoardItem(newBoard),
-    };
+  async updateBoard(
+    @Param('id') id: number,
+    @Body() board: BoardEntity,
+  ): Promise<BoardEntity> {
+    return (await this.boardsService.update(id, board)).raw[0];
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteBoard(@Param('id') id: number) {
+  async deleteBoard(@Param('id') id: number): Promise<void> {
     await this.boardsService.remove(id);
-
-    return;
   }
 
   formatBoardHeader(@I18n() i18n: I18nContext) {
@@ -206,7 +200,7 @@ export class BoardsController {
     };
   }
 
-  async formatBoardItem(board: BoardDTO) {
+  async formatBoardItem(board: BoardEntity) {
     const user = await this.usersService.findOne(board.creator);
     const project = await this.projectsService.findOne(board.project);
 
