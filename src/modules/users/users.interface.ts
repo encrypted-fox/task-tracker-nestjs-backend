@@ -1,6 +1,6 @@
-import { UserDTO } from './users.entity';
+import { UserEntity } from './users.entity';
 
-export interface PartialUser extends UserDTO {
+export interface PartialUser extends UserEntity {
   token?: string;
   refresh_token?: string;
 }

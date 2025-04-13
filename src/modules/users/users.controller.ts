@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
-import { UserDTO } from './users.entity';
+import { UserEntity } from './users.entity';
 import { UsersService } from './users.service';
 
 @Controller('api/users')
@@ -48,47 +48,41 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllUsers() {
-    const users = await this.usersService.findAll();
-
-    return {
-      users,
-    };
+  async getAllUsers(): Promise<UserEntity[]> {
+    return await this.usersService.findAll();
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getUser(@Param('id') id: number) {
+  async getUser(@Param('id') id: number): Promise<UserEntity> {
     return await this.usersService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createUser(@I18n() i18n: I18nContext, @Body() user: UserDTO) {
-    const newUser = await this.usersService.create(user);
-
-    return {
-      data: this.formatUserItem(newUser),
-    };
+  async createUser(
+    @I18n() i18n: I18nContext,
+    @Body() user: UserEntity,
+  ): Promise<UserEntity> {
+    return await this.usersService.create(user);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateUser(@Param('id') id: number, @Body() user: UserDTO) {
-    const newUser = (await this.usersService.update(id, user)).raw[0];
-
-    return {
-      data: this.formatUserItem(newUser),
-    };
+  async updateUser(
+    @Param('id') id: number,
+    @Body() user: UserEntity,
+  ): Promise<UserEntity> {
+    return (await this.usersService.update(id, user)).raw[0];
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteUser(@Param('id') id: number) {
+  async deleteUser(@Param('id') id: number): Promise<void> {
     await this.usersService.remove(id);
 
     return;
@@ -225,7 +219,7 @@ export class UsersController {
     };
   }
 
-  async formatUserItem(user: UserDTO) {
+  async formatUserItem(user: UserEntity) {
     return {
       id: user.id,
       parts: {

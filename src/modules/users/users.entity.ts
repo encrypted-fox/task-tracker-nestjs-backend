@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class UserDTO {
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id?: number;
   @Column({ unique: true })
@@ -21,7 +21,7 @@ export class UserDTO {
   @Column({ nullable: true })
   avatar?: string;
   @Column({ nullable: true, array: true })
-  teams?: number;
+  teams?: number[];
   @Column({ nullable: true })
   role?: string;
   @Column()
