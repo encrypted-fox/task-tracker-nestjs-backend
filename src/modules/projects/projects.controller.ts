@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
-import { ProjectDTO } from './projects.entity';
+import { ProjectEntity } from './projects.entity';
 import { UsersService } from 'src/modules/users/users.service';
 import { ProjectsService } from 'src/modules/projects/projects.service';
 
@@ -52,50 +52,36 @@ export class ProjectsController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllProjects() {
-    const projects = await this.projectsService.findAll();
-
-    return {
-      projects,
-    };
+  async getAllProjects(): Promise<ProjectEntity[]> {
+    return await this.projectsService.findAll();
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async getProject(@Param('id') id: number) {
+  async getProject(@Param('id') id: number): Promise<ProjectEntity> {
     return await this.projectsService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createProject(@I18n() i18n: I18nContext, @Body() project: ProjectDTO) {
-    const newProject = await this.projectsService.create(project);
-
-    return {
-      data: this.formatProjectItem(newProject),
-    };
+  async createProject(@I18n() i18n: I18nContext, @Body() project: ProjectEntity): Promise<ProjectEntity> {
+    return await this.projectsService.create(project);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateProject(@Param('id') id: number, @Body() project: ProjectDTO) {
-    const newProject = (await this.projectsService.update(id, project)).raw[0];
-
-    return {
-      data: this.formatProjectItem(newProject),
-    };
+  async updateProject(@Param('id') id: number, @Body() project: ProjectEntity): Promise<ProjectEntity> {
+    return (await this.projectsService.update(id, project)).raw[0];
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteProject(@Param('id') id: number) {
+  async deleteProject(@Param('id') id: number): Promise<void> {
     await this.projectsService.remove(id);
-
-    return;
   }
 
   formatProjectHeader(@I18n() i18n: I18nContext) {
@@ -197,7 +183,7 @@ export class ProjectsController {
     };
   }
 
-  async formatProjectItem(project: ProjectDTO) {
+  async formatProjectItem(project: ProjectEntity) {
     const user = await this.usersService.findOne(project.creator);
 
     return {

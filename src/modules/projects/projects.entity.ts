@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class ProjectDTO {
+export class ProjectEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
@@ -9,11 +9,11 @@ export class ProjectDTO {
   @Column({ nullable: true })
   description?: string;
   @Column({ nullable: true, array: true })
-  attachments?: string;
+  attachments?: string[];
   @Column()
   creator: number;
   @Column({ nullable: true, array: true })
-  visibilityType?: number;
+  visibilityType?: number[];
   @Column({ nullable: true })
   visibilityValue?: string;
   @Column()
