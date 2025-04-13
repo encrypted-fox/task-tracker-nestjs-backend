@@ -22,12 +22,8 @@ export class RelationTypesController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllRelationTypes() {
-    const relationTypes = await this.relationTypesService.findAll();
-
-    return {
-      relationTypes,
-    };
+  async getAllRelationTypes(): Promise<RelationTypeEntity[]> {
+    return await this.relationTypesService.findAll();
   }
 
   @UseGuards(AuthGuard)
@@ -43,13 +39,8 @@ export class RelationTypesController {
   async createRelationType(
     @I18n() i18n: I18nContext,
     @Body() relationType: RelationTypeEntity,
-  ): Promise<{ data: RelationTypeEntity }> {
-    const newRelationType =
-      await this.relationTypesService.create(relationType);
-
-    return {
-      data: newRelationType,
-    };
+  ): Promise<RelationTypeEntity> {
+    return await this.relationTypesService.create(relationType);
   }
 
   @UseGuards(AuthGuard)
@@ -58,14 +49,8 @@ export class RelationTypesController {
   async updateRelationType(
     @Param('id') id: number,
     @Body() relationType: RelationTypeEntity,
-  ): Promise<{ data: RelationTypeEntity }> {
-    const newRelationType = (
-      await this.relationTypesService.update(id, relationType)
-    ).raw[0];
-
-    return {
-      data: newRelationType,
-    };
+  ): Promise<RelationTypeEntity> {
+    return (await this.relationTypesService.update(id, relationType)).raw[0];
   }
 
   @UseGuards(AuthGuard)
@@ -73,7 +58,5 @@ export class RelationTypesController {
   @Delete(':id')
   async deleteRelationType(@Param('id') id: number): Promise<void> {
     await this.relationTypesService.remove(id);
-
-    return;
   }
 }

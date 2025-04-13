@@ -14,7 +14,6 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { RoleEntity } from './roles.entity';
 import { RolesService } from './roles.service';
-import { ProjectEntity } from '../projects/projects.entity';
 
 @Controller('api/roles')
 export class RolesController {

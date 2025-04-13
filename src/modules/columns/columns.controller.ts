@@ -17,7 +17,6 @@ import { UsersService } from 'src/modules/users/users.service';
 import { ColumnsService } from 'src/modules/columns/columns.service';
 import { BoardsService } from '../boards/boards.service';
 import { ProjectsService } from '../projects/projects.service';
-import { PriorityEntity } from '../priorities/priorities.entity';
 
 @Controller('api/columns')
 export class ColumnsController {

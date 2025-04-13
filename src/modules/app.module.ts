@@ -5,15 +5,20 @@ import { TasksModule } from './tasks/tasks.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { TeamDTO } from './teams/teams.entity';
-import { UserDTO } from './users/users.entity';
-import { ProjectDTO } from './projects/projects.entity';
-import { BoardDTO } from './boards/boards.entity';
-import { ColumnDTO } from './columns/columns.entity';
-import { TaskDTO } from './tasks/tasks.entity';
+import { TeamEntity } from './teams/teams.entity';
+import { UserEntity } from './users/users.entity';
+import { ProjectEntity } from './projects/projects.entity';
+import { BoardEntity } from './boards/boards.entity';
+import { ColumnEntity } from './columns/columns.entity';
+import { TaskEntity } from './tasks/tasks.entity';
+import { PriorityEntity } from './priorities/priorities.entity';
+import { RuleEntity } from './rules/rules.entity';
 
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'path';
+import { RoleEntity } from './roles/roles.entity';
+import { RelationEntity } from './relations/relations.entity';
+import { RelationTypeEntity } from './relationTypes/relationTypes.entity';
 
 @Module({
   imports: [
@@ -27,7 +32,20 @@ import * as path from 'path';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [UserDTO, TeamDTO, TaskDTO, ColumnDTO, BoardDTO, ProjectDTO],
+      entities: [
+        UserEntity,
+        TeamEntity,
+        TaskEntity,
+        ColumnEntity,
+        BoardEntity,
+        ProjectEntity,
+        PriorityEntity,
+        RuleEntity,
+        RoleEntity,
+        RuleEntity,
+        RelationTypeEntity,
+        RelationEntity,
+      ],
       synchronize: true,
     }),
     ConfigModule.forRoot(),

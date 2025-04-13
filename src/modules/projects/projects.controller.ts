@@ -66,14 +66,20 @@ export class ProjectsController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  async createProject(@I18n() i18n: I18nContext, @Body() project: ProjectEntity): Promise<ProjectEntity> {
+  async createProject(
+    @I18n() i18n: I18nContext,
+    @Body() project: ProjectEntity,
+  ): Promise<ProjectEntity> {
     return await this.projectsService.create(project);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async updateProject(@Param('id') id: number, @Body() project: ProjectEntity): Promise<ProjectEntity> {
+  async updateProject(
+    @Param('id') id: number,
+    @Body() project: ProjectEntity,
+  ): Promise<ProjectEntity> {
     return (await this.projectsService.update(id, project)).raw[0];
   }
 

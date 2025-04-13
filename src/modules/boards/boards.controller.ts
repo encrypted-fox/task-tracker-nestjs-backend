@@ -16,8 +16,6 @@ import { BoardEntity } from './boards.entity';
 import { UsersService } from 'src/modules/users/users.service';
 import { BoardsService } from 'src/modules/boards/boards.service';
 import { ProjectsService } from 'src/modules/projects/projects.service';
-import { PartialUser } from '../users/users.interface';
-import { ColumnEntity } from '../columns/columns.entity';
 
 @Controller('api/boards')
 export class BoardsController {

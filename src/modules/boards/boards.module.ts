@@ -7,7 +7,11 @@ import { BoardsController } from './boards.controller';
 import { ProjectsModule } from 'src/modules/projects/projects.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BoardEntity]), UsersModule, ProjectsModule],
+  imports: [
+    TypeOrmModule.forFeature([BoardEntity]),
+    UsersModule,
+    ProjectsModule,
+  ],
   providers: [BoardsService],
   exports: [BoardsService],
   controllers: [BoardsController],
