@@ -13,6 +13,7 @@ import {
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { TaskEntity } from './tasks.entity';
+import { PrioritiesService } from '../priorities/priorities.service';
 import { UsersService } from 'src/modules/users/users.service';
 import { ColumnsService } from '../columns/columns.service';
 import { BoardsService } from 'src/modules/boards/boards.service';
@@ -22,6 +23,7 @@ import { TasksService } from './tasks.service';
 @Controller('api/tasks')
 export class TasksController {
   constructor(
+    private prioritiesService: PrioritiesService,
     private projectsService: ProjectsService,
     private columnsService: ColumnsService,
     private boardsService: BoardsService,
@@ -252,6 +254,7 @@ export class TasksController {
   }
 
   async formatTaskItem(task: TaskEntity) {
+    const priority = await this.prioritiesService.findOne(task.priority);
     const column = await this.columnsService.findOne(task.column);
     const board = await this.boardsService.findOne(task.board);
     const project = await this.projectsService.findOne(task.project);
@@ -277,7 +280,8 @@ export class TasksController {
           url: `columns/${task.column}`,
         },
         priority: {
-          label: task.priority,
+          label: priority?.title,
+          url: `priorities/${priority.column}`,
         },
         attachments: {
           label: task.attachments?.length,
