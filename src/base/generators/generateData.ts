@@ -1,0 +1,76 @@
+import { TaskEntity } from '../../modules/tasks/tasks.entity';
+import { UserEntity } from '../../modules/users/users.entity';
+
+export function generateData(items: any[], take: string[]) {
+  return items.map((item: any) => generateItem(item, take));
+}
+// [ 'priority', 'column', 'board', 'project', 'creator', 'task', 'relatedTasks', 'relatedUsers', 'type', 'role', 'value', 'createdAt', 'updatedAt', 'deletedAt']
+function generateItem(item: any, take: string[]) {
+  const data = {
+    id: (el: any) => ({ label: `#${el?.id}` }),
+    username: (el: any) => ({ label: el?.username }),
+    email: (el: any) => ({ label: el?.email }),
+    phone: (el: any) => ({ label: el?.phone }),
+    firstName: (el: any) => ({ label: el?.firstName }),
+    middleName: (el: any) => ({ label: el?.middleName }),
+    lastName: (el: any) => ({ label: el?.lastName }),
+    avatar: (el: any) => ({ img: el?.avatar }),
+    title: (el: any) => ({ label: el?.title }),
+    description: (el: any) => ({ label: el?.description }),
+    attachments: (el: any) => ({ label: el?.attachments?.length }),
+    estimate: (el: any) => ({ label: el?.estimate }),
+    value: (el: any) => ({ label: el?.value }),
+    priority: (el: any) => ({
+      label: el?.priority?.title,
+      url: `priorities/${el?.priority?.id}`,
+    }),
+    column: (el: any) => ({
+      label: el?.column?.title,
+      url: `columns/${el?.column?.id}`,
+    }),
+    board: (el: any) => ({
+      label: el?.board?.title,
+      url: `boards/${el?.board?.id}`,
+    }),
+    project: (el: any) => ({
+      label: el?.project?.title,
+      url: `projects/${el?.project?.id}`,
+    }),
+    task: (el: any) => ({
+      label: el?.task?.title,
+      url: `tasks/${el?.task?.id}`,
+    }),
+    type: (el: any) => ({
+      label: el?.relationType?.title,
+      url: `relationTypes/${el?.relationType?.id}`,
+    }),
+    role: (el: any) => ({
+      label: el?.role?.title,
+      url: `roles/${el?.role?.id}`,
+    }),
+    creator: (el: any) => ({
+      label: `${el?.creator?.lastName} ${el?.creator?.firstName} ${el?.creator?.middleName}`,
+      url: `users/${el?.creator?.id}`,
+      img: el?.creator?.avatar,
+    }),
+    relatedTasks: (el: any) => ({
+      labels: el?.relatedTasks?.map((el: TaskEntity) => el.title),
+      urls: el?.relatedTasks?.map((el: TaskEntity) => `tasks/${el.id}`),
+    }),
+    relatedUsers: (el: any) => ({
+      labels: el?.relatedUsers?.map((el: UserEntity) => el.username),
+      urls: el?.relatedTasks?.map((el: UserEntity) => `tasks/${el.id}`),
+    }),
+    createdAt: (el: any) => ({ label: el?.createdAt }),
+    updatedAt: (el: any) => ({ label: el?.updatedAt }),
+    deletedAt: (el: any) => ({ label: el?.deletedAt }),
+  };
+
+  const resp = {};
+
+  for (const el of take) {
+    resp[el] = data[el](item);
+  }
+
+  return resp;
+}
