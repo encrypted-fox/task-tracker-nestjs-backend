@@ -10,6 +10,14 @@ export class RelationsService extends BaseService {
     @InjectRepository(RelationEntity)
     private relationsRepository: Repository<RelationEntity>,
   ) {
-    super(relationsRepository);
+    const relations = {
+      task: true,
+      relatedTasks: true,
+      relationType: true,
+      creator: true,
+    };
+    const searchFields = ['id'];
+
+    super(relationsRepository, searchFields, relations);
   }
 }

@@ -19,12 +19,30 @@ import * as path from 'path';
 import { RoleEntity } from './roles/roles.entity';
 import { RelationEntity } from './relations/relations.entity';
 import { RelationTypeEntity } from './relationTypes/relationTypes.entity';
+import { TeamsModule } from './teams/teams.module';
+import { ColumnsModule } from './columns/columns.module';
+import { RulesModule } from './rules/rules.module';
+import { ProjectsModule } from './projects/projects.module';
+import { PrioritiesModule } from './priorities/priorities.module';
+import { RolesModule } from './roles/roles.module';
+import { RelationTypesModule } from './relationTypes/relationTypes.module';
+import { RelationsModule } from './relations/relations.module';
+import { BoardsModule } from './boards/boards.module';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
+    TeamsModule,
+    PrioritiesModule,
+    ColumnsModule,
+    BoardsModule,
+    ProjectsModule,
+    RulesModule,
+    RolesModule,
     TasksModule,
+    RelationTypesModule,
+    RelationsModule,
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as unknown as 'postgres' | 'mysql',
       host: process.env.DB_HOST,
@@ -35,14 +53,13 @@ import { RelationTypeEntity } from './relationTypes/relationTypes.entity';
       entities: [
         UserEntity,
         TeamEntity,
-        TaskEntity,
+        PriorityEntity,
         ColumnEntity,
         BoardEntity,
         ProjectEntity,
-        PriorityEntity,
         RuleEntity,
         RoleEntity,
-        RuleEntity,
+        TaskEntity,
         RelationTypeEntity,
         RelationEntity,
       ],

@@ -17,7 +17,7 @@ export class BaseService {
       id: 'DESC',
     },
   ) {
-    let where = null;
+    let where: any;
 
     if (Object.keys(filters).length) {
       if (query) {

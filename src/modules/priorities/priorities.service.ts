@@ -10,6 +10,9 @@ export class PrioritiesService extends BaseService {
     @InjectRepository(PriorityEntity)
     private prioritiesRepository: Repository<PriorityEntity>,
   ) {
-    super(prioritiesRepository);
+    const relations = {};
+    const searchFields = ['id', 'title', 'value'];
+
+    super(prioritiesRepository, searchFields, relations);
   }
 }

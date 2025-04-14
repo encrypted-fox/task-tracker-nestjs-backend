@@ -10,6 +10,17 @@ export class UsersService extends BaseService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
   ) {
-    super(usersRepository);
+    const relations = { teams: true, role: true };
+    const searchFields = [
+      'id',
+      'username',
+      'email',
+      'phone',
+      'firstName',
+      'middleName',
+      'lastName',
+    ];
+
+    super(usersRepository, searchFields, relations);
   }
 }

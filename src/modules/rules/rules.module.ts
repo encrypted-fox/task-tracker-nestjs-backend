@@ -10,4 +10,4 @@ import { RulesController } from './rules.controller';
   exports: [RulesService],
   controllers: [RulesController],
 })
-export class BoardsModule {}
+export class RulesModule {}

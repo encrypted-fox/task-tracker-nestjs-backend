@@ -10,6 +10,9 @@ export class RelationTypesService extends BaseService {
     @InjectRepository(RelationTypeEntity)
     private relationTypesRepository: Repository<RelationTypeEntity>,
   ) {
-    super(relationTypesRepository);
+    const relations = {};
+    const searchFields = ['id', 'title'];
+
+    super(relationTypesRepository, searchFields, relations);
   }
 }

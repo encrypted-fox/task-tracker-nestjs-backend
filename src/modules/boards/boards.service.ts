@@ -10,6 +10,9 @@ export class BoardsService extends BaseService {
     @InjectRepository(BoardEntity)
     private boardsRepository: Repository<BoardEntity>,
   ) {
-    super(boardsRepository);
+    const relations = { project: true, creator: true };
+    const searchFields = ['title', 'description'];
+
+    super(boardsRepository, searchFields, relations);
   }
 }

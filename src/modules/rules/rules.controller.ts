@@ -9,38 +9,60 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { RuleEntity } from './rules.entity';
 import { RulesService } from './rules.service';
+import { BaseController } from '../../base/BaseController';
 
 @Controller('api/rules')
-export class RulesController {
-  constructor(private rulesService: RulesService) {}
+export class RulesController extends BaseController {
+  constructor(private rulesService: RulesService) {
+    super();
+  }
+
+  private rulesFields = [
+    'id',
+    'title',
+    'value',
+    'role',
+    'createdAt',
+    'updatedAt',
+    'deletedAt',
+  ];
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  async getRulesList(@I18n() i18n: I18nContext) {
-    const rules = await this.rulesService.findAll();
-
-    const formattedRules = [];
-
-    for (let i = 0; i < rules.length; i++) {
-      formattedRules.push(await this.formatRuleItem(rules[i]));
-    }
+  async getRulesList(
+    @I18n() i18n: I18nContext,
+    @Query() query: string,
+    @Query() filters: any,
+    @Query() skip: number,
+    @Query() take: number,
+    @Query() order: any,
+  ) {
+    const rules = await this.rulesService.find(
+      {},
+      filters,
+      query,
+      skip,
+      take,
+      order,
+    );
 
     return {
-      header: this.formatRuleHeader(i18n),
-      table: this.formatRuleTable(),
-      data: formattedRules,
-      count: rules.length,
+      header: this.generateHeader(i18n, this.rulesFields),
+      table: this.generateTable(this.rulesFields),
+      data: this.generateData(rules, this.rulesFields),
 
-      // todo sorting
-      sort: {
-        name: 'creator',
-        direction: 'up',
+      meta: {
+        count: rules.length,
+        skip,
+        take,
+        order: order || { id: 'DESC' },
       },
     };
   }
@@ -48,15 +70,39 @@ export class RulesController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllRules(): Promise<RuleEntity[]> {
-    return await this.rulesService.findAll();
+  async getAllRules(
+    @Query() query: string,
+    @Query() filters: any,
+    @Query() skip: number,
+    @Query() take: number,
+    @Query() order: any,
+  ) {
+    const rules = await this.rulesService.find(
+      {},
+      filters,
+      query,
+      skip,
+      take,
+      order,
+    );
+
+    return {
+      data: rules,
+
+      meta: {
+        count: rules.length,
+        skip,
+        take,
+        order: order || { id: 'DESC' },
+      },
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async getRule(@Param('id') id: number): Promise<RuleEntity> {
-    return await this.rulesService.findOne(id);
+    return this.rulesService.findOne({ id });
   }
 
   @UseGuards(AuthGuard)
@@ -66,7 +112,7 @@ export class RulesController {
     @I18n() i18n: I18nContext,
     @Body() rule: RuleEntity,
   ): Promise<RuleEntity> {
-    return await this.rulesService.create(rule);
+    return this.rulesService.create(rule);
   }
 
   @UseGuards(AuthGuard)
@@ -76,7 +122,7 @@ export class RulesController {
     @Param('id') id: number,
     @Body() rule: RuleEntity,
   ): Promise<RuleEntity> {
-    return (await this.rulesService.update(id, rule)).raw[0];
+    return this.rulesService.update(id, rule);
   }
 
   @UseGuards(AuthGuard)
@@ -84,107 +130,5 @@ export class RulesController {
   @Delete(':id')
   async deleteRule(@Param('id') id: number): Promise<void> {
     await this.rulesService.remove(id);
-  }
-
-  formatRuleHeader(@I18n() i18n: I18nContext) {
-    return [
-      {
-        label: i18n.t('crud.id'),
-        name: 'id',
-        style: 'width: 100px;',
-      },
-      {
-        label: i18n.t('crud.title'),
-        name: 'title',
-        style: 'width: 175px;',
-      },
-      {
-        label: i18n.t('crud.value'),
-        name: 'value',
-        style: 'width: 100px;',
-      },
-      {
-        label: i18n.t('crud.createdAt'),
-        name: 'createdAt',
-        style: 'width: 200px;',
-      },
-      {
-        label: i18n.t('crud.updatedAt'),
-        name: 'updatedAt',
-        style: 'width: 200px;',
-      },
-      {
-        label: i18n.t('crud.deletedAt'),
-        name: 'deletedAt',
-        style: 'width: 200px;',
-      },
-    ];
-  }
-
-  formatRuleTable() {
-    return {
-      id: {
-        outerStyle: 'width: 100px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'badge badge-secondary',
-      },
-      title: {
-        outerStyle: 'width: 175px;',
-        innerStyle: 'font-weight: bold; text-decoration: underline;',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      value: {
-        outerStyle: 'width: 100px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      createdAt: {
-        outerStyle: 'width: 200px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      updatedAt: {
-        outerStyle: 'width: 200px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      deletedAt: {
-        outerStyle: 'width: 200px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-    };
-  }
-
-  async formatRuleItem(rule: RuleEntity) {
-    return {
-      id: rule.id,
-      parts: {
-        id: {
-          label: rule.id,
-        },
-        title: {
-          label: rule.title,
-        },
-        value: {
-          label: rule.value,
-        },
-        createdAt: {
-          label: rule.createdAt,
-        },
-        updatedAt: {
-          label: rule.updatedAt,
-        },
-        deletedAt: {
-          label: rule.deletedAt,
-        },
-      },
-    };
   }
 }

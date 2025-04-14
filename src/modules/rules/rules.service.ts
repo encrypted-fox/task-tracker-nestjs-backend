@@ -10,6 +10,9 @@ export class RulesService extends BaseService {
     @InjectRepository(RuleEntity)
     private rulesRepository: Repository<RuleEntity>,
   ) {
-    super(rulesRepository);
+    const relations = { role: true };
+    const searchFields = ['id', 'title', 'value'];
+
+    super(rulesRepository, searchFields, relations);
   }
 }

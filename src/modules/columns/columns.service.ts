@@ -8,8 +8,11 @@ import { ColumnEntity } from './columns.entity';
 export class ColumnsService extends BaseService {
   constructor(
     @InjectRepository(ColumnEntity)
-    private boardsRepository: Repository<ColumnEntity>,
+    private columnsRepository: Repository<ColumnEntity>,
   ) {
-    super(boardsRepository);
+    const relations = { project: true, board: true, creator: true };
+    const searchFields = ['id', 'title'];
+
+    super(columnsRepository, searchFields, relations);
   }
 }

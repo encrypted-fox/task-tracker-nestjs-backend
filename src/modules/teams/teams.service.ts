@@ -10,6 +10,9 @@ export class TeamsService extends BaseService {
     @InjectRepository(TeamEntity)
     private teamsRepository: Repository<TeamEntity>,
   ) {
-    super(teamsRepository);
+    const relations = { creator: true };
+    const searchFields = ['id', 'title'];
+
+    super(teamsRepository, searchFields, relations);
   }
 }

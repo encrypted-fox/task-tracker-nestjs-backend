@@ -9,38 +9,52 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { TeamEntity } from './teams.entity';
-import { TeamsService } from './teams.service';
+import { TeamsService } from 'src/modules/teams/teams.service';
+import { BaseController } from '../../base/BaseController';
 
 @Controller('api/teams')
-export class TeamsController {
-  constructor(private teamsService: TeamsService) {}
+export class TeamsController extends BaseController {
+  constructor(private teamsService: TeamsService) {
+    super();
+  }
+
+  private teamsFields = ['id', 'title', 'createdAt', 'updatedAt', 'deletedAt'];
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  async getTeamsList(@I18n() i18n: I18nContext) {
-    const teams = await this.teamsService.findAll();
-
-    const formattedTeams = [];
-
-    for (let i = 0; i < teams.length; i++) {
-      formattedTeams.push(await this.formatTeamItem(teams[i]));
-    }
+  async getTeamsList(
+    @I18n() i18n: I18nContext,
+    @Query() query: string,
+    @Query() filters: any,
+    @Query() skip: number,
+    @Query() take: number,
+    @Query() order: any,
+  ) {
+    const teams = await this.teamsService.find(
+      {},
+      filters,
+      query,
+      skip,
+      take,
+      order,
+    );
 
     return {
-      header: this.formatTeamHeader(i18n),
-      table: this.formatTeamTable(),
-      data: formattedTeams,
-      count: teams.length,
+      header: this.generateHeader(i18n, this.teamsFields),
+      table: this.generateTable(this.teamsFields),
+      data: this.generateData(teams, this.teamsFields),
 
-      // todo sorting
-      sort: {
-        name: 'creator',
-        direction: 'up',
+      meta: {
+        count: teams.length,
+        skip,
+        take,
+        order: order || { id: 'DESC' },
       },
     };
   }
@@ -48,15 +62,39 @@ export class TeamsController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllTeams(): Promise<TeamEntity[]> {
-    return await this.teamsService.findAll();
+  async getAllTeams(
+    @Query() query: string,
+    @Query() filters: any,
+    @Query() skip: number,
+    @Query() take: number,
+    @Query() order: any,
+  ) {
+    const teams = await this.teamsService.find(
+      {},
+      filters,
+      query,
+      skip,
+      take,
+      order,
+    );
+
+    return {
+      data: teams,
+
+      meta: {
+        count: teams.length,
+        skip,
+        take,
+        order: order || { id: 'DESC' },
+      },
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async getTeam(@Param('id') id: number): Promise<TeamEntity> {
-    return await this.teamsService.findOne(id);
+    return this.teamsService.findOne({ id });
   }
 
   @UseGuards(AuthGuard)
@@ -66,7 +104,7 @@ export class TeamsController {
     @I18n() i18n: I18nContext,
     @Body() team: TeamEntity,
   ): Promise<TeamEntity> {
-    return await this.teamsService.create(team);
+    return this.teamsService.create(team);
   }
 
   @UseGuards(AuthGuard)
@@ -76,7 +114,7 @@ export class TeamsController {
     @Param('id') id: number,
     @Body() team: TeamEntity,
   ): Promise<TeamEntity> {
-    return (await this.teamsService.update(id, team)).raw[0];
+    return this.teamsService.update(id, team);
   }
 
   @UseGuards(AuthGuard)
@@ -84,93 +122,5 @@ export class TeamsController {
   @Delete(':id')
   async deleteTeam(@Param('id') id: number): Promise<void> {
     await this.teamsService.remove(id);
-  }
-
-  formatTeamHeader(@I18n() i18n: I18nContext) {
-    return [
-      {
-        label: i18n.t('crud.id'),
-        name: 'id',
-        style: 'width: 100px;',
-      },
-      {
-        label: i18n.t('crud.title'),
-        name: 'title',
-        style: 'width: 175px;',
-      },
-      {
-        label: i18n.t('crud.createdAt'),
-        name: 'createdAt',
-        style: 'width: 250px;',
-      },
-      {
-        label: i18n.t('crud.updatedAt'),
-        name: 'updatedAt',
-        style: 'width: 250px;',
-      },
-      {
-        label: i18n.t('crud.deletedAt'),
-        name: 'deletedAt',
-        style: 'width: 250px;',
-      },
-    ];
-  }
-
-  formatTeamTable() {
-    return {
-      id: {
-        outerStyle: 'width: 100px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'badge badge-secondary',
-      },
-      title: {
-        outerStyle: 'width: 175px;',
-        innerStyle: 'font-weight: bold; text-decoration: underline;',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      createdAt: {
-        outerStyle: 'width: 250px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      updatedAt: {
-        outerStyle: 'width: 250px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      deletedAt: {
-        outerStyle: 'width: 250px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-    };
-  }
-
-  async formatTeamItem(team: TeamEntity) {
-    return {
-      id: team.id,
-      parts: {
-        id: {
-          label: team.id,
-        },
-        title: {
-          label: team.title,
-        },
-        createdAt: {
-          label: team.createdAt,
-        },
-        updatedAt: {
-          label: team.updatedAt,
-        },
-        deletedAt: {
-          label: team.deletedAt,
-        },
-      },
-    };
   }
 }

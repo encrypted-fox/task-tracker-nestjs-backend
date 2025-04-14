@@ -10,6 +10,16 @@ export class TasksService extends BaseService {
     @InjectRepository(TaskEntity)
     private tasksRepository: Repository<TaskEntity>,
   ) {
-    super(tasksRepository);
+    const relations = {
+      priority: true,
+      column: true,
+      board: true,
+      project: true,
+      creator: true,
+      relatedUsers: true,
+    };
+    const searchFields = ['id', 'title', 'description', 'estimate'];
+
+    super(tasksRepository, searchFields, relations);
   }
 }

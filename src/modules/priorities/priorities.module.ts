@@ -10,4 +10,4 @@ import { PrioritiesController } from './priorities.controller';
   exports: [PrioritiesService],
   controllers: [PrioritiesController],
 })
-export class BoardsModule {}
+export class PrioritiesModule {}

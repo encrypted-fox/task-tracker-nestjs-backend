@@ -9,38 +9,52 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { RoleEntity } from './roles.entity';
 import { RolesService } from './roles.service';
+import { BaseController } from '../../base/BaseController';
 
 @Controller('api/roles')
-export class RolesController {
-  constructor(private rolesService: RolesService) {}
+export class RolesController extends BaseController {
+  constructor(private rolesService: RolesService) {
+    super();
+  }
+
+  private rolesFields = ['id', 'title', 'createdAt', 'updatedAt', 'deletedAt'];
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  async getRolesList(@I18n() i18n: I18nContext) {
-    const roles = await this.rolesService.findAll();
-
-    const formattedRoles = [];
-
-    for (let i = 0; i < roles.length; i++) {
-      formattedRoles.push(await this.formatRoleItem(roles[i]));
-    }
+  async getRolesList(
+    @I18n() i18n: I18nContext,
+    @Query() query: string,
+    @Query() filters: any,
+    @Query() skip: number,
+    @Query() take: number,
+    @Query() order: any,
+  ) {
+    const roles = await this.rolesService.find(
+      {},
+      filters,
+      query,
+      skip,
+      take,
+      order,
+    );
 
     return {
-      header: this.formatRoleHeader(i18n),
-      table: this.formatRoleTable(),
-      data: formattedRoles,
-      count: roles.length,
+      header: this.generateHeader(i18n, this.rolesFields),
+      table: this.generateTable(this.rolesFields),
+      data: this.generateData(roles, this.rolesFields),
 
-      // todo sorting
-      sort: {
-        name: 'creator',
-        direction: 'up',
+      meta: {
+        count: roles.length,
+        skip,
+        take,
+        order: order || { id: 'DESC' },
       },
     };
   }
@@ -48,15 +62,39 @@ export class RolesController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
-  async getAllRoles(): Promise<RoleEntity[]> {
-    return await this.rolesService.findAll();
+  async getAllRoles(
+    @Query() query: string,
+    @Query() filters: any,
+    @Query() skip: number,
+    @Query() take: number,
+    @Query() order: any,
+  ) {
+    const roles = await this.rolesService.find(
+      {},
+      filters,
+      query,
+      skip,
+      take,
+      order,
+    );
+
+    return {
+      data: roles,
+
+      meta: {
+        count: roles.length,
+        skip,
+        take,
+        order: order || { id: 'DESC' },
+      },
+    };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async getRole(@Param('id') id: number): Promise<RoleEntity> {
-    return await this.rolesService.findOne(id);
+    return this.rolesService.findOne({ id });
   }
 
   @UseGuards(AuthGuard)
@@ -66,7 +104,7 @@ export class RolesController {
     @I18n() i18n: I18nContext,
     @Body() role: RoleEntity,
   ): Promise<RoleEntity> {
-    return await this.rolesService.create(role);
+    return this.rolesService.create(role);
   }
 
   @UseGuards(AuthGuard)
@@ -76,7 +114,7 @@ export class RolesController {
     @Param('id') id: number,
     @Body() role: RoleEntity,
   ): Promise<RoleEntity> {
-    return (await this.rolesService.update(id, role)).raw[0];
+    return this.rolesService.update(id, role);
   }
 
   @UseGuards(AuthGuard)
@@ -84,93 +122,5 @@ export class RolesController {
   @Delete(':id')
   async deleteRole(@Param('id') id: number): Promise<void> {
     await this.rolesService.remove(id);
-  }
-
-  formatRoleHeader(@I18n() i18n: I18nContext) {
-    return [
-      {
-        label: i18n.t('crud.id'),
-        name: 'id',
-        style: 'width: 100px;',
-      },
-      {
-        label: i18n.t('crud.title'),
-        name: 'title',
-        style: 'width: 175px;',
-      },
-      {
-        label: i18n.t('crud.createdAt'),
-        name: 'createdAt',
-        style: 'width: 200px;',
-      },
-      {
-        label: i18n.t('crud.updatedAt'),
-        name: 'updatedAt',
-        style: 'width: 200px;',
-      },
-      {
-        label: i18n.t('crud.deletedAt'),
-        name: 'deletedAt',
-        style: 'width: 200px;',
-      },
-    ];
-  }
-
-  formatRoleTable() {
-    return {
-      id: {
-        outerStyle: 'width: 100px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'badge badge-secondary',
-      },
-      title: {
-        outerStyle: 'width: 175px;',
-        innerStyle: 'font-weight: bold; text-decoration: underline;',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      createdAt: {
-        outerStyle: 'width: 200px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      updatedAt: {
-        outerStyle: 'width: 200px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-      deletedAt: {
-        outerStyle: 'width: 200px;',
-        innerStyle: '',
-        outerClass: '',
-        innerClass: 'text-primary text-ellipsis',
-      },
-    };
-  }
-
-  async formatRoleItem(role: RoleEntity) {
-    return {
-      id: role.id,
-      parts: {
-        id: {
-          label: role.id,
-        },
-        title: {
-          label: role.title,
-        },
-        createdAt: {
-          label: role.createdAt,
-        },
-        updatedAt: {
-          label: role.updatedAt,
-        },
-        deletedAt: {
-          label: role.deletedAt,
-        },
-      },
-    };
   }
 }
