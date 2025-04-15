@@ -1,33 +1,38 @@
-import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { TasksModule } from './tasks/tasks.module';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { TeamEntity } from './teams/teams.entity';
-import { UserEntity } from './users/users.entity';
-import { ProjectEntity } from './projects/projects.entity';
-import { BoardEntity } from './boards/boards.entity';
-import { ColumnEntity } from './columns/columns.entity';
-import { TaskEntity } from './tasks/tasks.entity';
-import { PriorityEntity } from './priorities/priorities.entity';
-import { RuleEntity } from './rules/rules.entity';
-
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'path';
-import { RoleEntity } from './roles/roles.entity';
-import { RelationEntity } from './relations/relations.entity';
-import { RelationTypeEntity } from './relationTypes/relationTypes.entity';
+
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import { TeamsModule } from './teams/teams.module';
-import { ColumnsModule } from './columns/columns.module';
-import { RulesModule } from './rules/rules.module';
-import { ProjectsModule } from './projects/projects.module';
 import { PrioritiesModule } from './priorities/priorities.module';
+import { ColumnsModule } from './columns/columns.module';
+import { BoardsModule } from './boards/boards.module';
+import { ProjectsModule } from './projects/projects.module';
+import { RulesModule } from './rules/rules.module';
 import { RolesModule } from './roles/roles.module';
+import { TasksModule } from './tasks/tasks.module';
+import { TagsModule } from './tags/tags.module';
 import { RelationTypesModule } from './relationTypes/relationTypes.module';
 import { RelationsModule } from './relations/relations.module';
-import { BoardsModule } from './boards/boards.module';
+import { NotificationTypesModule } from './notificationTypes/notificationTypes.module';
+
+import { UserEntity } from './users/users.entity';
+import { TeamEntity } from './teams/teams.entity';
+import { PriorityEntity } from './priorities/priorities.entity';
+import { ColumnEntity } from './columns/columns.entity';
+import { BoardEntity } from './boards/boards.entity';
+import { ProjectEntity } from './projects/projects.entity';
+import { RuleEntity } from './rules/rules.entity';
+import { RoleEntity } from './roles/roles.entity';
+import { TaskEntity } from './tasks/tasks.entity';
+import { TagEntity } from './tags/tags.entity';
+import { RelationTypeEntity } from './relationTypes/relationTypes.entity';
+import { RelationEntity } from './relations/relations.entity';
+import { NotificationTypeEntity } from './notificationTypes/notificationTypes.entity';
+import { NotificationEntity } from './notifications/notifications.entity';
 
 @Module({
   imports: [
@@ -41,8 +46,10 @@ import { BoardsModule } from './boards/boards.module';
     RulesModule,
     RolesModule,
     TasksModule,
+    TagsModule,
     RelationTypesModule,
     RelationsModule,
+    NotificationTypesModule,
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as unknown as 'postgres' | 'mysql',
       host: process.env.DB_HOST,
@@ -60,8 +67,11 @@ import { BoardsModule } from './boards/boards.module';
         RuleEntity,
         RoleEntity,
         TaskEntity,
+        TagEntity,
         RelationTypeEntity,
         RelationEntity,
+        NotificationTypeEntity,
+        NotificationEntity,
       ],
       synchronize: true,
     }),
