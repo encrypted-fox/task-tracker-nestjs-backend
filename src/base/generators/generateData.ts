@@ -1,5 +1,7 @@
 import { TaskEntity } from '../../modules/tasks/tasks.entity';
 import { UserEntity } from '../../modules/users/users.entity';
+import { TeamEntity } from '../../modules/teams/teams.entity';
+import { TagEntity } from '../../modules/tags/tags.entity';
 
 export function generateData(items: any[], take: string[]) {
   return items.map((item: any) => generateItem(item, take));
@@ -17,6 +19,7 @@ function generateItem(item: any, take: string[]) {
     avatar: (el: any) => ({ img: el?.avatar }),
     title: (el: any) => ({ label: el?.title }),
     description: (el: any) => ({ label: el?.description }),
+    object: (el: any) => ({ label: el?.object }),
     attachments: (el: any) => ({ label: el?.attachments?.length }),
     estimate: (el: any) => ({ label: el?.estimate }),
     value: (el: any) => ({ label: el?.value }),
@@ -40,9 +43,17 @@ function generateItem(item: any, take: string[]) {
       label: el?.task?.title,
       url: `tasks/${el?.task?.id}`,
     }),
-    type: (el: any) => ({
+    relationType: (el: any) => ({
       label: el?.relationType?.title,
       url: `relationTypes/${el?.relationType?.id}`,
+    }),
+    notificationType: (el: any) => ({
+      label: el?.notificationType?.title,
+      url: `notificationTypes/${el?.notificationType?.id}`,
+    }),
+    commentType: (el: any) => ({
+      label: el?.commentType?.title,
+      url: `commentTypes/${el?.commentType?.id}`,
     }),
     role: (el: any) => ({
       label: el?.role?.title,
@@ -53,6 +64,11 @@ function generateItem(item: any, take: string[]) {
       url: `users/${el?.creator?.id}`,
       img: el?.creator?.avatar,
     }),
+    user: (el: any) => ({
+      label: `${el?.user?.lastName} ${el?.user?.firstName} ${el?.user?.middleName}`,
+      url: `users/${el?.user?.id}`,
+      img: el?.user?.avatar,
+    }),
     relatedTasks: (el: any) => ({
       labels: el?.relatedTasks?.map((el: TaskEntity) => el.title),
       urls: el?.relatedTasks?.map((el: TaskEntity) => `tasks/${el.id}`),
@@ -60,6 +76,14 @@ function generateItem(item: any, take: string[]) {
     relatedUsers: (el: any) => ({
       labels: el?.relatedUsers?.map((el: UserEntity) => el.username),
       urls: el?.relatedTasks?.map((el: UserEntity) => `tasks/${el.id}`),
+    }),
+    teams: (el: any) => ({
+      labels: el?.teams?.map((el: TeamEntity) => el.title),
+      urls: el?.teams()?.map((el: TeamEntity) => `teams/${el.id}`),
+    }),
+    tags: (el: any) => ({
+      labels: el?.tags?.map((el: TagEntity) => el.title),
+      urls: el?.tags()?.map((el: TagEntity) => `tags/${el.id}`),
     }),
     createdAt: (el: any) => ({ label: el?.createdAt }),
     updatedAt: (el: any) => ({ label: el?.updatedAt }),

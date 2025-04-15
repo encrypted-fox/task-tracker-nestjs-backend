@@ -53,6 +53,11 @@ export function generateHeader(i18n: I18nContext, take: string[]) {
       style: 'width: 250px;',
     },
     {
+      name: 'object',
+      label: i18n.t('crud.object'),
+      style: 'width: 250px;',
+    },
+    {
       name: 'attachments',
       label: i18n.t('crud.attachments'),
       style: 'width: 100px;',
@@ -93,8 +98,13 @@ export function generateHeader(i18n: I18nContext, take: string[]) {
       style: 'width: 175px;',
     },
     {
-      name: 'type',
-      label: i18n.t('crud.type'),
+      name: 'relationType',
+      label: i18n.t('crud.relationType'),
+      style: 'width: 200px;',
+    },
+    {
+      name: 'notificationType',
+      label: i18n.t('crud.notificationType'),
       style: 'width: 200px;',
     },
     {
@@ -116,6 +126,16 @@ export function generateHeader(i18n: I18nContext, take: string[]) {
       name: 'relatedUsers',
       label: i18n.t('crud.relatedUsers'),
       style: 'width: 175px;',
+    },
+    {
+      name: 'teams',
+      label: i18n.t('crud.teams'),
+      style: 'width: 175px;',
+    },
+    {
+      name: 'tags',
+      label: i18n.t('crud.tags'),
+      style: 'width: 100px;',
     },
     {
       name: 'createdAt',

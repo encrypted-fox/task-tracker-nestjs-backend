@@ -42,8 +42,16 @@ export function generateTable(take: string[]) {
       outerStyle: 'width: 250px;',
       innerClass: 'text-primary text-ellipsis',
     },
+    object: {
+      outerStyle: 'width: 250px;',
+      innerClass: 'text-primary text-ellipsis',
+    },
     attachments: {
       iconAppend: 'attachment',
+      outerStyle: 'width: 100px;',
+      innerClass: 'text-primary text-ellipsis',
+    },
+    tags: {
       outerStyle: 'width: 100px;',
       innerClass: 'text-primary text-ellipsis',
     },
@@ -76,7 +84,15 @@ export function generateTable(take: string[]) {
       outerStyle: 'width: 175px;',
       innerClass: 'link text-ellipsis',
     },
-    type: {
+    relationType: {
+      outerStyle: 'width: 200px;',
+      innerClass: 'link text-ellipsis',
+    },
+    notificationType: {
+      outerStyle: 'width: 200px;',
+      innerClass: 'link text-ellipsis',
+    },
+    commentType: {
       outerStyle: 'width: 200px;',
       innerClass: 'link text-ellipsis',
     },
@@ -88,11 +104,19 @@ export function generateTable(take: string[]) {
       outerStyle: 'width: 250px;',
       innerClass: 'link text-ellipsis',
     },
+    user: {
+      outerStyle: 'width: 250px;',
+      innerClass: 'link text-ellipsis',
+    },
     relatedTasks: {
       outerStyle: 'width: 175px;',
       innerClass: 'link text-ellipsis',
     },
     relatedUsers: {
+      outerStyle: 'width: 175px;',
+      innerClass: 'link text-ellipsis',
+    },
+    teams: {
       outerStyle: 'width: 175px;',
       innerClass: 'link text-ellipsis',
     },
