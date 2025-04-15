@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { UserEntity } from './users.entity';
 import { UsersService } from './users.service';
 import { BaseController } from '../../base/BaseController';
@@ -32,6 +32,7 @@ export class UsersController extends BaseController {
     'middleName',
     'lastName',
     'avatar',
+    'teams',
     'createdAt',
     'updatedAt',
     'deletedAt',

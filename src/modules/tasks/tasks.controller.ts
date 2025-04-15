@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { TaskEntity } from './tasks.entity';
 import { TasksService } from './tasks.service';
 import { BaseController } from '../../base/BaseController';
@@ -31,6 +31,7 @@ export class TasksController extends BaseController {
     'column',
     'priority',
     'attachments',
+    'tags',
     'board',
     'project',
     'creator',

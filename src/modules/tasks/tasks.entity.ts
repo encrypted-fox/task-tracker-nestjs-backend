@@ -12,6 +12,7 @@ import { ProjectEntity } from '../projects/projects.entity';
 import { BoardEntity } from '../boards/boards.entity';
 import { ColumnEntity } from '../columns/columns.entity';
 import { PriorityEntity } from '../priorities/priorities.entity';
+import { TagEntity } from '../tags/tags.entity';
 
 @Entity()
 export class TaskEntity {
@@ -34,8 +35,13 @@ export class TaskEntity {
   @JoinColumn({ name: 'priority_id' })
   priority?: PriorityEntity;
 
-  @Column('text', { nullable: true, array: true })
-  tags?: string[];
+  @ManyToMany(() => TagEntity, { nullable: true })
+  @JoinTable({
+    name: 'task_tags',
+    joinColumn: { name: 'task_id' },
+    inverseJoinColumn: { name: 'tag_id' },
+  })
+  tags?: TagEntity[];
 
   @ManyToOne(() => ColumnEntity, { nullable: true })
   @JoinColumn({ name: 'column_id' })

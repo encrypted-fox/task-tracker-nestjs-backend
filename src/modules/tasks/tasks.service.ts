@@ -12,6 +12,7 @@ export class TasksService extends BaseService {
   ) {
     const relations = {
       priority: true,
+      tags: true,
       column: true,
       board: true,
       project: true,
