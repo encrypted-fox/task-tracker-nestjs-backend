@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { Public } from 'src/exported';
-import { UserEntity } from 'src/modules/users/users.entity';
+import { AuthService } from './auth.service';
+import { UserEntity } from '../users/users.entity';
 import { PartialUser } from '../users/users.interface';
 
 @Controller('api/auth')

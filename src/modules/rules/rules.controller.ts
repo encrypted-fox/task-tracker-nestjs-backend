@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { RuleEntity } from './rules.entity';
 import { RulesService } from './rules.service';
 import { BaseController } from '../../base/BaseController';

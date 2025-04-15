@@ -12,9 +12,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { BoardEntity } from './boards.entity';
-import { BoardsService } from 'src/modules/boards/boards.service';
+import { BoardsService } from './boards.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/boards')

@@ -12,9 +12,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { ColumnEntity } from './columns.entity';
-import { ColumnsService } from 'src/modules/columns/columns.service';
+import { ColumnsService } from './columns.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/columns')
