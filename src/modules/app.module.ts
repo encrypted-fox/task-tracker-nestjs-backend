@@ -18,6 +18,9 @@ import { TagsModule } from './tags/tags.module';
 import { RelationTypesModule } from './relationTypes/relationTypes.module';
 import { RelationsModule } from './relations/relations.module';
 import { NotificationTypesModule } from './notificationTypes/notificationTypes.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { VisibilityTypesModule } from './visibilityTypes/visibilityTypes.module';
+import { VisibilitiesModule } from './visibilities/visibilities.module';
 
 import { UserEntity } from './users/users.entity';
 import { TeamEntity } from './teams/teams.entity';
@@ -33,6 +36,8 @@ import { RelationTypeEntity } from './relationTypes/relationTypes.entity';
 import { RelationEntity } from './relations/relations.entity';
 import { NotificationTypeEntity } from './notificationTypes/notificationTypes.entity';
 import { NotificationEntity } from './notifications/notifications.entity';
+import { VisibilityTypeEntity } from './visibilityTypes/visibilityTypes.entity';
+import { VisibilityEntity } from './visibilities/visibilities.entity';
 
 @Module({
   imports: [
@@ -50,6 +55,9 @@ import { NotificationEntity } from './notifications/notifications.entity';
     RelationTypesModule,
     RelationsModule,
     NotificationTypesModule,
+    NotificationsModule,
+    VisibilityTypesModule,
+    VisibilitiesModule,
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as unknown as 'postgres' | 'mysql',
       host: process.env.DB_HOST,
@@ -72,6 +80,8 @@ import { NotificationEntity } from './notifications/notifications.entity';
         RelationEntity,
         NotificationTypeEntity,
         NotificationEntity,
+        VisibilityTypeEntity,
+        VisibilityEntity,
       ],
       synchronize: true,
     }),
