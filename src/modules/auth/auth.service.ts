@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async signIn(username: string, password: string): Promise<PartialUser> {
-    const user = (await this.usersService.find({ username }))[0];
+    const user = await this.usersService.findOne({ username });
 
     if (!user) {
       throw new UnauthorizedException();
