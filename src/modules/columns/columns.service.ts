@@ -5,7 +5,7 @@ import { BaseService } from '../../base/BaseService';
 import { ColumnEntity } from './columns.entity';
 
 @Injectable()
-export class ColumnsService extends BaseService {
+export class ColumnsService extends BaseService<ColumnEntity> {
   constructor(
     @InjectRepository(ColumnEntity)
     private columnsRepository: Repository<ColumnEntity>,

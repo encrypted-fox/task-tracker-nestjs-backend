@@ -5,7 +5,7 @@ import { BaseService } from '../../base/BaseService';
 import { NotificationEntity } from './notifications.entity';
 
 @Injectable()
-export class NotificationsService extends BaseService {
+export class NotificationsService extends BaseService<NotificationEntity> {
   constructor(
     @InjectRepository(NotificationEntity)
     private notificationsRepository: Repository<NotificationEntity>,

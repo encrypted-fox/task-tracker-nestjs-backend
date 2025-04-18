@@ -5,7 +5,7 @@ import { BaseService } from '../../base/BaseService';
 import { VisibilityTypeEntity } from './visibilityTypes.entity';
 
 @Injectable()
-export class VisibilityTypesService extends BaseService {
+export class VisibilityTypesService extends BaseService<VisibilityTypeEntity> {
   constructor(
     @InjectRepository(VisibilityTypeEntity)
     private visibilityTypesRepository: Repository<VisibilityTypeEntity>,

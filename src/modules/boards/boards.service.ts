@@ -5,7 +5,7 @@ import { BaseService } from '../../base/BaseService';
 import { BoardEntity } from './boards.entity';
 
 @Injectable()
-export class BoardsService extends BaseService {
+export class BoardsService extends BaseService<BoardEntity> {
   constructor(
     @InjectRepository(BoardEntity)
     private boardsRepository: Repository<BoardEntity>,

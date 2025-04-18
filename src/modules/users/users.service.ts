@@ -5,7 +5,7 @@ import { BaseService } from '../../base/BaseService';
 import { UserEntity } from './users.entity';
 
 @Injectable()
-export class UsersService extends BaseService {
+export class UsersService extends BaseService<UserEntity> {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,

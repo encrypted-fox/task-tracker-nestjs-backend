@@ -5,7 +5,7 @@ import { BaseService } from '../../base/BaseService';
 import { CommentTypeEntity } from './commentTypes.entity';
 
 @Injectable()
-export class CommentTypesService extends BaseService {
+export class CommentTypesService extends BaseService<CommentTypeEntity> {
   constructor(
     @InjectRepository(CommentTypeEntity)
     private commentTypesRepository: Repository<CommentTypeEntity>,

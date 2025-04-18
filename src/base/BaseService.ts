@@ -1,14 +1,14 @@
 import { FindOptionsRelations, Like, Repository } from 'typeorm';
 
-export class BaseService {
+export class BaseService<Entity> {
   constructor(
     private repository: Repository<any>,
     private searchFields: string[],
     private relations: FindOptionsRelations<any>,
   ) {}
 
-  async find(
-    entity: any,
+  public async find(
+    entity: Partial<Entity>,
     filters?: any,
     query?: string,
     skip: number = 0,
@@ -16,10 +16,10 @@ export class BaseService {
     order: any = {
       id: 'DESC',
     },
-  ) {
+  ): Promise<Entity[]> {
     let where: any;
 
-    if (Object.keys(filters).length) {
+    if (filters && Object.keys(filters).length) {
       if (query) {
         where = [];
 
@@ -51,8 +51,8 @@ export class BaseService {
     });
   }
 
-  async findOne(
-    entity: any,
+  public async findOne(
+    entity: Partial<Entity>,
     filters?: any,
     query?: string,
     skip: number = 0,
@@ -60,12 +60,12 @@ export class BaseService {
     order: any = {
       id: 'DESC',
     },
-  ) {
+  ): Promise<Entity> {
     const found = await this.find(entity, filters, query, skip, take, order);
     return found ? found[0] : null;
   }
 
-  async create(item: any): Promise<any> {
+  public async create(item: Partial<Entity>): Promise<Entity> {
     const createdDate = new Date();
     const createdDateISO = createdDate.toISOString();
     const newItem = this.repository.create({
@@ -81,7 +81,7 @@ export class BaseService {
     });
   }
 
-  async update(id: number, newItem: any): Promise<any> {
+  public async update(id: number, newItem: Partial<Entity>): Promise<Entity> {
     const updatedDate = new Date();
     const updatedDateISO = updatedDate.toISOString();
 
@@ -96,7 +96,7 @@ export class BaseService {
     });
   }
 
-  async remove(id: number): Promise<any> {
+  public async remove(id: number): Promise<void> {
     const updatedDate = new Date();
     const updatedDateISO = updatedDate.toISOString();
 
@@ -104,7 +104,5 @@ export class BaseService {
       { id },
       { updatedAt: updatedDateISO, deletedAt: updatedDateISO },
     );
-
-    return;
   }
 }
