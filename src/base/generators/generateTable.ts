@@ -1,5 +1,16 @@
-export function generateTable(take: string[]) {
-  const list = {
+export type TableItem = {
+  outerClass?: string;
+  outerStyle?: string;
+  innerClass?: string;
+  innerStyle?: string;
+  iconPrepend?: string;
+  iconAppend?: string;
+};
+
+export type Table = { [key: string]: TableItem };
+
+export function generateTable(take: string[]): Table {
+  const list: Table = {
     id: {
       outerStyle: 'width: 100px;',
       innerClass: 'badge badge-secondary',
@@ -142,7 +153,7 @@ export function generateTable(take: string[]) {
     },
   };
 
-  const taken = {};
+  const taken: Table = {};
 
   for (const key in Object.keys(list)) {
     if (key in take) taken[key] = list[key];

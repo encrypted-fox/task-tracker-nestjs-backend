@@ -1,7 +1,15 @@
 import { I18nContext } from 'nestjs-i18n';
 
-export function generateHeader(i18n: I18nContext, take: string[]) {
-  const list = [
+export type HeaderItem = {
+  name: string;
+  label: string;
+  style: string;
+};
+
+export type Header = HeaderItem[];
+
+export function generateHeader(i18n: I18nContext, take: string[]): Header {
+  const list: Header = [
     {
       name: 'id',
       label: i18n.t('crud.id'),
@@ -169,5 +177,5 @@ export function generateHeader(i18n: I18nContext, take: string[]) {
     },
   ];
 
-  return list.filter((item) => item.name in take);
+  return list.filter((item: HeaderItem): boolean => item.name in take);
 }

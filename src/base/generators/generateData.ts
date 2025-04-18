@@ -3,102 +3,129 @@ import { UserEntity } from '../../modules/users/users.entity';
 import { TeamEntity } from '../../modules/teams/teams.entity';
 import { TagEntity } from '../../modules/tags/tags.entity';
 
-export function generateData(items: any[], take: string[]) {
+export type DataPart = {
+  json?: string;
+  img?: string;
+  label?: string;
+  url?: string;
+};
+
+export type DataItem = { [key: string]: DataPart | DataPart[] };
+
+export type Data = DataItem[];
+
+export type DataFunctionList = {
+  [key: string]: (el: any) => DataPart | DataPart[];
+};
+
+export function generateData(items: any[], take: string[]): Data {
   return items.map((item: any) => generateItem(item, take));
 }
 
-function generateItem(item: any, take: string[]) {
-  const data = {
-    id: (el: any) => ({ label: `#${el?.id}` }),
-    username: (el: any) => ({ label: el?.username }),
-    email: (el: any) => ({ label: el?.email }),
-    phone: (el: any) => ({ label: el?.phone }),
-    firstName: (el: any) => ({ label: el?.firstName }),
-    middleName: (el: any) => ({ label: el?.middleName }),
-    lastName: (el: any) => ({ label: el?.lastName }),
-    avatar: (el: any) => ({ img: el?.avatar }),
-    title: (el: any) => ({ label: el?.title }),
-    description: (el: any) => ({ label: el?.description }),
-    object: (el: any) => ({ json: el?.object }),
-    attachments: (el: any) => ({ label: el?.attachments?.length }),
-    estimate: (el: any) => ({ label: el?.estimate }),
-    value: (el: any) => ({ label: el?.value }),
-    priority: (el: any) => ({
+function generateItem(item: any, take: string[]): DataItem {
+  const data: DataFunctionList = {
+    id: (el: any): DataPart => ({ label: `#${el?.id}` }),
+    username: (el: any): DataPart => ({ label: el?.username }),
+    email: (el: any): DataPart => ({ label: el?.email }),
+    phone: (el: any): DataPart => ({ label: el?.phone }),
+    firstName: (el: any): DataPart => ({ label: el?.firstName }),
+    middleName: (el: any): DataPart => ({ label: el?.middleName }),
+    lastName: (el: any): DataPart => ({ label: el?.lastName }),
+    avatar: (el: any): DataPart => ({ img: el?.avatar }),
+    title: (el: any): DataPart => ({ label: el?.title }),
+    description: (el: any): DataPart => ({ label: el?.description }),
+    object: (el: any): DataPart => ({ json: el?.object }),
+    attachments: (el: any): DataPart => ({ label: el?.attachments?.length }),
+    estimate: (el: any): DataPart => ({ label: el?.estimate }),
+    value: (el: any): DataPart => ({ label: el?.value }),
+    priority: (el: any): DataPart => ({
       label: el?.priority?.title,
       url: `priorities/${el?.priority?.id}`,
     }),
-    column: (el: any) => ({
+    column: (el: any): DataPart => ({
       label: el?.column?.title,
       url: `columns/${el?.column?.id}`,
     }),
-    board: (el: any) => ({
+    board: (el: any): DataPart => ({
       label: el?.board?.title,
       url: `boards/${el?.board?.id}`,
     }),
-    project: (el: any) => ({
+    project: (el: any): DataPart => ({
       label: el?.project?.title,
       url: `projects/${el?.project?.id}`,
     }),
-    task: (el: any) => ({
+    task: (el: any): DataPart => ({
       label: el?.task?.title,
       url: `tasks/${el?.task?.id}`,
     }),
-    relationType: (el: any) => ({
+    relationType: (el: any): DataPart => ({
       label: el?.relationType?.title,
       url: `relationTypes/${el?.relationType?.id}`,
     }),
-    notificationType: (el: any) => ({
+    notificationType: (el: any): DataPart => ({
       label: el?.notificationType?.title,
       url: `notificationTypes/${el?.notificationType?.id}`,
     }),
-    commentType: (el: any) => ({
+    commentType: (el: any): DataPart => ({
       label: el?.commentType?.title,
       url: `commentTypes/${el?.commentType?.id}`,
     }),
-    visibilityType: (el: any) => ({
+    visibilityType: (el: any): DataPart => ({
       label: el?.visibilityType()?.title,
       url: `visibilityTypes/${el?.visibilityType?.id}`,
     }),
-    role: (el: any) => ({
+    role: (el: any): DataPart => ({
       label: el?.role?.title,
       url: `roles/${el?.role?.id}`,
     }),
-    creator: (el: any) => ({
+    creator: (el: any): DataPart => ({
       label: `${el?.creator?.lastName} ${el?.creator?.firstName} ${el?.creator?.middleName}`,
       url: `users/${el?.creator?.id}`,
       img: el?.creator?.avatar,
     }),
-    user: (el: any) => ({
+    user: (el: any): DataPart => ({
       label: `${el?.user?.lastName} ${el?.user?.firstName} ${el?.user?.middleName}`,
       url: `users/${el?.user?.id}`,
       img: el?.user?.avatar,
     }),
-    visibility: (el: any) => ({
+    visibility: (el: any): DataPart => ({
       label: el?.visibility?.title,
       url: `visibilities/${el?.visibility?.id}`,
     }),
-    relatedTasks: (el: any) => ({
-      labels: el?.relatedTasks?.map((el: TaskEntity) => el.title),
-      urls: el?.relatedTasks?.map((el: TaskEntity) => `tasks/${el.id}`),
-    }),
-    relatedUsers: (el: any) => ({
-      labels: el?.relatedUsers?.map((el: UserEntity) => el.username),
-      urls: el?.relatedTasks?.map((el: UserEntity) => `tasks/${el.id}`),
-    }),
-    teams: (el: any) => ({
-      labels: el?.teams?.map((el: TeamEntity) => el.title),
-      urls: el?.teams()?.map((el: TeamEntity) => `teams/${el.id}`),
-    }),
-    tags: (el: any) => ({
-      labels: el?.tags?.map((el: TagEntity) => el.title),
-      urls: el?.tags()?.map((el: TagEntity) => `tags/${el.id}`),
-    }),
-    createdAt: (el: any) => ({ label: el?.createdAt }),
-    updatedAt: (el: any) => ({ label: el?.updatedAt }),
-    deletedAt: (el: any) => ({ label: el?.deletedAt }),
+    relatedTasks: (el: any): DataPart[] =>
+      el?.relatedTasks?.map(
+        (el: TaskEntity): DataPart => ({
+          label: el.title,
+          url: `tasks/${el.id}`,
+        }),
+      ),
+    relatedUsers: (el: any): DataPart[] =>
+      el?.relatedUsers?.map(
+        (el: UserEntity): DataPart => ({
+          label: el?.username,
+          url: `users/${el.id}`,
+        }),
+      ),
+    teams: (el: any): DataPart[] =>
+      el?.teams?.map(
+        (el: TeamEntity): DataPart => ({
+          label: el?.title,
+          url: `teams/${el.id}`,
+        }),
+      ),
+    tags: (el: any): DataPart[] =>
+      el?.tags?.map(
+        (el: TagEntity): DataPart => ({
+          label: el?.title,
+          url: `tags/${el.id}`,
+        }),
+      ),
+    createdAt: (el: any): DataPart => ({ label: el?.createdAt }),
+    updatedAt: (el: any): DataPart => ({ label: el?.updatedAt }),
+    deletedAt: (el: any): DataPart => ({ label: el?.deletedAt }),
   };
 
-  const resp = {};
+  const resp: DataItem = {};
 
   for (const el of take) {
     resp[el] = data[el](item);
