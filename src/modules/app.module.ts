@@ -41,6 +41,7 @@ import { VisibilityEntity } from './visibilities/visibilities.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     AuthModule,
     UsersModule,
     TeamsModule,
@@ -85,7 +86,6 @@ import { VisibilityEntity } from './visibilities/visibilities.entity';
       ],
       synchronize: true,
     }),
-    ConfigModule.forRoot(),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
