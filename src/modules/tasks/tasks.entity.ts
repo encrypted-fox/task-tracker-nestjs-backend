@@ -13,6 +13,7 @@ import { BoardEntity } from '../boards/boards.entity';
 import { ColumnEntity } from '../columns/columns.entity';
 import { PriorityEntity } from '../priorities/priorities.entity';
 import { TagEntity } from '../tags/tags.entity';
+import { VisibilityEntity } from '../visibilities/visibilities.entity';
 
 @Entity()
 export class TaskEntity {
@@ -59,11 +60,9 @@ export class TaskEntity {
   @JoinColumn({ name: 'creator_id' })
   creator: UserEntity;
 
-  @Column('int', { nullable: true, array: true })
-  visibilityType?: number[];
-
-  @Column({ nullable: true })
-  visibilityValue?: string;
+  @ManyToOne(() => VisibilityEntity)
+  @JoinColumn({ name: 'visibility_id' })
+  visibility: VisibilityEntity;
 
   @ManyToMany(() => UserEntity)
   @JoinTable({

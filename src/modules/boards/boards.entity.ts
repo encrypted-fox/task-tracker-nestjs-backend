@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from '../users/users.entity';
 import { ProjectEntity } from '../projects/projects.entity';
+import { VisibilityEntity } from '../visibilities/visibilities.entity';
 
 @Entity()
 export class BoardEntity {
@@ -30,11 +31,9 @@ export class BoardEntity {
   @JoinColumn({ name: 'creator_id' })
   creator: UserEntity;
 
-  @Column('int', { nullable: true, array: true })
-  visibilityType?: number[];
-
-  @Column({ nullable: true })
-  visibilityValue?: string;
+  @ManyToOne(() => VisibilityEntity)
+  @JoinColumn({ name: 'visibility_id' })
+  visibility: VisibilityEntity;
 
   @Column()
   createdAt: string;

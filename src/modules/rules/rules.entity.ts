@@ -16,7 +16,7 @@ export class RuleEntity {
   title: string;
 
   @Column()
-  value: number;
+  value: boolean;
 
   @ManyToOne(() => RoleEntity)
   @JoinColumn({ name: 'role_id' })

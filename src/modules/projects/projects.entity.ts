@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { UserEntity } from '../users/users.entity';
+import { VisibilityEntity } from '../visibilities/visibilities.entity';
 
 @Entity()
 export class ProjectEntity {
@@ -25,11 +26,9 @@ export class ProjectEntity {
   @JoinColumn({ name: 'creator_id' })
   creator: UserEntity;
 
-  @Column('int', { nullable: true, array: true })
-  visibilityType?: number[];
-
-  @Column({ nullable: true })
-  visibilityValue?: string;
+  @ManyToOne(() => VisibilityEntity)
+  @JoinColumn({ name: 'visibility_id' })
+  visibility: VisibilityEntity;
 
   @Column()
   createdAt: string;

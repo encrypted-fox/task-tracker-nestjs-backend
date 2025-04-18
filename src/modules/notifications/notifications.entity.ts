@@ -19,13 +19,13 @@ export class NotificationEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => UserEntity)
-  @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
-
   @ManyToOne(() => NotificationTypeEntity)
   @JoinColumn({ name: 'type_id' })
   notificationType: NotificationTypeEntity;
+
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
 
   @Column()
   createdAt: string;
