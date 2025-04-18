@@ -96,11 +96,19 @@ export function generateTable(take: string[]) {
       outerStyle: 'width: 200px;',
       innerClass: 'link text-ellipsis',
     },
+    visibilityType: {
+      outerStyle: 'width: 200px;',
+      innerClass: 'link text-ellipsis',
+    },
     role: {
       outerStyle: 'width: 175px;',
       innerClass: 'link text-ellipsis',
     },
     creator: {
+      outerStyle: 'width: 250px;',
+      innerClass: 'link text-ellipsis',
+    },
+    visibility: {
       outerStyle: 'width: 250px;',
       innerClass: 'link text-ellipsis',
     },

@@ -108,6 +108,16 @@ export function generateHeader(i18n: I18nContext, take: string[]) {
       style: 'width: 200px;',
     },
     {
+      name: 'commentType',
+      label: i18n.t('crud.commentType'),
+      style: 'width: 200px;',
+    },
+    {
+      name: 'visibilityType',
+      label: i18n.t('crud.visibilityType'),
+      style: 'width: 200px;',
+    },
+    {
       name: 'role',
       label: i18n.t('crud.role'),
       style: 'width: 140px;',
@@ -115,6 +125,11 @@ export function generateHeader(i18n: I18nContext, take: string[]) {
     {
       name: 'creator',
       label: i18n.t('crud.creator'),
+      style: 'width: 250px;',
+    },
+    {
+      name: 'visibility',
+      label: i18n.t('crud.visibility'),
       style: 'width: 250px;',
     },
     {

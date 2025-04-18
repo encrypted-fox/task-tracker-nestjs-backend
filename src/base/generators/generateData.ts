@@ -6,7 +6,7 @@ import { TagEntity } from '../../modules/tags/tags.entity';
 export function generateData(items: any[], take: string[]) {
   return items.map((item: any) => generateItem(item, take));
 }
-// [ 'priority', 'column', 'board', 'project', 'creator', 'task', 'relatedTasks', 'relatedUsers', 'type', 'role', 'value', 'createdAt', 'updatedAt', 'deletedAt']
+
 function generateItem(item: any, take: string[]) {
   const data = {
     id: (el: any) => ({ label: `#${el?.id}` }),
@@ -19,7 +19,7 @@ function generateItem(item: any, take: string[]) {
     avatar: (el: any) => ({ img: el?.avatar }),
     title: (el: any) => ({ label: el?.title }),
     description: (el: any) => ({ label: el?.description }),
-    object: (el: any) => ({ label: el?.object }),
+    object: (el: any) => ({ json: el?.object }),
     attachments: (el: any) => ({ label: el?.attachments?.length }),
     estimate: (el: any) => ({ label: el?.estimate }),
     value: (el: any) => ({ label: el?.value }),
@@ -55,6 +55,10 @@ function generateItem(item: any, take: string[]) {
       label: el?.commentType?.title,
       url: `commentTypes/${el?.commentType?.id}`,
     }),
+    visibilityType: (el: any) => ({
+      label: el?.visibilityType()?.title,
+      url: `visibilityTypes/${el?.visibilityType?.id}`,
+    }),
     role: (el: any) => ({
       label: el?.role?.title,
       url: `roles/${el?.role?.id}`,
@@ -68,6 +72,10 @@ function generateItem(item: any, take: string[]) {
       label: `${el?.user?.lastName} ${el?.user?.firstName} ${el?.user?.middleName}`,
       url: `users/${el?.user?.id}`,
       img: el?.user?.avatar,
+    }),
+    visibility: (el: any) => ({
+      label: el?.visibility?.title,
+      url: `visibilities/${el?.visibility?.id}`,
     }),
     relatedTasks: (el: any) => ({
       labels: el?.relatedTasks?.map((el: TaskEntity) => el.title),
