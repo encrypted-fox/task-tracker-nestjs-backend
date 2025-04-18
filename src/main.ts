@@ -7,4 +7,4 @@ async function bootstrap() {
   await app.listen(8888);
 }
 
-bootstrap();
+bootstrap().then(() => {});

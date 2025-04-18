@@ -1,10 +1,4 @@
-import { generateHeader } from './generators/generateHeader';
-import { generateTable } from './generators/generateTable';
-import { generateData } from './generators/generateData';
-
-import type { Header } from './generators/generateHeader';
-import type { Table } from './generators/generateTable';
-import type { Data } from './generators/generateData';
+import { I18n, I18nContext } from 'nestjs-i18n';
 
 import {
   Body,
@@ -18,9 +12,17 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+
 import { AuthGuard } from '../modules/auth/auth.guard';
-import { I18n, I18nContext } from 'nestjs-i18n';
 import { BaseService } from './BaseService';
+
+import { generateHeader } from './generators/generateHeader';
+import { generateTable } from './generators/generateTable';
+import { generateData } from './generators/generateData';
+
+import type { Header } from './generators/generateHeader';
+import type { Table } from './generators/generateTable';
+import type { Data } from './generators/generateData';
 
 type BaseQueryParams = {
   query?: string;

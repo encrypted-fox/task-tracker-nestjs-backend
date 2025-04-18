@@ -1,8 +1,7 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { BoardEntity } from './boards.entity';
 import { BoardsService } from './boards.service';
 import { BaseController } from '../../base/BaseController';
-import { Entity } from 'typeorm';
 
 @Controller('api/boards')
 export class BoardsController extends BaseController<
@@ -22,12 +21,7 @@ export class BoardsController extends BaseController<
       'updatedAt',
       'deletedAt',
     ];
-    super(boardsFields, boardsService);
-  }
 
-  @HttpCode(HttpStatus.OK)
-  @Get('/123')
-  async get(): Promise<any> {
-    return Object.keys(Entity);
+    super(boardsFields, boardsService);
   }
 }
