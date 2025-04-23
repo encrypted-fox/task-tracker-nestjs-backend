@@ -24,14 +24,16 @@ export class AuthController {
       username: string;
       password: string;
       repeatPassword: string;
+      inviteCode: string;
       email: string;
     },
   ): Promise<PartialUser> {
     if (request.password === request.repeatPassword)
-      return this.authService.register(
+      return this.authService.registerByInvite(
         request.username,
         request.password,
         request.email,
+        request.inviteCode,
       );
   }
 }

@@ -1,14 +1,23 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { UsersService } from '../users/users.service';
+import { InvitesService } from '../invites/invites.service';
+
 import { PartialUser } from '../users/users.interface';
+import { TeamEntity } from '../teams/teams.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private invitesService: InvitesService,
     private jwtService: JwtService,
   ) {}
 
@@ -36,6 +45,7 @@ export class AuthService {
     username: string,
     password: string,
     email: string,
+    teams: TeamEntity[] = [],
   ): Promise<PartialUser> {
     const found = (await this.usersService.find({ username })).length;
 
@@ -49,6 +59,7 @@ export class AuthService {
       username,
       password: hash,
       email,
+      teams,
     };
     const newUser = await this.usersService.create(user);
 
@@ -57,5 +68,34 @@ export class AuthService {
     delete newUser.password;
 
     return { ...newUser, token };
+  }
+
+  async registerByInvite(
+    username: string,
+    password: string,
+    email: string,
+    inviteCode: string,
+  ): Promise<PartialUser> {
+    if (!inviteCode) {
+      throw new BadRequestException();
+    }
+
+    if (username && password && email) {
+      const inviteEntity = await this.invitesService.findOne({
+        value: inviteCode,
+      });
+
+      if (!inviteEntity) {
+        throw new ForbiddenException();
+      }
+
+      const result = await this.register(username, password, email, [
+        inviteEntity?.team,
+      ]);
+
+      await this.invitesService.remove(inviteEntity.id);
+
+      return result;
+    }
   }
 }
