@@ -14,7 +14,6 @@ import { AuthService } from './auth.service';
 
 import { UsersEntity } from '../users/users.entity';
 import { ExtendedUsersEntity } from '../users/users.interface';
-import { request } from 'express';
 
 @ApiTags('auth')
 @Controller('api/auth')

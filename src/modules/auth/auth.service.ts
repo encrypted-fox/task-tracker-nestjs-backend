@@ -21,7 +21,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, password: string): Promise<ExtendedUsersEntity> {
+  async signIn(
+    username: string,
+    password: string,
+  ): Promise<ExtendedUsersEntity> {
     const user = await this.usersService.findOne({ username });
 
     if (!user) {

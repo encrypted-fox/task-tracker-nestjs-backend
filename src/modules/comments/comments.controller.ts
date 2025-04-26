@@ -13,9 +13,12 @@ import {
 } from '@nestjs/common';
 
 import {
-  ApiBearerAuth, ApiBody,
+  ApiBearerAuth,
+  ApiBody,
   ApiCreatedResponse,
-  ApiOkResponse, ApiOperation, ApiParam,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { ApiQueryDecorator } from '../../helpers/ApiQueryDecorator';
