@@ -3,7 +3,7 @@ import { SetMetadata } from '@nestjs/common';
 export const LOG_ACTION_KEY = 'log_action';
 
 export interface LogActionOptions {
-  entity: string,
+  entity: string;
   action: 'CREATE' | 'UPDATE' | 'DELETE';
 }
 
