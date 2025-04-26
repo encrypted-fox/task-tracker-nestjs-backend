@@ -1,16 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './auth.controller';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth.guard';
+
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { InvitesModule } from '../invites/invites.module';
+import { UsersModule } from '../users/users.module';
+
+import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
+import { AuthController } from './auth.controller';
+
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     UsersModule,
+    InvitesModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,

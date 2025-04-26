@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { InvitesService } from '../invites/invites.service';
 
-import { PartialUser } from '../users/users.interface';
+import { ExtendedUsersEntity } from '../users/users.interface';
 import { TeamsEntity } from '../teams/teams.entity';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, password: string): Promise<PartialUser> {
+  async signIn(username: string, password: string): Promise<ExtendedUsersEntity> {
     const user = await this.usersService.findOne({ username });
 
     if (!user) {
@@ -46,7 +46,7 @@ export class AuthService {
     password: string,
     email: string,
     teams: TeamsEntity[] = [],
-  ): Promise<PartialUser> {
+  ): Promise<ExtendedUsersEntity> {
     const found = (await this.usersService.find({ username })).length;
 
     if (found) {
@@ -75,7 +75,7 @@ export class AuthService {
     password: string,
     email: string,
     inviteCode: string,
-  ): Promise<PartialUser> {
+  ): Promise<ExtendedUsersEntity> {
     if (!inviteCode) {
       throw new BadRequestException();
     }
