@@ -1,30 +1,18 @@
 import { I18n, I18nContext } from 'nestjs-i18n';
 
-import {
-  Body,
-  Delete,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  Patch,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Param, Query } from '@nestjs/common';
 
-import { AuthGuard } from '../modules/auth/auth.guard';
 import { BaseService } from './BaseService';
 
-import { generateHeader } from './generators/generateHeader';
-import { generateTable } from './generators/generateTable';
-import { generateData } from './generators/generateData';
+import { generateHeader } from '../helpers/generators/generateHeader';
+import { generateTable } from '../helpers/generators/generateTable';
+import { generateData } from '../helpers/generators/generateData';
 
-import type { Header } from './generators/generateHeader';
-import type { Table } from './generators/generateTable';
-import type { Data } from './generators/generateData';
+import type { Header } from '../helpers/generators/generateHeader';
+import type { Table } from '../helpers/generators/generateTable';
+import type { Data } from '../helpers/generators/generateData';
 
-type BaseQueryParams = {
+export type BaseQueryParams = {
   query?: string;
   filters?: any;
   skip?: number;
@@ -39,7 +27,7 @@ type Meta = {
   order: { [key: string]: 'DESC' | 'ASC' };
 };
 
-type Response<Entity> = {
+export type Response<Entity> = {
   header?: Header;
   table?: Table;
   data: Data | Entity[];
@@ -55,9 +43,6 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
   public generateTable = generateTable;
   public generateData = generateData;
 
-  @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Get('/list')
   async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -85,9 +70,6 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
     };
   }
 
-  @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Get('')
   async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<Entity>> {
@@ -112,23 +94,14 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
     };
   }
 
-  @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Get(':id')
   async get(@Param('id') id: number): Promise<Entity> {
     return this.service.findOne({ id } as unknown as Partial<Entity>);
   }
 
-  @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.CREATED)
-  @Post('')
   async create(@Body() board: Entity): Promise<Entity> {
     return this.service.create(board);
   }
 
-  @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Patch(':id')
   async update(
     @Param('id') id: number,
     @Body() entity: Entity,
@@ -136,9 +109,6 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
     return this.service.update(id, entity);
   }
 
-  @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
     await this.service.remove(id);
   }
