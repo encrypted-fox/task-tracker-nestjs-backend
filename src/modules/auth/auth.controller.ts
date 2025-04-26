@@ -8,7 +8,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Public } from 'src/exported';
+import { Public } from '../../exported';
 
 import { AuthService } from './auth.service';
 
