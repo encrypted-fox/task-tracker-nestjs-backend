@@ -1,8 +1,45 @@
-import { Controller } from '@nestjs/common';
-import { NotificationTypesEntity } from './notificationTypes.entity';
-import { NotificationTypesService } from './notificationTypes.service';
-import { BaseController } from '../../base/BaseController';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ApiQueryDecorator } from '../../helpers/ApiQueryDecorator';
+
+import { I18n, I18nContext } from 'nestjs-i18n';
+
+import {
+  BaseController,
+  type BaseQueryParams,
+  type Response,
+} from '../../base/BaseController';
+
+import { AuthGuard } from '../auth/auth.guard';
+import { LogAction } from '../logs/logs.decorator';
+
+import { NotificationTypesService } from './notificationTypes.service';
+import { NotificationTypesEntity } from './notificationTypes.entity';
+import { NotificationsEntity } from '../notifications/notifications.entity';
+
+@ApiBearerAuth()
+@ApiTags('auth')
 @Controller('api/notificationTypes')
 export class NotificationTypesController extends BaseController<
   NotificationTypesEntity,
@@ -12,5 +49,118 @@ export class NotificationTypesController extends BaseController<
     const notificationTypesFields = ['id', 'title'];
 
     super(notificationTypesFields, notificationTypesService);
+  }
+
+  @ApiQueryDecorator(
+    'Get notification types list',
+    'Returns structured data for table rendering with headers and metadata',
+  )
+  @ApiOkResponse({ type: () => NotificationTypesEntity })
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get('/list')
+  override async getList(
+    @I18n() i18n: I18nContext,
+    @Query() queryParams: BaseQueryParams,
+  ): Promise<Response<NotificationTypesEntity>> {
+    return super.getList(i18n, queryParams);
+  }
+
+  @ApiQueryDecorator(
+    'Get notification types',
+    'Returns structured data with metadata and entities',
+  )
+  @ApiOkResponse({ type: () => NotificationTypesEntity })
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get('')
+  override async getAll(
+    @Query() queryParams: BaseQueryParams,
+  ): Promise<Response<NotificationTypesEntity>> {
+    return super.getAll(queryParams);
+  }
+
+  @ApiOperation({
+    summary: 'Get notification type',
+    description: 'Returns entity by id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    example: 20,
+    description: 'Id of an entity',
+  })
+  @ApiOkResponse({ type: () => NotificationTypesEntity })
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  override async get(
+    @Param('id') id: number,
+  ): Promise<NotificationTypesEntity> {
+    return super.get(id);
+  }
+
+  @ApiOperation({
+    summary: 'Create notification type',
+    description: 'Creates entity',
+  })
+  @ApiBody({
+    type: () => NotificationsEntity,
+    description: 'Entity to create',
+  })
+  @ApiCreatedResponse({ type: () => NotificationTypesEntity })
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  @Post('')
+  @LogAction({ entity: 'notificationTypes', action: 'CREATE' })
+  override async create(
+    @Body() notificationType: NotificationTypesEntity,
+  ): Promise<NotificationTypesEntity> {
+    return super.create(notificationType);
+  }
+
+  @ApiOperation({
+    summary: 'Update notification type',
+    description: 'Updates entity',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    example: 20,
+    description: 'Id of an entity',
+  })
+  @ApiBody({
+    type: () => NotificationsEntity,
+    description: 'Entity to create',
+  })
+  @ApiOkResponse({ type: () => NotificationTypesEntity })
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Patch(':id')
+  @LogAction({ entity: 'notificationTypes', action: 'UPDATE' })
+  override async update(
+    @Param('id') id: number,
+    @Body() entity: NotificationTypesEntity,
+  ): Promise<NotificationTypesEntity> {
+    return super.update(id, entity);
+  }
+
+  @ApiOperation({
+    summary: 'Delete notification type',
+    description: 'Delete entity',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    example: 20,
+    description: 'Id of an entity',
+  })
+  @ApiOkResponse()
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  @LogAction({ entity: 'notificationTypes', action: 'DELETE' })
+  override async delete(@Param('id') id: number): Promise<void> {
+    return super.delete(id);
   }
 }
