@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { NotificationTypeEntity } from './notificationTypes.entity';
+import { NotificationTypesEntity } from './notificationTypes.entity';
 
 @Injectable()
-export class NotificationTypesService extends BaseService<NotificationTypeEntity> {
+export class NotificationTypesService extends BaseService<NotificationTypesEntity> {
   constructor(
-    @InjectRepository(NotificationTypeEntity)
-    private notificationTypesRepository: Repository<NotificationTypeEntity>,
+    @InjectRepository(NotificationTypesEntity)
+    private notificationTypesRepository: Repository<NotificationTypesEntity>,
   ) {
     const notifications = {};
     const searchFields = ['id', 'title'];

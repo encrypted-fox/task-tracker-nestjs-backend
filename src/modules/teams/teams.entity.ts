@@ -5,19 +5,19 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { UserEntity } from '../users/users.entity';
+import { UsersEntity } from '../users/users.entity';
 
 @Entity()
-export class TeamEntity {
+export class TeamsEntity {
   @PrimaryGeneratedColumn()
   id?: number;
 
   @Column({ unique: true })
   title: string;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UserEntity;
+  creator: UsersEntity;
 
   @Column()
   createdAt: string;

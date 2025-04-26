@@ -1,10 +1,10 @@
 import { Controller } from '@nestjs/common';
-import { RuleEntity } from './rules.entity';
+import { RulesEntity } from './rules.entity';
 import { RulesService } from './rules.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/rules')
-export class RulesController extends BaseController<RuleEntity, RulesService> {
+export class RulesController extends BaseController<RulesEntity, RulesService> {
   constructor(private rulesService: RulesService) {
     const rulesFields = [
       'id',

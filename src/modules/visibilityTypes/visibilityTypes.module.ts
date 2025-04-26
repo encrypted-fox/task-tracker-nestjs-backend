@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { VisibilityTypeEntity } from './visibilityTypes.entity';
+import { VisibilityTypesEntity } from './visibilityTypes.entity';
 import { VisibilityTypesService } from './visibilityTypes.service';
 import { VisibilityTypesController } from './visibilityTypes.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([VisibilityTypeEntity])],
+  imports: [TypeOrmModule.forFeature([VisibilityTypesEntity])],
   providers: [VisibilityTypesService],
   exports: [VisibilityTypesService],
   controllers: [VisibilityTypesController],

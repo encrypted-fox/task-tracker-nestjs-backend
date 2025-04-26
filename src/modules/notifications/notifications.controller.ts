@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
-import { NotificationEntity } from './notifications.entity';
+import { NotificationsEntity } from './notifications.entity';
 import { NotificationsService } from './notifications.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/notifications')
 export class NotificationsController extends BaseController<
-  NotificationEntity,
+  NotificationsEntity,
   NotificationsService
 > {
   constructor(private notificationsService: NotificationsService) {

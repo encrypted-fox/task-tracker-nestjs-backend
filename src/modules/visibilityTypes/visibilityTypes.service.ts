@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { VisibilityTypeEntity } from './visibilityTypes.entity';
+import { VisibilityTypesEntity } from './visibilityTypes.entity';
 
 @Injectable()
-export class VisibilityTypesService extends BaseService<VisibilityTypeEntity> {
+export class VisibilityTypesService extends BaseService<VisibilityTypesEntity> {
   constructor(
-    @InjectRepository(VisibilityTypeEntity)
-    private visibilityTypesRepository: Repository<VisibilityTypeEntity>,
+    @InjectRepository(VisibilityTypesEntity)
+    private visibilityTypesRepository: Repository<VisibilityTypesEntity>,
   ) {
     const relations = {};
     const searchFields = ['id', 'title'];

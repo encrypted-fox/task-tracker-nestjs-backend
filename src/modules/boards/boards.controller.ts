@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
-import { BoardEntity } from './boards.entity';
+import { BoardsEntity } from './boards.entity';
 import { BoardsService } from './boards.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/boards')
 export class BoardsController extends BaseController<
-  BoardEntity,
+  BoardsEntity,
   BoardsService
 > {
   constructor(private boardsService: BoardsService) {

@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { InviteEntity } from './invites.entity';
+import { InvitesEntity } from './invites.entity';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class InvitesService extends BaseService<InviteEntity> {
+export class InvitesService extends BaseService<InvitesEntity> {
   constructor(
-    @InjectRepository(InviteEntity)
-    private invitesRepository: Repository<InviteEntity>,
+    @InjectRepository(InvitesEntity)
+    private invitesRepository: Repository<InvitesEntity>,
   ) {
     const relations = { project: true, creator: true };
     const searchFields = ['value'];
@@ -21,7 +21,7 @@ export class InvitesService extends BaseService<InviteEntity> {
     return uuid().replace(/-/g, '').substring(0, 12).toLowerCase();
   }
 
-  async create(item: Partial<InviteEntity>): Promise<InviteEntity> {
+  async create(item: Partial<InvitesEntity>): Promise<InvitesEntity> {
     try {
       item.value = this.generateInviteCode();
 

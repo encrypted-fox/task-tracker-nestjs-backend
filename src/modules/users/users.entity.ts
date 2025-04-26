@@ -7,11 +7,11 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { TeamEntity } from '../teams/teams.entity';
-import { RoleEntity } from '../roles/roles.entity';
+import { TeamsEntity } from '../teams/teams.entity';
+import { RolesEntity } from '../roles/roles.entity';
 
 @Entity()
-export class UserEntity {
+export class UsersEntity {
   @PrimaryGeneratedColumn()
   id?: number;
 
@@ -39,17 +39,17 @@ export class UserEntity {
   @Column({ nullable: true })
   avatar?: string;
 
-  @ManyToMany(() => TeamEntity, { nullable: true })
+  @ManyToMany(() => TeamsEntity, { nullable: true })
   @JoinTable({
     name: 'user_teams',
     joinColumn: { name: 'user_id' },
     inverseJoinColumn: { name: 'team_id' },
   })
-  teams?: TeamEntity[];
+  teams?: TeamsEntity[];
 
-  @ManyToOne(() => RoleEntity, { nullable: true })
+  @ManyToOne(() => RolesEntity, { nullable: true })
   @JoinColumn({ name: 'role_id' })
-  role?: RoleEntity;
+  role?: RolesEntity;
 
   @Column()
   createdAt: string;

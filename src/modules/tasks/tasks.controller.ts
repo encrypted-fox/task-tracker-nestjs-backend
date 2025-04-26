@@ -1,10 +1,10 @@
 import { Controller } from '@nestjs/common';
-import { TaskEntity } from './tasks.entity';
+import { TasksEntity } from './tasks.entity';
 import { TasksService } from './tasks.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/tasks')
-export class TasksController extends BaseController<TaskEntity, TasksService> {
+export class TasksController extends BaseController<TasksEntity, TasksService> {
   constructor(private tasksService: TasksService) {
     const tasksFields = [
       'id',

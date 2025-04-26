@@ -5,10 +5,10 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { RoleEntity } from '../roles/roles.entity';
+import { RolesEntity } from '../roles/roles.entity';
 
 @Entity()
-export class RuleEntity {
+export class RulesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,9 +18,9 @@ export class RuleEntity {
   @Column()
   value: boolean;
 
-  @ManyToOne(() => RoleEntity)
+  @ManyToOne(() => RolesEntity)
   @JoinColumn({ name: 'role_id' })
-  role: RoleEntity;
+  role: RolesEntity;
 
   @Column()
   createdAt: string;

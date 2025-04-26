@@ -5,10 +5,10 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { VisibilityTypeEntity } from '../visibilityTypes/visibilityTypes.entity';
+import { VisibilityTypesEntity } from '../visibilityTypes/visibilityTypes.entity';
 
 @Entity()
-export class VisibilityEntity {
+export class VisibilitiesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,9 +18,9 @@ export class VisibilityEntity {
   @Column({ type: 'json', nullable: true })
   object?: Record<string, unknown>;
 
-  @ManyToOne(() => VisibilityTypeEntity)
+  @ManyToOne(() => VisibilityTypesEntity)
   @JoinColumn({ name: 'type_id' })
-  visibilityType: VisibilityTypeEntity;
+  visibilityType: VisibilityTypesEntity;
 
   @Column()
   createdAt: string;

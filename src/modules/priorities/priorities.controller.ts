@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
-import { PriorityEntity } from './priorities.entity';
+import { PrioritiesEntity } from './priorities.entity';
 import { PrioritiesService } from './priorities.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/priorities')
 export class PrioritiesController extends BaseController<
-  PriorityEntity,
+  PrioritiesEntity,
   PrioritiesService
 > {
   constructor(private prioritiesService: PrioritiesService) {

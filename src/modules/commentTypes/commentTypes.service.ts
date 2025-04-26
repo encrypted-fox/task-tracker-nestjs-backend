@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { CommentTypeEntity } from './commentTypes.entity';
+import { CommentTypesEntity } from './commentTypes.entity';
 
 @Injectable()
-export class CommentTypesService extends BaseService<CommentTypeEntity> {
+export class CommentTypesService extends BaseService<CommentTypesEntity> {
   constructor(
-    @InjectRepository(CommentTypeEntity)
-    private commentTypesRepository: Repository<CommentTypeEntity>,
+    @InjectRepository(CommentTypesEntity)
+    private commentTypesRepository: Repository<CommentTypesEntity>,
   ) {
     const comments = {};
     const searchFields = ['id', 'title'];

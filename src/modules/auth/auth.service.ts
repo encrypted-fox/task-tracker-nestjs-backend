@@ -11,7 +11,7 @@ import { UsersService } from '../users/users.service';
 import { InvitesService } from '../invites/invites.service';
 
 import { PartialUser } from '../users/users.interface';
-import { TeamEntity } from '../teams/teams.entity';
+import { TeamsEntity } from '../teams/teams.entity';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +45,7 @@ export class AuthService {
     username: string,
     password: string,
     email: string,
-    teams: TeamEntity[] = [],
+    teams: TeamsEntity[] = [],
   ): Promise<PartialUser> {
     const found = (await this.usersService.find({ username })).length;
 

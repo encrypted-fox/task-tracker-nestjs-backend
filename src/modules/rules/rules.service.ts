@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { RuleEntity } from './rules.entity';
+import { RulesEntity } from './rules.entity';
 
 @Injectable()
-export class RulesService extends BaseService<RuleEntity> {
+export class RulesService extends BaseService<RulesEntity> {
   constructor(
-    @InjectRepository(RuleEntity)
-    private rulesRepository: Repository<RuleEntity>,
+    @InjectRepository(RulesEntity)
+    private rulesRepository: Repository<RulesEntity>,
   ) {
     const relations = { role: true };
     const searchFields = ['id', 'title', 'value'];

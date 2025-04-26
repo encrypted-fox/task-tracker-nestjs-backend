@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { RelationEntity } from './relations.entity';
+import { RelationsEntity } from './relations.entity';
 
 @Injectable()
-export class RelationsService extends BaseService<RelationEntity> {
+export class RelationsService extends BaseService<RelationsEntity> {
   constructor(
-    @InjectRepository(RelationEntity)
-    private relationsRepository: Repository<RelationEntity>,
+    @InjectRepository(RelationsEntity)
+    private relationsRepository: Repository<RelationsEntity>,
   ) {
     const relations = {
       task: true,

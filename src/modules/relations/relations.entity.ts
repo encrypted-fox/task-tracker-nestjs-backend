@@ -7,34 +7,34 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { TaskEntity } from '../tasks/tasks.entity';
-import { RelationTypeEntity } from '../relationTypes/relationTypes.entity';
-import { UserEntity } from '../users/users.entity';
+import { TasksEntity } from '../tasks/tasks.entity';
+import { RelationTypesEntity } from '../relationTypes/relationTypes.entity';
+import { UsersEntity } from '../users/users.entity';
 
 @Entity()
-export class RelationEntity {
+export class RelationsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => TaskEntity)
+  @ManyToOne(() => TasksEntity)
   @JoinColumn({ name: 'task_id' })
-  task: TaskEntity;
+  task: TasksEntity;
 
-  @ManyToMany(() => TaskEntity)
+  @ManyToMany(() => TasksEntity)
   @JoinTable({
     name: 'relation_tasks',
     joinColumn: { name: 'relation_id' },
     inverseJoinColumn: { name: 'task_id' },
   })
-  relatedTasks: TaskEntity[];
+  relatedTasks: TasksEntity[];
 
-  @ManyToOne(() => RelationTypeEntity)
+  @ManyToOne(() => RelationTypesEntity)
   @JoinColumn({ name: 'type_id' })
-  relationType: RelationTypeEntity;
+  relationType: RelationTypesEntity;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UserEntity;
+  creator: UsersEntity;
 
   @Column()
   createdAt: string;

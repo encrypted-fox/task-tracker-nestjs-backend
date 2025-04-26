@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { Public } from 'src/exported';
 import { AuthService } from './auth.service';
-import { UserEntity } from '../users/users.entity';
+import { UsersEntity } from '../users/users.entity';
 import { PartialUser } from '../users/users.interface';
 
 @Controller('api/auth')
@@ -11,7 +11,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() request: UserEntity): Promise<PartialUser> {
+  signIn(@Body() request: UsersEntity): Promise<PartialUser> {
     return this.authService.signIn(request.username, request.password);
   }
 

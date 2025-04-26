@@ -5,12 +5,12 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { UserEntity } from '../users/users.entity';
-import { ProjectEntity } from '../projects/projects.entity';
-import { VisibilityEntity } from '../visibilities/visibilities.entity';
+import { UsersEntity } from '../users/users.entity';
+import { ProjectsEntity } from '../projects/projects.entity';
+import { VisibilitiesEntity } from '../visibilities/visibilities.entity';
 
 @Entity()
-export class BoardEntity {
+export class BoardsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,17 +23,17 @@ export class BoardEntity {
   @Column('text', { nullable: true, array: true })
   attachments?: string[];
 
-  @ManyToOne(() => ProjectEntity, { nullable: true })
+  @ManyToOne(() => ProjectsEntity, { nullable: true })
   @JoinColumn({ name: 'project_id' })
-  project?: ProjectEntity;
+  project?: ProjectsEntity;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UserEntity;
+  creator: UsersEntity;
 
-  @ManyToOne(() => VisibilityEntity)
+  @ManyToOne(() => VisibilitiesEntity)
   @JoinColumn({ name: 'visibility_id' })
-  visibility: VisibilityEntity;
+  visibility: VisibilitiesEntity;
 
   @Column()
   createdAt: string;

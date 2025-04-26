@@ -7,16 +7,16 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { UserEntity } from '../users/users.entity';
-import { ProjectEntity } from '../projects/projects.entity';
-import { BoardEntity } from '../boards/boards.entity';
-import { ColumnEntity } from '../columns/columns.entity';
-import { PriorityEntity } from '../priorities/priorities.entity';
-import { TagEntity } from '../tags/tags.entity';
-import { VisibilityEntity } from '../visibilities/visibilities.entity';
+import { UsersEntity } from '../users/users.entity';
+import { ProjectsEntity } from '../projects/projects.entity';
+import { BoardsEntity } from '../boards/boards.entity';
+import { ColumnsEntity } from '../columns/columns.entity';
+import { PrioritiesEntity } from '../priorities/priorities.entity';
+import { TagsEntity } from '../tags/tags.entity';
+import { VisibilitiesEntity } from '../visibilities/visibilities.entity';
 
 @Entity()
-export class TaskEntity {
+export class TasksEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -32,45 +32,45 @@ export class TaskEntity {
   @Column('text', { nullable: true, array: true })
   attachments?: string[];
 
-  @ManyToOne(() => PriorityEntity, { nullable: true })
+  @ManyToOne(() => PrioritiesEntity, { nullable: true })
   @JoinColumn({ name: 'priority_id' })
-  priority?: PriorityEntity;
+  priority?: PrioritiesEntity;
 
-  @ManyToMany(() => TagEntity, { nullable: true })
+  @ManyToMany(() => TagsEntity, { nullable: true })
   @JoinTable({
     name: 'task_tags',
     joinColumn: { name: 'task_id' },
     inverseJoinColumn: { name: 'tag_id' },
   })
-  tags?: TagEntity[];
+  tags?: TagsEntity[];
 
-  @ManyToOne(() => ColumnEntity, { nullable: true })
+  @ManyToOne(() => ColumnsEntity, { nullable: true })
   @JoinColumn({ name: 'column_id' })
-  column?: ColumnEntity;
+  column?: ColumnsEntity;
 
-  @ManyToOne(() => BoardEntity, { nullable: true })
+  @ManyToOne(() => BoardsEntity, { nullable: true })
   @JoinColumn({ name: 'board_id' })
-  board?: BoardEntity;
+  board?: BoardsEntity;
 
-  @ManyToOne(() => ProjectEntity, { nullable: true })
+  @ManyToOne(() => ProjectsEntity, { nullable: true })
   @JoinColumn({ name: 'project_id' })
-  project?: ProjectEntity;
+  project?: ProjectsEntity;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UserEntity;
+  creator: UsersEntity;
 
-  @ManyToOne(() => VisibilityEntity)
+  @ManyToOne(() => VisibilitiesEntity)
   @JoinColumn({ name: 'visibility_id' })
-  visibility: VisibilityEntity;
+  visibility: VisibilitiesEntity;
 
-  @ManyToMany(() => UserEntity)
+  @ManyToMany(() => UsersEntity)
   @JoinTable({
     name: 'task_users',
     joinColumn: { name: 'task_id' },
     inverseJoinColumn: { name: 'user_id' },
   })
-  relatedUsers: UserEntity[];
+  relatedUsers: UsersEntity[];
 
   @Column()
   createdAt: string;

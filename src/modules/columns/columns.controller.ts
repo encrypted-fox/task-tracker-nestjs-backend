@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
-import { ColumnEntity } from './columns.entity';
+import { ColumnsEntity } from './columns.entity';
 import { ColumnsService } from './columns.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/columns')
 export class ColumnsController extends BaseController<
-  ColumnEntity,
+  ColumnsEntity,
   ColumnsService
 > {
   constructor(private columnsService: ColumnsService) {

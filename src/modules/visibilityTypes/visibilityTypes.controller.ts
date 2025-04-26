@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
-import { VisibilityTypeEntity } from './visibilityTypes.entity';
+import { VisibilityTypesEntity } from './visibilityTypes.entity';
 import { VisibilityTypesService } from './visibilityTypes.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/visibilityTypes')
 export class VisibilityTypesController extends BaseController<
-  VisibilityTypeEntity,
+  VisibilityTypesEntity,
   VisibilityTypesService
 > {
   constructor(private visibilityTypesService: VisibilityTypesService) {

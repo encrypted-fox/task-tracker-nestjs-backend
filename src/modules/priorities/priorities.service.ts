@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { PriorityEntity } from './priorities.entity';
+import { PrioritiesEntity } from './priorities.entity';
 
 @Injectable()
-export class PrioritiesService extends BaseService<PriorityEntity> {
+export class PrioritiesService extends BaseService<PrioritiesEntity> {
   constructor(
-    @InjectRepository(PriorityEntity)
-    private prioritiesRepository: Repository<PriorityEntity>,
+    @InjectRepository(PrioritiesEntity)
+    private prioritiesRepository: Repository<PrioritiesEntity>,
   ) {
     const relations = {};
     const searchFields = ['id', 'title', 'value'];

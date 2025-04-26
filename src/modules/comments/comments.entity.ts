@@ -5,12 +5,12 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { UserEntity } from '../users/users.entity';
-import { CommentTypeEntity } from '../commentTypes/commentTypes.entity';
-import { TaskEntity } from '../tasks/tasks.entity';
+import { UsersEntity } from '../users/users.entity';
+import { CommentTypesEntity } from '../commentTypes/commentTypes.entity';
+import { TasksEntity } from '../tasks/tasks.entity';
 
 @Entity()
-export class CommentEntity {
+export class CommentsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,17 +20,17 @@ export class CommentEntity {
   @Column('text', { nullable: true, array: true })
   attachments?: string[];
 
-  @ManyToOne(() => CommentTypeEntity)
+  @ManyToOne(() => CommentTypesEntity)
   @JoinColumn({ name: 'type_id' })
-  commentType: CommentTypeEntity;
+  commentType: CommentTypesEntity;
 
-  @ManyToOne(() => TaskEntity)
+  @ManyToOne(() => TasksEntity)
   @JoinColumn({ name: 'task_id' })
-  task: TaskEntity;
+  task: TasksEntity;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'user_id' })
-  creator: UserEntity;
+  creator: UsersEntity;
 
   @Column()
   createdAt: string;

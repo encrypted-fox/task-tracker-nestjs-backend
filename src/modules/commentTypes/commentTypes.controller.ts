@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
-import { CommentTypeEntity } from './commentTypes.entity';
+import { CommentTypesEntity } from './commentTypes.entity';
 import { CommentTypesService } from './commentTypes.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/commentTypes')
 export class CommentTypesController extends BaseController<
-  CommentTypeEntity,
+  CommentTypesEntity,
   CommentTypesService
 > {
   constructor(private commentTypesService: CommentTypesService) {

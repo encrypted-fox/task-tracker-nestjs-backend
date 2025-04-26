@@ -1,7 +1,7 @@
-import { TaskEntity } from '../../modules/tasks/tasks.entity';
-import { UserEntity } from '../../modules/users/users.entity';
-import { TeamEntity } from '../../modules/teams/teams.entity';
-import { TagEntity } from '../../modules/tags/tags.entity';
+import { TasksEntity } from '../../modules/tasks/tasks.entity';
+import { UsersEntity } from '../../modules/users/users.entity';
+import { TeamsEntity } from '../../modules/teams/teams.entity';
+import { TagsEntity } from '../../modules/tags/tags.entity';
 
 export type DataPart = {
   json?: string;
@@ -94,28 +94,28 @@ function generateItem(item: any, take: string[]): DataItem {
     }),
     relatedTasks: (el: any): DataPart[] =>
       el?.relatedTasks?.map(
-        (el: TaskEntity): DataPart => ({
+        (el: TasksEntity): DataPart => ({
           label: el.title,
           url: `tasks/${el.id}`,
         }),
       ),
     relatedUsers: (el: any): DataPart[] =>
       el?.relatedUsers?.map(
-        (el: UserEntity): DataPart => ({
+        (el: UsersEntity): DataPart => ({
           label: el?.username,
           url: `users/${el.id}`,
         }),
       ),
     teams: (el: any): DataPart[] =>
       el?.teams?.map(
-        (el: TeamEntity): DataPart => ({
+        (el: TeamsEntity): DataPart => ({
           label: el?.title,
           url: `teams/${el.id}`,
         }),
       ),
     tags: (el: any): DataPart[] =>
       el?.tags?.map(
-        (el: TagEntity): DataPart => ({
+        (el: TagsEntity): DataPart => ({
           label: el?.title,
           url: `tags/${el.id}`,
         }),

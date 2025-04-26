@@ -5,11 +5,11 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { UserEntity } from '../users/users.entity';
-import { NotificationTypeEntity } from '../notificationTypes/notificationTypes.entity';
+import { UsersEntity } from '../users/users.entity';
+import { NotificationTypesEntity } from '../notificationTypes/notificationTypes.entity';
 
 @Entity()
-export class NotificationEntity {
+export class NotificationsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,13 +19,13 @@ export class NotificationEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => NotificationTypeEntity)
+  @ManyToOne(() => NotificationTypesEntity)
   @JoinColumn({ name: 'type_id' })
-  notificationType: NotificationTypeEntity;
+  notificationType: NotificationTypesEntity;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  user: UsersEntity;
 
   @Column()
   createdAt: string;

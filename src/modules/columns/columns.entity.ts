@@ -5,29 +5,29 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { UserEntity } from '../users/users.entity';
-import { BoardEntity } from '../boards/boards.entity';
-import { ProjectEntity } from '../projects/projects.entity';
+import { UsersEntity } from '../users/users.entity';
+import { BoardsEntity } from '../boards/boards.entity';
+import { ProjectsEntity } from '../projects/projects.entity';
 
 @Entity()
-export class ColumnEntity {
+export class ColumnsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   title: string;
 
-  @ManyToOne(() => BoardEntity, { nullable: true })
+  @ManyToOne(() => BoardsEntity, { nullable: true })
   @JoinColumn({ name: 'board_id' })
-  board?: BoardEntity;
+  board?: BoardsEntity;
 
-  @ManyToOne(() => ProjectEntity, { nullable: true })
+  @ManyToOne(() => ProjectsEntity, { nullable: true })
   @JoinColumn({ name: 'project_id' })
-  project?: ProjectEntity;
+  project?: ProjectsEntity;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UserEntity;
+  creator: UsersEntity;
 
   @Column()
   createdAt: string;

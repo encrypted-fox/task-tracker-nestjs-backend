@@ -22,22 +22,22 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { VisibilityTypesModule } from './visibilityTypes/visibilityTypes.module';
 import { VisibilitiesModule } from './visibilities/visibilities.module';
 
-import { UserEntity } from './users/users.entity';
-import { TeamEntity } from './teams/teams.entity';
-import { PriorityEntity } from './priorities/priorities.entity';
-import { ColumnEntity } from './columns/columns.entity';
-import { BoardEntity } from './boards/boards.entity';
-import { ProjectEntity } from './projects/projects.entity';
-import { RuleEntity } from './rules/rules.entity';
-import { RoleEntity } from './roles/roles.entity';
-import { TaskEntity } from './tasks/tasks.entity';
-import { TagEntity } from './tags/tags.entity';
-import { RelationTypeEntity } from './relationTypes/relationTypes.entity';
-import { RelationEntity } from './relations/relations.entity';
-import { NotificationTypeEntity } from './notificationTypes/notificationTypes.entity';
-import { NotificationEntity } from './notifications/notifications.entity';
-import { VisibilityTypeEntity } from './visibilityTypes/visibilityTypes.entity';
-import { VisibilityEntity } from './visibilities/visibilities.entity';
+import { UsersEntity } from './users/users.entity';
+import { TeamsEntity } from './teams/teams.entity';
+import { PrioritiesEntity } from './priorities/priorities.entity';
+import { ColumnsEntity } from './columns/columns.entity';
+import { BoardsEntity } from './boards/boards.entity';
+import { ProjectsEntity } from './projects/projects.entity';
+import { RulesEntity } from './rules/rules.entity';
+import { RolesEntity } from './roles/roles.entity';
+import { TasksEntity } from './tasks/tasks.entity';
+import { TagsEntity } from './tags/tags.entity';
+import { RelationTypesEntity } from './relationTypes/relationTypes.entity';
+import { RelationsEntity } from './relations/relations.entity';
+import { NotificationTypesEntity } from './notificationTypes/notificationTypes.entity';
+import { NotificationsEntity } from './notifications/notifications.entity';
+import { VisibilityTypesEntity } from './visibilityTypes/visibilityTypes.entity';
+import { VisibilitiesEntity } from './visibilities/visibilities.entity';
 
 @Module({
   imports: [
@@ -67,22 +67,22 @@ import { VisibilityEntity } from './visibilities/visibilities.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [
-        UserEntity,
-        TeamEntity,
-        PriorityEntity,
-        ColumnEntity,
-        BoardEntity,
-        ProjectEntity,
-        RuleEntity,
-        RoleEntity,
-        TaskEntity,
-        TagEntity,
-        RelationTypeEntity,
-        RelationEntity,
-        NotificationTypeEntity,
-        NotificationEntity,
-        VisibilityTypeEntity,
-        VisibilityEntity,
+        UsersEntity,
+        TeamsEntity,
+        PrioritiesEntity,
+        ColumnsEntity,
+        BoardsEntity,
+        ProjectsEntity,
+        RulesEntity,
+        RolesEntity,
+        TasksEntity,
+        TagsEntity,
+        RelationTypesEntity,
+        RelationsEntity,
+        NotificationTypesEntity,
+        NotificationsEntity,
+        VisibilityTypesEntity,
+        VisibilitiesEntity,
       ],
       synchronize: true,
     }),

@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class VisibilityTypeEntity {
+export class VisibilityTypesEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()

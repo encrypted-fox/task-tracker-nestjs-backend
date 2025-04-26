@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
-import { RelationEntity } from './relations.entity';
+import { RelationsEntity } from './relations.entity';
 import { RelationsService } from './relations.service';
 import { BaseController } from '../../base/BaseController';
 
 @Controller('api/relations')
 export class RelationsController extends BaseController<
-  RelationEntity,
+  RelationsEntity,
   RelationsService
 > {
   constructor(private relationsService: RelationsService) {

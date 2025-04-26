@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../../base/BaseService';
-import { ColumnEntity } from './columns.entity';
+import { ColumnsEntity } from './columns.entity';
 
 @Injectable()
-export class ColumnsService extends BaseService<ColumnEntity> {
+export class ColumnsService extends BaseService<ColumnsEntity> {
   constructor(
-    @InjectRepository(ColumnEntity)
-    private columnsRepository: Repository<ColumnEntity>,
+    @InjectRepository(ColumnsEntity)
+    private columnsRepository: Repository<ColumnsEntity>,
   ) {
     const relations = { project: true, board: true, creator: true };
     const searchFields = ['id', 'title'];

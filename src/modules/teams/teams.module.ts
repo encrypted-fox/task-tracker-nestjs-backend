@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TeamsService } from './teams.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TeamEntity } from './teams.entity';
+import { TeamsEntity } from './teams.entity';
 import { TeamsController } from './teams.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TeamEntity])],
+  imports: [TypeOrmModule.forFeature([TeamsEntity])],
   providers: [TeamsService],
   exports: [TeamsService],
   controllers: [TeamsController],

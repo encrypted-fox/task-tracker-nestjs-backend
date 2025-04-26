@@ -5,11 +5,11 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { UserEntity } from '../users/users.entity';
-import { VisibilityEntity } from '../visibilities/visibilities.entity';
+import { UsersEntity } from '../users/users.entity';
+import { VisibilitiesEntity } from '../visibilities/visibilities.entity';
 
 @Entity()
-export class ProjectEntity {
+export class ProjectsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,13 +22,13 @@ export class ProjectEntity {
   @Column('text', { nullable: true, array: true })
   attachments?: string[];
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UserEntity;
+  creator: UsersEntity;
 
-  @ManyToOne(() => VisibilityEntity)
+  @ManyToOne(() => VisibilitiesEntity)
   @JoinColumn({ name: 'visibility_id' })
-  visibility: VisibilityEntity;
+  visibility: VisibilitiesEntity;
 
   @Column()
   createdAt: string;
