@@ -34,7 +34,7 @@ export class UsersEntity {
     description: 'Password. String.',
   })
   @Column()
-  password: string;
+  password?: string;
 
   @ApiProperty({
     example: '1234@gmail.com',
@@ -107,7 +107,7 @@ export class UsersEntity {
     description: 'Created date. ISO string. UTC 0',
   })
   @Column()
-  createdAt: string;
+  createdAt?: string;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',

@@ -36,7 +36,7 @@ export class TeamsEntity {
     description: 'Created date. ISO string. UTC 0',
   })
   @Column()
-  createdAt: string;
+  createdAt?: string;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',
