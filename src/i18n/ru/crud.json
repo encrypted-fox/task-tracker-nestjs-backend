@@ -15,6 +15,8 @@
   "estimate": "Ожидаемое время",
   "time": "Время",
   "value": "Значение",
+  "action": "Метод",
+  "path": "Путь",
   "relationType": "Тип связи",
   "notificationType": "Тип уведомления",
   "commentType": "Тип комментария",

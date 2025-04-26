@@ -38,6 +38,8 @@ function generateItem(item: any, take: string[]): DataItem {
     attachments: (el: any): DataPart => ({ label: el?.attachments?.length }),
     estimate: (el: any): DataPart => ({ label: el?.estimate }),
     value: (el: any): DataPart => ({ label: el?.value }),
+    action: (el: any): DataPart => ({ label: el?.value }),
+    path: (el: any): DataPart => ({ label: el?.value }),
     priority: (el: any): DataPart => ({
       label: el?.priority?.title,
       url: `priorities/${el?.priority?.id}`,

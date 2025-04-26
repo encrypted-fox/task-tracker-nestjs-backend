@@ -81,6 +81,16 @@ export function generateHeader(i18n: I18nContext, take: string[]): Header {
       style: 'width: 100px;',
     },
     {
+      name: 'action',
+      label: i18n.t('crud.action'),
+      style: 'width: 100px;',
+    },
+    {
+      name: 'path',
+      label: i18n.t('crud.path'),
+      style: 'width: 300px;',
+    },
+    {
       name: 'priority',
       label: i18n.t('crud.priority'),
       style: 'width: 140px;',

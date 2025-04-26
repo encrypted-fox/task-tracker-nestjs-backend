@@ -75,6 +75,14 @@ export function generateTable(take: string[]): Table {
       outerStyle: 'width: 100px;',
       innerClass: 'text-primary text-ellipsis',
     },
+    action: {
+      outerStyle: 'width: 100px;',
+      innerClass: 'text-primary text-ellipsis',
+    },
+    path: {
+      outerStyle: 'width: 300px;',
+      innerClass: 'text-primary text-ellipsis',
+    },
     priority: {
       outerStyle: 'width: 140px;',
       innerClass: 'link text-ellipsis',
