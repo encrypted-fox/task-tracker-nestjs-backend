@@ -22,7 +22,7 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Sign in',
-    description: 'Returns entity by id',
+    description: 'Authenticate',
   })
   @ApiBody({
     type: () => UsersEntity,
@@ -37,8 +37,8 @@ export class AuthController {
   }
 
   @ApiOperation({
-    summary: 'Sign in',
-    description: 'Returns entity by id',
+    summary: 'Register',
+    description: 'Register',
   })
   @ApiBody({
     schema: {
