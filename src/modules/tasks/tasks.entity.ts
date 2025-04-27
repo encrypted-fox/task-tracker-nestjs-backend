@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  Relation,
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
@@ -65,7 +66,7 @@ export class TasksEntity {
   })
   @ManyToOne(() => PrioritiesEntity, { nullable: true })
   @JoinColumn({ name: 'priority_id' })
-  priority?: PrioritiesEntity;
+  priority?: Relation<PrioritiesEntity>;
 
   @ApiProperty({
     example: [1],
@@ -78,7 +79,7 @@ export class TasksEntity {
     joinColumn: { name: 'task_id' },
     inverseJoinColumn: { name: 'tag_id' },
   })
-  tags?: TagsEntity[];
+  tags?: Relation<TagsEntity[]>;
 
   @ApiProperty({
     example: 1,
@@ -87,7 +88,7 @@ export class TasksEntity {
   })
   @ManyToOne(() => ColumnsEntity, { nullable: true })
   @JoinColumn({ name: 'column_id' })
-  column?: ColumnsEntity;
+  column?: Relation<ColumnsEntity>;
 
   @ApiProperty({
     example: 1,
@@ -96,7 +97,7 @@ export class TasksEntity {
   })
   @ManyToOne(() => BoardsEntity, { nullable: true })
   @JoinColumn({ name: 'board_id' })
-  board?: BoardsEntity;
+  board?: Relation<BoardsEntity>;
 
   @ApiProperty({
     example: 1,
@@ -105,7 +106,7 @@ export class TasksEntity {
   })
   @ManyToOne(() => ProjectsEntity, { nullable: true })
   @JoinColumn({ name: 'project_id' })
-  project?: ProjectsEntity;
+  project?: Relation<ProjectsEntity>;
 
   @ApiProperty({
     example: 1,
@@ -114,7 +115,7 @@ export class TasksEntity {
   })
   @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UsersEntity;
+  creator: Relation<UsersEntity>;
 
   @ApiProperty({
     example: 1,
@@ -123,7 +124,7 @@ export class TasksEntity {
   })
   @ManyToOne(() => VisibilitiesEntity, { nullable: true })
   @JoinColumn({ name: 'visibility_id' })
-  visibility?: VisibilitiesEntity;
+  visibility?: Relation<VisibilitiesEntity>;
 
   @ApiProperty({
     example: [1],
@@ -136,7 +137,7 @@ export class TasksEntity {
     joinColumn: { name: 'task_id' },
     inverseJoinColumn: { name: 'user_id' },
   })
-  relatedUsers: UsersEntity[];
+  relatedUsers: Relation<UsersEntity[]>;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',

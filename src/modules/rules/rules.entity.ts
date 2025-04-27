@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Relation,
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
@@ -41,7 +42,7 @@ export class RulesEntity {
   })
   @ManyToOne(() => RolesEntity)
   @JoinColumn({ name: 'role_id' })
-  role: RolesEntity;
+  role: Relation<RolesEntity>;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',

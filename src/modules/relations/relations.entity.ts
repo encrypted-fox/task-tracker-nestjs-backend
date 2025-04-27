@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  Relation,
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
@@ -30,7 +31,7 @@ export class RelationsEntity {
   })
   @ManyToOne(() => TasksEntity)
   @JoinColumn({ name: 'task_id' })
-  task: TasksEntity;
+  task: Relation<TasksEntity>;
 
   @ApiProperty({
     example: [1],
@@ -43,7 +44,7 @@ export class RelationsEntity {
     joinColumn: { name: 'relation_id' },
     inverseJoinColumn: { name: 'task_id' },
   })
-  relatedTasks: TasksEntity[];
+  relatedTasks: Relation<TasksEntity[]>;
 
   @ApiProperty({
     example: 1,
@@ -52,7 +53,7 @@ export class RelationsEntity {
   })
   @ManyToOne(() => RelationTypesEntity)
   @JoinColumn({ name: 'type_id' })
-  relationType: RelationTypesEntity;
+  relationType: Relation<RelationTypesEntity>;
 
   @ApiProperty({
     example: 1,
@@ -61,7 +62,7 @@ export class RelationsEntity {
   })
   @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UsersEntity;
+  creator: Relation<UsersEntity>;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',

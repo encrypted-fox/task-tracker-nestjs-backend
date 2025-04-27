@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Relation,
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
@@ -29,7 +30,7 @@ export class TeamsEntity {
   })
   @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: UsersEntity;
+  creator: Relation<UsersEntity>;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',

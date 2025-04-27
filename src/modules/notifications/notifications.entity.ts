@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Relation,
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
@@ -42,7 +43,7 @@ export class NotificationsEntity {
   })
   @ManyToOne(() => NotificationTypesEntity)
   @JoinColumn({ name: 'type_id' })
-  notificationType: NotificationTypesEntity;
+  notificationType: Relation<NotificationTypesEntity>;
 
   @ApiProperty({
     example: 1,
@@ -51,7 +52,7 @@ export class NotificationsEntity {
   })
   @ManyToOne(() => UsersEntity)
   @JoinColumn({ name: 'user_id' })
-  user: UsersEntity;
+  user: Relation<UsersEntity>;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',

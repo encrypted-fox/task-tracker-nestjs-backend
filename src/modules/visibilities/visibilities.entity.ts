@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Relation,
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
@@ -43,7 +44,7 @@ export class VisibilitiesEntity {
   })
   @ManyToOne(() => VisibilityTypesEntity)
   @JoinColumn({ name: 'type_id' })
-  visibilityType: VisibilityTypesEntity;
+  visibilityType: Relation<VisibilityTypesEntity>;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',
