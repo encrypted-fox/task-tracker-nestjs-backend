@@ -21,7 +21,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApiQueryDecorator } from '../../helpers/ApiQueryDecorator';
+import { ApiQueryDecorator } from '../../helpers/decorators/ApiQueryDecorator';
 
 import { I18n, I18nContext } from 'nestjs-i18n';
 
@@ -32,13 +32,13 @@ import {
 } from '../../base/BaseController';
 
 import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../logs/logs.decorator';
+import { LogAction } from '../../helpers/decorators/LogActionDecorator';
 
 import { InvitesService } from './invites.service';
 import { InvitesEntity } from './invites.entity';
 
 @ApiBearerAuth()
-@ApiTags('auth')
+@ApiTags('invites')
 @Controller('api/invites')
 export class InvitesController extends BaseController<
   InvitesEntity,
@@ -65,7 +65,7 @@ export class InvitesController extends BaseController<
   @ApiOkResponse({ type: () => InvitesEntity })
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @Get('/list')
+  @Get('list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,

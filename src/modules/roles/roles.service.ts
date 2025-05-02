@@ -10,7 +10,7 @@ export class RolesService extends BaseService<RolesEntity> {
     @InjectRepository(RolesEntity)
     private rolesRepository: Repository<RolesEntity>,
   ) {
-    const relations = {};
+    const relations = { team: true };
     const searchFields = ['id', 'title'];
 
     super(rolesRepository, searchFields, relations);

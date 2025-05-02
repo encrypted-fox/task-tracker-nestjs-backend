@@ -10,7 +10,7 @@ export class LogsService extends BaseService<LogsEntity> {
     @InjectRepository(LogsEntity)
     private logsRepository: Repository<LogsEntity>,
   ) {
-    const relations = { project: true, creator: true };
+    const relations = { creator: true };
     const searchFields = ['title', 'action'];
 
     super(logsRepository, searchFields, relations);

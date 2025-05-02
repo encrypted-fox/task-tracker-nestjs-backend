@@ -10,7 +10,7 @@ export class CommentsService extends BaseService<CommentsEntity> {
     @InjectRepository(CommentsEntity)
     private commentsRepository: Repository<CommentsEntity>,
   ) {
-    const relations = { user: true, commentType: true };
+    const relations = { creator: true, task: true, commentType: true };
     const searchFields = ['id', 'description'];
 
     super(commentsRepository, searchFields, relations);

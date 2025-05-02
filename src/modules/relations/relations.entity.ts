@@ -15,7 +15,7 @@ import { TasksEntity } from '../tasks/tasks.entity';
 import { RelationTypesEntity } from '../relationTypes/relationTypes.entity';
 import { UsersEntity } from '../users/users.entity';
 
-@Entity()
+@Entity('relations')
 export class RelationsEntity {
   @ApiProperty({
     example: 1,

@@ -21,7 +21,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApiQueryDecorator } from '../../helpers/ApiQueryDecorator';
+import { ApiQueryDecorator } from '../../helpers/decorators/ApiQueryDecorator';
 
 import { I18n, I18nContext } from 'nestjs-i18n';
 
@@ -32,13 +32,13 @@ import {
 } from '../../base/BaseController';
 
 import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../logs/logs.decorator';
+import { LogAction } from '../../helpers/decorators/LogActionDecorator';
 
 import { CommentsService } from './comments.service';
 import { CommentsEntity } from './comments.entity';
 
 @ApiBearerAuth()
-@ApiTags('auth')
+@ApiTags('comments')
 @Controller('api/comments')
 export class CommentsController extends BaseController<
   CommentsEntity,
@@ -67,7 +67,7 @@ export class CommentsController extends BaseController<
   @ApiOkResponse({ type: () => CommentsEntity })
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @Get('/list')
+  @Get('list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,

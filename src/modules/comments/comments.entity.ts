@@ -13,7 +13,7 @@ import { UsersEntity } from '../users/users.entity';
 import { CommentTypesEntity } from '../commentTypes/commentTypes.entity';
 import { TasksEntity } from '../tasks/tasks.entity';
 
-@Entity()
+@Entity('comments')
 export class CommentsEntity {
   @ApiProperty({
     example: 1,

@@ -17,6 +17,7 @@ export class TasksService extends BaseService<TasksEntity> {
       board: true,
       project: true,
       creator: true,
+      visibility: true,
       relatedUsers: true,
     };
     const searchFields = ['id', 'title', 'description', 'estimate'];

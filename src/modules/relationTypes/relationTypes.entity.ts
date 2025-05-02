@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity()
+@Entity('relation_types')
 export class RelationTypesEntity {
   @ApiProperty({
     example: 1,

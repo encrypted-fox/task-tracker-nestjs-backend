@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity()
+@Entity('notification_types')
 export class NotificationTypesEntity {
   @ApiProperty({
     example: 1,

@@ -10,7 +10,7 @@ export class VisibilitiesService extends BaseService<VisibilitiesEntity> {
     @InjectRepository(VisibilitiesEntity)
     private visibilitiesRepository: Repository<VisibilitiesEntity>,
   ) {
-    const relations = {};
+    const relations = { visibilityType: true };
     const searchFields = ['id', 'title'];
 
     super(visibilitiesRepository, searchFields, relations);

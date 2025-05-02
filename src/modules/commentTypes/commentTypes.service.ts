@@ -10,9 +10,9 @@ export class CommentTypesService extends BaseService<CommentTypesEntity> {
     @InjectRepository(CommentTypesEntity)
     private commentTypesRepository: Repository<CommentTypesEntity>,
   ) {
-    const comments = {};
+    const relations = {};
     const searchFields = ['id', 'title'];
 
-    super(commentTypesRepository, searchFields, comments);
+    super(commentTypesRepository, searchFields, relations);
   }
 }

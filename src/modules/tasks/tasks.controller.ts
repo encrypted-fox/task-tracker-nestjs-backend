@@ -21,7 +21,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApiQueryDecorator } from '../../helpers/ApiQueryDecorator';
+import { ApiQueryDecorator } from '../../helpers/decorators/ApiQueryDecorator';
 
 import { I18n, I18nContext } from 'nestjs-i18n';
 
@@ -32,13 +32,13 @@ import {
 } from '../../base/BaseController';
 
 import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../logs/logs.decorator';
+import { LogAction } from '../../helpers/decorators/LogActionDecorator';
 
 import { TasksService } from './tasks.service';
 import { TasksEntity } from './tasks.entity';
 
 @ApiBearerAuth()
-@ApiTags('auth')
+@ApiTags('tasks')
 @Controller('api/tasks')
 export class TasksController extends BaseController<TasksEntity, TasksService> {
   constructor(private tasksService: TasksService) {
@@ -70,7 +70,7 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
   @ApiOkResponse({ type: () => TasksEntity })
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @Get('/list')
+  @Get('list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,

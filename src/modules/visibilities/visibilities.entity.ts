@@ -11,7 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { VisibilityTypesEntity } from '../visibilityTypes/visibilityTypes.entity';
 
-@Entity()
+@Entity('visibilities')
 export class VisibilitiesEntity {
   @ApiProperty({
     example: 1,

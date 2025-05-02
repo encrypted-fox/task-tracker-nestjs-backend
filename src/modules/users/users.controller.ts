@@ -21,7 +21,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApiQueryDecorator } from '../../helpers/ApiQueryDecorator';
+import { ApiQueryDecorator } from '../../helpers/decorators/ApiQueryDecorator';
 
 import { I18n, I18nContext } from 'nestjs-i18n';
 
@@ -32,13 +32,13 @@ import {
 } from '../../base/BaseController';
 
 import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../logs/logs.decorator';
+import { LogAction } from '../../helpers/decorators/LogActionDecorator';
 
 import { UsersService } from './users.service';
 import { UsersEntity } from './users.entity';
 
 @ApiBearerAuth()
-@ApiTags('auth')
+@ApiTags('users')
 @Controller('api/users')
 export class UsersController extends BaseController<UsersEntity, UsersService> {
   constructor(private usersService: UsersService) {
@@ -52,6 +52,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
       'lastName',
       'avatar',
       'teams',
+      'role',
       'createdAt',
       'updatedAt',
       'deletedAt',
@@ -67,7 +68,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
   @ApiOkResponse({ type: () => UsersEntity })
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @Get('/list')
+  @Get('list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,

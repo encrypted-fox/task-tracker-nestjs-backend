@@ -19,7 +19,7 @@ import { PrioritiesEntity } from '../priorities/priorities.entity';
 import { TagsEntity } from '../tags/tags.entity';
 import { VisibilitiesEntity } from '../visibilities/visibilities.entity';
 
-@Entity()
+@Entity('tasks')
 export class TasksEntity {
   @ApiProperty({
     example: 1,

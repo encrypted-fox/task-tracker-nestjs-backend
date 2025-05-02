@@ -11,17 +11,22 @@ export class InvitesService extends BaseService<InvitesEntity> {
     @InjectRepository(InvitesEntity)
     private invitesRepository: Repository<InvitesEntity>,
   ) {
-    const relations = { project: true, creator: true };
+    const relations = { creator: true, team: true };
     const searchFields = ['value'];
 
     super(invitesRepository, searchFields, relations);
   }
 
+  private createAttempts = 5;
+
   private generateInviteCode(): string {
     return uuid().replace(/-/g, '').substring(0, 12).toLowerCase();
   }
 
-  async create(item: Partial<InvitesEntity>): Promise<InvitesEntity> {
+  override async create(item: Partial<InvitesEntity>): Promise<InvitesEntity> {
+    if (this.createAttempts++ > 5)
+      throw new Error('Max create attempts exceeded');
+
     try {
       item.value = this.generateInviteCode();
 

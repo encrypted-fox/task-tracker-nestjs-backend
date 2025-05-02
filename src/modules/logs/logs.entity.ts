@@ -11,7 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { UsersEntity } from '../users/users.entity';
 
-@Entity()
+@Entity('logs')
 export class LogsEntity {
   @ApiProperty({
     example: 1,

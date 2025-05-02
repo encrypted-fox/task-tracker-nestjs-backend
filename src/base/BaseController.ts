@@ -24,7 +24,7 @@ type Meta = {
   count: number;
   skip?: number;
   take?: number;
-  order: { [key: string]: 'DESC' | 'ASC' };
+  order: { [key: string]: string };
 };
 
 export type Response<Entity> = {

@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity()
+@Entity('comment_types')
 export class CommentTypesEntity {
   @ApiProperty({
     example: 1,

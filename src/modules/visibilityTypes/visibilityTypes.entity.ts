@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity()
+@Entity('visibility_types')
 export class VisibilityTypesEntity {
   @ApiProperty({
     example: 1,

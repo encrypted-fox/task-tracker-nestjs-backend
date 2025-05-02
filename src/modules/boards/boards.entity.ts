@@ -13,7 +13,7 @@ import { UsersEntity } from '../users/users.entity';
 import { ProjectsEntity } from '../projects/projects.entity';
 import { VisibilitiesEntity } from '../visibilities/visibilities.entity';
 
-@Entity()
+@Entity('boards')
 export class BoardsEntity {
   @ApiProperty({
     example: 1,

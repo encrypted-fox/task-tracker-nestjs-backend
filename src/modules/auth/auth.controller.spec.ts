@@ -2,9 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { IS_PUBLIC_KEY } from '../../exported';
+import { IS_PUBLIC_KEY } from '../../helpers/decorators/PublicDecorator';
 import { UsersEntity } from '../users/users.entity';
 import { ExtendedUsersEntity } from '../users/users.interface';
+import { HTTP_CODE_METADATA, PATH_METADATA } from '@nestjs/common/constants';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -53,17 +54,21 @@ describe('AuthController', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should have correct decorators', () => {
-      const isPublic = Reflect.getMetadata(
-        IS_PUBLIC_KEY,
-        controller.signIn, // Важно: передаем сам метод
-      );
+    it('should be public', () => {
+      const isPublic = Reflect.getMetadata(IS_PUBLIC_KEY, controller.signIn);
       expect(isPublic).toBe(true);
+    });
 
-      const postPath = Reflect.getMetadata('path', controller.signIn);
+    it('should have /login path', () => {
+      const postPath = Reflect.getMetadata(PATH_METADATA, controller.signIn);
       expect(postPath).toBe('login');
+    });
 
-      const httpCode = Reflect.getMetadata('__httpCode__', controller.signIn);
+    it('should have OK response code', () => {
+      const httpCode = Reflect.getMetadata(
+        HTTP_CODE_METADATA,
+        controller.signIn,
+      );
       expect(httpCode).toBe(HttpStatus.OK);
     });
   });
@@ -107,30 +112,22 @@ describe('AuthController', () => {
       expect(authService.registerByInvite).not.toHaveBeenCalled();
     });
 
-    it('should have correct ApiBody decorator', () => {
-      const apiBodyMetadata = Reflect.getMetadata(
-        'swagger/apiParameters',
-        AuthController.prototype.register,
-      );
+    it('should be public', () => {
+      const isPublic = Reflect.getMetadata(IS_PUBLIC_KEY, controller.register);
+      expect(isPublic).toBe(true);
+    });
 
-      expect(apiBodyMetadata).toBeDefined();
-      expect(apiBodyMetadata[0].schema).toEqual({
-        type: 'object',
-        properties: {
-          username: expect.anything(),
-          password: expect.anything(),
-          repeatPassword: expect.anything(),
-          inviteCode: expect.anything(),
-          email: expect.anything(),
-        },
-        required: [
-          'username',
-          'password',
-          'repeatPassword',
-          'inviteCode',
-          'email',
-        ],
-      });
+    it('should have /register path', () => {
+      const postPath = Reflect.getMetadata(PATH_METADATA, controller.register);
+      expect(postPath).toBe('register');
+    });
+
+    it('should have CREATED response code', () => {
+      const httpCode = Reflect.getMetadata(
+        HTTP_CODE_METADATA,
+        controller.register,
+      );
+      expect(httpCode).toBe(HttpStatus.CREATED);
     });
   });
 

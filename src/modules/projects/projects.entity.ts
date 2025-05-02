@@ -12,7 +12,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UsersEntity } from '../users/users.entity';
 import { VisibilitiesEntity } from '../visibilities/visibilities.entity';
 
-@Entity()
+@Entity('projects')
 export class ProjectsEntity {
   @ApiProperty({
     example: 1,

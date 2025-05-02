@@ -10,9 +10,9 @@ export class NotificationTypesService extends BaseService<NotificationTypesEntit
     @InjectRepository(NotificationTypesEntity)
     private notificationTypesRepository: Repository<NotificationTypesEntity>,
   ) {
-    const notifications = {};
+    const relations = {};
     const searchFields = ['id', 'title'];
 
-    super(notificationTypesRepository, searchFields, notifications);
+    super(notificationTypesRepository, searchFields, relations);
   }
 }

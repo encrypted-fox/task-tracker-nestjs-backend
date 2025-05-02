@@ -11,9 +11,9 @@ async function bootstrap() {
     SwaggerModule.createDocument(
       app,
       new DocumentBuilder()
-        .setTitle('Tasks Tracker')
+        .setTitle('Task Tracker')
         .setDescription('API documentation')
-        .setVersion('1.0')
+        .setVersion('0.0.1')
         .addBearerAuth()
         .build(),
     ),
