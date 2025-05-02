@@ -9,7 +9,7 @@ type ServiceSpecConfig<Service, Entity> = {
   searchFields: string[];
 };
 
-jest.mock('../../base/BaseService', () => {
+jest.mock('../base/BaseService', () => {
   const mockBaseService = {};
 
   return {
@@ -23,9 +23,7 @@ export function createServiceSpec<Service, Entity>(
   let service: Service;
   let mockRepository: Repository<Entity>;
 
-  const MockBaseService = jest.requireMock(
-    '../../base/BaseService',
-  ).BaseService;
+  const MockBaseService = jest.requireMock('../base/BaseService').BaseService;
 
   beforeEach(async () => {
     jest.clearAllMocks();

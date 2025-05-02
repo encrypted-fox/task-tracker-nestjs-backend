@@ -2,13 +2,13 @@ import { I18nContext } from 'nestjs-i18n';
 
 import { BaseService } from './BaseService';
 
-import { generateHeader } from '../helpers/generators/generateHeader';
-import { generateTable } from '../helpers/generators/generateTable';
-import { generateData } from '../helpers/generators/generateData';
+import { generateHeader } from '../generators/generateHeader';
+import { generateTable } from '../generators/generateTable';
+import { generateData } from '../generators/generateData';
 
-import type { Header } from '../helpers/generators/generateHeader';
-import type { Table } from '../helpers/generators/generateTable';
-import type { Data } from '../helpers/generators/generateData';
+import type { Header } from '../generators/generateHeader';
+import type { Table } from '../generators/generateTable';
+import type { Data } from '../generators/generateData';
 
 export type BaseQueryParams = {
   query?: string;
@@ -71,7 +71,7 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
   async getAll(queryParams: BaseQueryParams): Promise<Response<Entity>> {
     const entities = await this.service.find(
       {},
-      JSON.parse(queryParams?.filters),
+      queryParams?.filters,
       queryParams?.query,
       queryParams?.skip,
       queryParams?.take,

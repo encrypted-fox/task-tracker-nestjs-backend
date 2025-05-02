@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { TeamsService } from './teams.service';
 import { TeamsEntity } from './teams.entity';
@@ -59,7 +57,6 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => TeamsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -74,7 +71,6 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => TeamsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -94,7 +90,6 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => TeamsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<TeamsEntity> {
@@ -110,7 +105,6 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => TeamsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'teams', action: 'CREATE' })
@@ -133,7 +127,6 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => TeamsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'teams', action: 'UPDATE' })
@@ -155,7 +148,6 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'teams', action: 'DELETE' })

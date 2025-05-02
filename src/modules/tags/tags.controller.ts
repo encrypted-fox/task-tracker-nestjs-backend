@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { TagsService } from './tags.service';
 import { TagsEntity } from './tags.entity';
@@ -52,7 +50,6 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => TagsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -67,7 +64,6 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => TagsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -87,7 +83,6 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => TagsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<TagsEntity> {
@@ -103,7 +98,6 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => TagsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'tags', action: 'CREATE' })
@@ -126,7 +120,6 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => TagsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'tags', action: 'UPDATE' })
@@ -148,7 +141,6 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'tags', action: 'DELETE' })

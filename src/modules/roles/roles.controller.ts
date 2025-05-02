@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { RolesService } from './roles.service';
 import { RolesEntity } from './roles.entity';
@@ -58,7 +56,6 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => RolesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -73,7 +70,6 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => RolesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -93,7 +89,6 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => RolesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<RolesEntity> {
@@ -109,7 +104,6 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => RolesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'roles', action: 'CREATE' })
@@ -132,7 +126,6 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => RolesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'roles', action: 'UPDATE' })
@@ -154,7 +147,6 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'roles', action: 'DELETE' })

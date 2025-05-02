@@ -10,7 +10,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -31,9 +30,7 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
-
-import { AuthGuard } from '../auth/auth.guard';
+} from '../../helpers/base/BaseController';
 
 import { LogsService } from './logs.service';
 import { LogsEntity } from './logs.entity';
@@ -63,7 +60,6 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => LogsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -78,7 +74,6 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => LogsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -98,7 +93,6 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => LogsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<LogsEntity> {
@@ -114,7 +108,6 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => LogsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   override async create(@Body() log: LogsEntity): Promise<LogsEntity> {
@@ -122,7 +115,6 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   }
 
   @ApiNotAcceptableResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NOT_ACCEPTABLE)
   @Patch(':id')
   override async update(): Promise<LogsEntity> {
@@ -130,7 +122,6 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   }
 
   @ApiNotAcceptableResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NOT_ACCEPTABLE)
   @Delete(':id')
   override async delete(): Promise<void> {

@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { TasksService } from './tasks.service';
 import { TasksEntity } from './tasks.entity';
@@ -68,7 +66,6 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => TasksEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -83,7 +80,6 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => TasksEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -103,7 +99,6 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => TasksEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<TasksEntity> {
@@ -119,7 +114,6 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => TasksEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'tasks', action: 'CREATE' })
@@ -142,7 +136,6 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => TasksEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'tasks', action: 'UPDATE' })
@@ -164,7 +157,6 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'tasks', action: 'DELETE' })

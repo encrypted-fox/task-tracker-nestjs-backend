@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { extractTokenFromHeader } from '../../helpers/extractTokenFromHeader';
 
-import { IS_PUBLIC_KEY } from '../../helpers/decorators/PublicDecorator';
+import { IS_PUBLIC_KEY } from './auth.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -38,12 +38,13 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      request['user'] = await this.jwtService.verifyAsync(token, {
+      request.user = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
     } catch {
       throw new UnauthorizedException();
     }
+
     return true;
   }
 }

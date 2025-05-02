@@ -11,7 +11,7 @@ import { PrioritiesModule } from './priorities/priorities.module';
 import { ColumnsModule } from './columns/columns.module';
 import { BoardsModule } from './boards/boards.module';
 import { ProjectsModule } from './projects/projects.module';
-import { RulesModule } from './rules/rules.module';
+import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { TasksModule } from './tasks/tasks.module';
 import { TagsModule } from './tags/tags.module';
@@ -30,7 +30,7 @@ import { PrioritiesEntity } from './priorities/priorities.entity';
 import { ColumnsEntity } from './columns/columns.entity';
 import { BoardsEntity } from './boards/boards.entity';
 import { ProjectsEntity } from './projects/projects.entity';
-import { RulesEntity } from './rules/rules.entity';
+import { PermissionsEntity } from './permissions/permissions.entity';
 import { RolesEntity } from './roles/roles.entity';
 import { TasksEntity } from './tasks/tasks.entity';
 import { TagsEntity } from './tags/tags.entity';
@@ -53,7 +53,7 @@ import { LogsEntity } from './logs/logs.entity';
     ColumnsModule,
     BoardsModule,
     ProjectsModule,
-    RulesModule,
+    PermissionsModule,
     RolesModule,
     TasksModule,
     TagsModule,
@@ -79,7 +79,7 @@ import { LogsEntity } from './logs/logs.entity';
         ColumnsEntity,
         BoardsEntity,
         ProjectsEntity,
-        RulesEntity,
+        PermissionsEntity,
         RolesEntity,
         TasksEntity,
         TagsEntity,

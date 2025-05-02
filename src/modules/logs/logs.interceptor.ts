@@ -11,7 +11,7 @@ import { LogsService } from './logs.service';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { extractTokenFromHeader } from '../../helpers/extractTokenFromHeader';
-import { LOG_ACTION_KEY } from '../../helpers/decorators/LogActionDecorator';
+import { LOG_ACTION_KEY } from './logs.decorator';
 
 @Injectable()
 export class LogsInterceptor implements NestInterceptor {

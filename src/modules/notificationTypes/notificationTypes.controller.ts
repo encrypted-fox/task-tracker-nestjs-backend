@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { NotificationTypesService } from './notificationTypes.service';
 import { NotificationTypesEntity } from './notificationTypes.entity';
@@ -62,7 +60,6 @@ export class NotificationTypesController extends BaseController<
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => NotificationTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -77,7 +74,6 @@ export class NotificationTypesController extends BaseController<
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => NotificationTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -97,7 +93,6 @@ export class NotificationTypesController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => NotificationTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(
@@ -115,7 +110,6 @@ export class NotificationTypesController extends BaseController<
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => NotificationTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'notificationTypes', action: 'CREATE' })
@@ -140,7 +134,6 @@ export class NotificationTypesController extends BaseController<
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => NotificationTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'notificationTypes', action: 'UPDATE' })
@@ -162,7 +155,6 @@ export class NotificationTypesController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'notificationTypes', action: 'DELETE' })

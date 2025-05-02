@@ -9,8 +9,6 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { AuthController } from './auth.controller';
 
-import { APP_GUARD } from '@nestjs/core';
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -22,14 +20,8 @@ import { APP_GUARD } from '@nestjs/core';
       signOptions: { expiresIn: '6h' },
     }),
   ],
-  providers: [
-    AuthService,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-  ],
+  providers: [AuthGuard, AuthService],
+  exports: [AuthGuard, AuthService],
   controllers: [AuthController],
-  exports: [AuthService],
 })
 export class AuthModule {}

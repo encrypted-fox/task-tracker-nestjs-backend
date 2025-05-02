@@ -64,7 +64,7 @@ describe('BaseController', () => {
   describe('getAll', () => {
     it('should return entities without formatting', async () => {
       const queryParams = {
-        filters: '{ "active": true }',
+        filters: { active: true },
         skip: 10,
         take: 5,
       };

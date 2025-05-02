@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { CommentsService } from './comments.service';
 import { CommentsEntity } from './comments.entity';
@@ -65,7 +63,6 @@ export class CommentsController extends BaseController<
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => CommentsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -80,7 +77,6 @@ export class CommentsController extends BaseController<
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => CommentsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -100,7 +96,6 @@ export class CommentsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => CommentsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<CommentsEntity> {
@@ -116,7 +111,6 @@ export class CommentsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => CommentsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'comments', action: 'CREATE' })
@@ -141,7 +135,6 @@ export class CommentsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => CommentsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'comments', action: 'UPDATE' })
@@ -163,7 +156,6 @@ export class CommentsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'comments', action: 'DELETE' })

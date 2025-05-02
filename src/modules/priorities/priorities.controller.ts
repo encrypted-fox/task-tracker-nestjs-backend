@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { PrioritiesService } from './priorities.service';
 import { PrioritiesEntity } from './priorities.entity';
@@ -62,7 +60,6 @@ export class PrioritiesController extends BaseController<
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => PrioritiesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -77,7 +74,6 @@ export class PrioritiesController extends BaseController<
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => PrioritiesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -97,7 +93,6 @@ export class PrioritiesController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => PrioritiesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<PrioritiesEntity> {
@@ -113,7 +108,6 @@ export class PrioritiesController extends BaseController<
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => PrioritiesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'priorities', action: 'CREATE' })
@@ -138,7 +132,6 @@ export class PrioritiesController extends BaseController<
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => PrioritiesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'priorities', action: 'UPDATE' })
@@ -160,7 +153,6 @@ export class PrioritiesController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'priorities', action: 'DELETE' })

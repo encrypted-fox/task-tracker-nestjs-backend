@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseService } from '../../base/BaseService';
+import { BaseService } from '../../helpers/base/BaseService';
 import { InvitesEntity } from './invites.entity';
 import { v4 as uuid } from 'uuid';
 

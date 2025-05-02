@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { ProjectsService } from './projects.service';
 import { ProjectsEntity } from './projects.entity';
@@ -64,7 +62,6 @@ export class ProjectsController extends BaseController<
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => ProjectsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -79,7 +76,6 @@ export class ProjectsController extends BaseController<
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => ProjectsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -99,7 +95,6 @@ export class ProjectsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => ProjectsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<ProjectsEntity> {
@@ -115,7 +110,6 @@ export class ProjectsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => ProjectsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'projects', action: 'CREATE' })
@@ -140,7 +134,6 @@ export class ProjectsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => ProjectsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'projects', action: 'UPDATE' })
@@ -162,7 +155,6 @@ export class ProjectsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'projects', action: 'DELETE' })

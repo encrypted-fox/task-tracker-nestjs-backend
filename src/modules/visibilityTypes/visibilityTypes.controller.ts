@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { VisibilityTypesService } from './visibilityTypes.service';
 import { VisibilityTypesEntity } from './visibilityTypes.entity';
@@ -61,7 +59,6 @@ export class VisibilityTypesController extends BaseController<
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => VisibilityTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -76,7 +73,6 @@ export class VisibilityTypesController extends BaseController<
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => VisibilityTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -96,7 +92,6 @@ export class VisibilityTypesController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => VisibilityTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<VisibilityTypesEntity> {
@@ -112,7 +107,6 @@ export class VisibilityTypesController extends BaseController<
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => VisibilityTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'visibilityTypes', action: 'CREATE' })
@@ -137,7 +131,6 @@ export class VisibilityTypesController extends BaseController<
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => VisibilityTypesEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'visibilityTypes', action: 'UPDATE' })
@@ -159,7 +152,6 @@ export class VisibilityTypesController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'visibilityTypes', action: 'DELETE' })

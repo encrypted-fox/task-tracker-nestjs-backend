@@ -1,10 +1,10 @@
 import { createEntityTests } from '../../helpers/tests/createEntitySpec';
-import { RulesEntity } from './rules.entity';
+import { PermissionsEntity } from './permissions.entity';
 
-describe('RulesEntity', () => {
+describe('PermissionsEntity', () => {
   createEntityTests({
-    entity: RulesEntity,
-    entityName: 'rules',
+    entity: PermissionsEntity,
+    entityName: 'permissions',
     columns: ['id', 'title', 'value', 'createdAt', 'updatedAt', 'deletedAt'],
     relations: [
       {

@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type Response,
   type BaseQueryParams,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { BoardsService } from './boards.service';
 import { BoardsEntity } from './boards.entity';
@@ -66,7 +64,6 @@ export class BoardsController extends BaseController<
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => BoardsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -81,7 +78,6 @@ export class BoardsController extends BaseController<
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => BoardsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -101,7 +97,6 @@ export class BoardsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => BoardsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<BoardsEntity> {
@@ -117,7 +112,6 @@ export class BoardsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => BoardsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'boards', action: 'CREATE' })
@@ -140,7 +134,6 @@ export class BoardsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => BoardsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'boards', action: 'UPDATE' })
@@ -162,7 +155,6 @@ export class BoardsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'boards', action: 'DELETE' })

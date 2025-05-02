@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { IS_PUBLIC_KEY } from '../../helpers/decorators/PublicDecorator';
+import { IS_PUBLIC_KEY } from './auth.decorator';
 import { UsersEntity } from '../users/users.entity';
 import { ExtendedUsersEntity } from '../users/users.interface';
 import { HTTP_CODE_METADATA, PATH_METADATA } from '@nestjs/common/constants';

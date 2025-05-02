@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -29,10 +28,9 @@ import {
   BaseController,
   type BaseQueryParams,
   type Response,
-} from '../../base/BaseController';
+} from '../../helpers/base/BaseController';
 
-import { AuthGuard } from '../auth/auth.guard';
-import { LogAction } from '../../helpers/decorators/LogActionDecorator';
+import { LogAction } from '../logs/logs.decorator';
 
 import { ColumnsService } from './columns.service';
 import { ColumnsEntity } from './columns.entity';
@@ -64,7 +62,6 @@ export class ColumnsController extends BaseController<
     'Returns structured data for table rendering with headers and metadata',
   )
   @ApiOkResponse({ type: () => ColumnsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('list')
   override async getList(
@@ -79,7 +76,6 @@ export class ColumnsController extends BaseController<
     'Returns structured data with metadata and entities',
   )
   @ApiOkResponse({ type: () => ColumnsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('')
   override async getAll(
@@ -99,7 +95,6 @@ export class ColumnsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse({ type: () => ColumnsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   override async get(@Param('id') id: number): Promise<ColumnsEntity> {
@@ -115,7 +110,6 @@ export class ColumnsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiCreatedResponse({ type: () => ColumnsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'columns', action: 'CREATE' })
@@ -138,7 +132,6 @@ export class ColumnsController extends BaseController<
     description: 'Entity to create',
   })
   @ApiOkResponse({ type: () => ColumnsEntity })
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'columns', action: 'UPDATE' })
@@ -160,7 +153,6 @@ export class ColumnsController extends BaseController<
     description: 'Id of an entity',
   })
   @ApiOkResponse()
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'columns', action: 'DELETE' })

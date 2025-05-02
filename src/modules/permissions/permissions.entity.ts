@@ -11,8 +11,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { RolesEntity } from '../roles/roles.entity';
 
-@Entity('rules')
-export class RulesEntity {
+@Entity('permissions')
+export class PermissionsEntity {
   @ApiProperty({
     example: 1,
     description: 'Id. Primary Key, number.',
@@ -30,7 +30,7 @@ export class RulesEntity {
 
   @ApiProperty({
     example: true,
-    description: 'Value of rule. Boolean.',
+    description: 'Value of permission. Boolean.',
   })
   @Column()
   value: boolean;
