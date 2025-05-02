@@ -73,9 +73,7 @@ export class UsersEntity {
   lastName?: string;
 
   @ApiProperty({
-    example: [
-      'https://ru.wikipedia.org/static/images/project-logos/ruwiki.png',
-    ],
+    example: 'https://ru.wikipedia.org/static/images/project-logos/ruwiki.png',
     description: 'Avatar link. String.',
   })
   @Column({ nullable: true })

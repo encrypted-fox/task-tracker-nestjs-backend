@@ -30,30 +30,35 @@ export class LogsInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap(async (result) => {
-        if (!options) return;
+        try {
+          if (!options) return;
+          const request = context.switchToHttp().getRequest();
+          const path = request.url;
 
-        const request = context.switchToHttp().getRequest();
-        const path = request.route?.path;
+          const token = extractTokenFromHeader(request);
 
-        const token = extractTokenFromHeader(request);
+          const creatorRaw = await this.jwtService.verifyAsync(token, {
+            secret: process.env.JWT_SECRET,
+          });
 
-        const creatorRaw = await this.jwtService.verifyAsync(token, {
-          secret: process.env.JWT_SECRET,
-        });
+          const creator = await this.usersService.findOne({
+            id: creatorRaw.id,
+          });
 
-        const creator = await this.usersService.findOne({ id: creatorRaw.id });
-
-        await this.logsService.create({
-          path,
-          action: options.action,
-          entity: options.entity,
-          object: {
-            id: result?.id || request.params?.id,
-            body: request.body,
-            params: request.params,
-          },
-          creator,
-        });
+          await this.logsService.create({
+            path,
+            action: options.action,
+            entity: options.entity,
+            object: {
+              id: result?.id || request.params?.id,
+              body: request.body,
+              params: request.params,
+            },
+            creator,
+          });
+        } catch (e) {
+          console.error('Logging failed: ', e);
+        }
       }),
     );
   }

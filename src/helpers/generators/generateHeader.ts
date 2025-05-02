@@ -187,5 +187,5 @@ export function generateHeader(i18n: I18nContext, take: string[]): Header {
     },
   ];
 
-  return list.filter((item: HeaderItem): boolean => item.name in take);
+  return list.filter((item: HeaderItem): boolean => take.includes(item.name));
 }

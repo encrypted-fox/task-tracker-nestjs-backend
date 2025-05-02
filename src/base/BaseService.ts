@@ -62,7 +62,7 @@ export class BaseService<Entity> {
     },
   ): Promise<Entity> {
     const found = await this.find(entity, filters, query, skip, take, order);
-    return found ? found[0] : null;
+    return found?.length ? found[0] : null;
   }
 
   public async create(item: Partial<Entity>): Promise<Entity> {

@@ -163,9 +163,11 @@ export function generateTable(take: string[]): Table {
 
   const taken: Table = {};
 
-  for (const key in Object.keys(list)) {
-    if (key in take) taken[key] = list[key];
-  }
+  Object.keys(list).forEach((key) => {
+    if (take.includes(key)) {
+      taken[key] = list[key];
+    }
+  });
 
   return taken;
 }

@@ -1,6 +1,4 @@
-import { I18n, I18nContext } from 'nestjs-i18n';
-
-import { Body, Param, Query } from '@nestjs/common';
+import { I18nContext } from 'nestjs-i18n';
 
 import { BaseService } from './BaseService';
 
@@ -44,8 +42,8 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
   public generateData = generateData;
 
   async getList(
-    @I18n() i18n: I18nContext,
-    @Query() queryParams: BaseQueryParams,
+    i18n: I18nContext,
+    queryParams: BaseQueryParams,
   ): Promise<Response<Entity>> {
     const entities = await this.service.find(
       {},
@@ -70,9 +68,7 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
     };
   }
 
-  async getAll(
-    @Query() queryParams: BaseQueryParams,
-  ): Promise<Response<Entity>> {
+  async getAll(queryParams: BaseQueryParams): Promise<Response<Entity>> {
     const entities = await this.service.find(
       {},
       JSON.parse(queryParams?.filters),
@@ -94,22 +90,19 @@ export class BaseController<Entity, Service extends BaseService<Entity>> {
     };
   }
 
-  async get(@Param('id') id: number): Promise<Entity> {
+  async get(id: number): Promise<Entity> {
     return this.service.findOne({ id } as unknown as Partial<Entity>);
   }
 
-  async create(@Body() board: Entity): Promise<Entity> {
+  async create(board: Entity): Promise<Entity> {
     return this.service.create(board);
   }
 
-  async update(
-    @Param('id') id: number,
-    @Body() entity: Entity,
-  ): Promise<Entity> {
+  async update(id: number, entity: Entity): Promise<Entity> {
     return this.service.update(id, entity);
   }
 
-  async delete(@Param('id') id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     await this.service.remove(id);
   }
 }

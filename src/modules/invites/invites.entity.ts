@@ -33,18 +33,18 @@ export class InvitesEntity {
     description: 'Creator id. Foreign Key users id, number.',
     type: () => UsersEntity,
   })
-  @ManyToOne(() => UsersEntity)
+  @ManyToOne(() => UsersEntity, { nullable: true })
   @JoinColumn({ name: 'creator_id' })
-  creator: Relation<UsersEntity>;
+  creator?: Relation<UsersEntity>;
 
   @ApiProperty({
     example: 1,
     description: 'Team id. Foreign Key teams id, number.',
     type: () => TeamsEntity,
   })
-  @ManyToOne(() => TeamsEntity)
+  @ManyToOne(() => TeamsEntity, { nullable: true })
   @JoinColumn({ name: 'team_id' })
-  team: Relation<TeamsEntity>;
+  team?: Relation<TeamsEntity>;
 
   @ApiProperty({
     example: '2011-10-05T14:48:00.000Z',
