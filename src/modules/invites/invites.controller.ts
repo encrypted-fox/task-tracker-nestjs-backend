@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { InvitesService } from './invites.service';
 import { InvitesEntity } from './invites.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('invites')
 @Controller('api/invites')
@@ -63,6 +65,7 @@ export class InvitesController extends BaseController<
   @ApiOkResponse({ type: () => InvitesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('invites:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -77,6 +80,7 @@ export class InvitesController extends BaseController<
   @ApiOkResponse({ type: () => InvitesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('invites:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<InvitesEntity>> {
@@ -96,6 +100,7 @@ export class InvitesController extends BaseController<
   @ApiOkResponse({ type: () => InvitesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('invites:get:one')
   override async get(@Param('id') id: number): Promise<InvitesEntity> {
     return super.get(id);
   }
@@ -112,6 +117,7 @@ export class InvitesController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'invites', action: 'CREATE' })
+  @RequirePermission('invites:create')
   override async create(@Body() invite: InvitesEntity): Promise<InvitesEntity> {
     return super.create(invite);
   }
@@ -134,6 +140,7 @@ export class InvitesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'invites', action: 'UPDATE' })
+  @RequirePermission('invites:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: InvitesEntity,
@@ -155,6 +162,7 @@ export class InvitesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'invites', action: 'DELETE' })
+  @RequirePermission('invites:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

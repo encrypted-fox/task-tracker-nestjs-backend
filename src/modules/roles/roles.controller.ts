@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { RolesService } from './roles.service';
 import { RolesEntity } from './roles.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('roles')
 @Controller('api/roles')
@@ -58,6 +60,7 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
   @ApiOkResponse({ type: () => RolesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('roles:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -72,6 +75,7 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
   @ApiOkResponse({ type: () => RolesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('roles:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<RolesEntity>> {
@@ -91,6 +95,7 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
   @ApiOkResponse({ type: () => RolesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('roles:get:one')
   override async get(@Param('id') id: number): Promise<RolesEntity> {
     return super.get(id);
   }
@@ -107,6 +112,7 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'roles', action: 'CREATE' })
+  @RequirePermission('roles:create')
   override async create(@Body() role: RolesEntity): Promise<RolesEntity> {
     return super.create(role);
   }
@@ -129,6 +135,7 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'roles', action: 'UPDATE' })
+  @RequirePermission('roles:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: RolesEntity,
@@ -150,6 +157,7 @@ export class RolesController extends BaseController<RolesEntity, RolesService> {
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'roles', action: 'DELETE' })
+  @RequirePermission('roles:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

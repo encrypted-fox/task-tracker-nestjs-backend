@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { CommentsService } from './comments.service';
 import { CommentsEntity } from './comments.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('comments')
 @Controller('api/comments')
@@ -65,6 +67,7 @@ export class CommentsController extends BaseController<
   @ApiOkResponse({ type: () => CommentsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('comments:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -79,6 +82,7 @@ export class CommentsController extends BaseController<
   @ApiOkResponse({ type: () => CommentsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('comments:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<CommentsEntity>> {
@@ -98,6 +102,7 @@ export class CommentsController extends BaseController<
   @ApiOkResponse({ type: () => CommentsEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('comments:get:one')
   override async get(@Param('id') id: number): Promise<CommentsEntity> {
     return super.get(id);
   }
@@ -114,6 +119,7 @@ export class CommentsController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'comments', action: 'CREATE' })
+  @RequirePermission('comments:create')
   override async create(
     @Body() comment: CommentsEntity,
   ): Promise<CommentsEntity> {
@@ -138,6 +144,7 @@ export class CommentsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'comments', action: 'UPDATE' })
+  @RequirePermission('comments:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: CommentsEntity,
@@ -159,6 +166,7 @@ export class CommentsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'comments', action: 'DELETE' })
+  @RequirePermission('comments:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

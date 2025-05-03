@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { VisibilitiesService } from './visibilities.service';
 import { VisibilitiesEntity } from './visibilities.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('visibilities')
 @Controller('api/visibilities')
@@ -63,6 +65,7 @@ export class VisibilitiesController extends BaseController<
   @ApiOkResponse({ type: () => VisibilitiesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('visibilities:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -77,6 +80,7 @@ export class VisibilitiesController extends BaseController<
   @ApiOkResponse({ type: () => VisibilitiesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('visibilities:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<VisibilitiesEntity>> {
@@ -96,6 +100,7 @@ export class VisibilitiesController extends BaseController<
   @ApiOkResponse({ type: () => VisibilitiesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('visibilities:get:one')
   override async get(@Param('id') id: number): Promise<VisibilitiesEntity> {
     return super.get(id);
   }
@@ -112,6 +117,7 @@ export class VisibilitiesController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'visibilities', action: 'CREATE' })
+  @RequirePermission('visibilities:create')
   override async create(
     @Body() visibility: VisibilitiesEntity,
   ): Promise<VisibilitiesEntity> {
@@ -136,6 +142,7 @@ export class VisibilitiesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'visibilities', action: 'UPDATE' })
+  @RequirePermission('visibilities:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: VisibilitiesEntity,
@@ -157,6 +164,7 @@ export class VisibilitiesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'visibilities', action: 'DELETE' })
+  @RequirePermission('visibilities:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

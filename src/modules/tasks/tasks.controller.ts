@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { TasksService } from './tasks.service';
 import { TasksEntity } from './tasks.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('tasks')
 @Controller('api/tasks')
@@ -68,6 +70,7 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
   @ApiOkResponse({ type: () => TasksEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('tasks:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -82,6 +85,7 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
   @ApiOkResponse({ type: () => TasksEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('tasks:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<TasksEntity>> {
@@ -101,6 +105,7 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
   @ApiOkResponse({ type: () => TasksEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('tasks:get:one')
   override async get(@Param('id') id: number): Promise<TasksEntity> {
     return super.get(id);
   }
@@ -117,6 +122,7 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'tasks', action: 'CREATE' })
+  @RequirePermission('tasks:create')
   override async create(@Body() task: TasksEntity): Promise<TasksEntity> {
     return super.create(task);
   }
@@ -139,6 +145,7 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'tasks', action: 'UPDATE' })
+  @RequirePermission('tasks:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: TasksEntity,
@@ -160,6 +167,7 @@ export class TasksController extends BaseController<TasksEntity, TasksService> {
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'tasks', action: 'DELETE' })
+  @RequirePermission('tasks:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

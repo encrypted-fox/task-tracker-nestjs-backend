@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { TagsService } from './tags.service';
 import { TagsEntity } from './tags.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('tags')
 @Controller('api/tags')
@@ -52,6 +54,7 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
   @ApiOkResponse({ type: () => TagsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('tags:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -66,6 +69,7 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
   @ApiOkResponse({ type: () => TagsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('tags:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<TagsEntity>> {
@@ -85,6 +89,7 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
   @ApiOkResponse({ type: () => TagsEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('tags:get:one')
   override async get(@Param('id') id: number): Promise<TagsEntity> {
     return super.get(id);
   }
@@ -101,6 +106,7 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'tags', action: 'CREATE' })
+  @RequirePermission('tags:create')
   override async create(@Body() tag: TagsEntity): Promise<TagsEntity> {
     return super.create(tag);
   }
@@ -123,6 +129,7 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'tags', action: 'UPDATE' })
+  @RequirePermission('tags:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: TagsEntity,
@@ -144,6 +151,7 @@ export class TagsController extends BaseController<TagsEntity, TagsService> {
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'tags', action: 'DELETE' })
+  @RequirePermission('tags:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

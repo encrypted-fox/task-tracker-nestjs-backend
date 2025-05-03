@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { CommentTypesService } from './commentTypes.service';
 import { CommentTypesEntity } from './commentTypes.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('commentTypes')
 @Controller('api/commentTypes')
@@ -61,6 +63,7 @@ export class CommentTypesController extends BaseController<
   @ApiOkResponse({ type: () => CommentTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('commentTypes:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -75,6 +78,7 @@ export class CommentTypesController extends BaseController<
   @ApiOkResponse({ type: () => CommentTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('commentTypes:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<CommentTypesEntity>> {
@@ -94,6 +98,7 @@ export class CommentTypesController extends BaseController<
   @ApiOkResponse({ type: () => CommentTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('commentTypes:get:one')
   override async get(@Param('id') id: number): Promise<CommentTypesEntity> {
     return super.get(id);
   }
@@ -110,6 +115,7 @@ export class CommentTypesController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'commentTypes', action: 'CREATE' })
+  @RequirePermission('commentTypes:create')
   override async create(
     @Body() commentType: CommentTypesEntity,
   ): Promise<CommentTypesEntity> {
@@ -134,6 +140,7 @@ export class CommentTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'commentTypes', action: 'UPDATE' })
+  @RequirePermission('commentTypes:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: CommentTypesEntity,
@@ -155,6 +162,7 @@ export class CommentTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'commentTypes', action: 'DELETE' })
+  @RequirePermission('commentTypes:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

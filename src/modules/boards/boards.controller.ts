@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { BoardsService } from './boards.service';
 import { BoardsEntity } from './boards.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('boards')
 @Controller('api/boards')
@@ -66,6 +68,7 @@ export class BoardsController extends BaseController<
   @ApiOkResponse({ type: () => BoardsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('boards:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -80,6 +83,7 @@ export class BoardsController extends BaseController<
   @ApiOkResponse({ type: () => BoardsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('boards:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<BoardsEntity>> {
@@ -99,6 +103,7 @@ export class BoardsController extends BaseController<
   @ApiOkResponse({ type: () => BoardsEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('boards:get:one')
   override async get(@Param('id') id: number): Promise<BoardsEntity> {
     return super.get(id);
   }
@@ -115,6 +120,7 @@ export class BoardsController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'boards', action: 'CREATE' })
+  @RequirePermission('boards:create')
   override async create(@Body() board: BoardsEntity): Promise<BoardsEntity> {
     return super.create(board);
   }
@@ -137,6 +143,7 @@ export class BoardsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'boards', action: 'UPDATE' })
+  @RequirePermission('boards:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: BoardsEntity,
@@ -158,6 +165,7 @@ export class BoardsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'boards', action: 'DELETE' })
+  @RequirePermission('boards:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

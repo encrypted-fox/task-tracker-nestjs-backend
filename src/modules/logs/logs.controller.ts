@@ -35,6 +35,8 @@ import {
 import { LogsService } from './logs.service';
 import { LogsEntity } from './logs.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('logs')
 @Controller('api/logs')
@@ -62,6 +64,7 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   @ApiOkResponse({ type: () => LogsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('logs:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -76,6 +79,7 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   @ApiOkResponse({ type: () => LogsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('logs:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<LogsEntity>> {
@@ -95,6 +99,7 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   @ApiOkResponse({ type: () => LogsEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('logs:get:one')
   override async get(@Param('id') id: number): Promise<LogsEntity> {
     return super.get(id);
   }
@@ -110,6 +115,7 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   @ApiCreatedResponse({ type: () => LogsEntity })
   @HttpCode(HttpStatus.CREATED)
   @Post('')
+  @RequirePermission('logs:create')
   override async create(@Body() log: LogsEntity): Promise<LogsEntity> {
     return super.create(log);
   }
@@ -117,6 +123,7 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   @ApiNotAcceptableResponse()
   @HttpCode(HttpStatus.NOT_ACCEPTABLE)
   @Patch(':id')
+  @RequirePermission('logs:update')
   override async update(): Promise<LogsEntity> {
     throw new NotAcceptableException();
   }
@@ -124,6 +131,7 @@ export class LogsController extends BaseController<LogsEntity, LogsService> {
   @ApiNotAcceptableResponse()
   @HttpCode(HttpStatus.NOT_ACCEPTABLE)
   @Delete(':id')
+  @RequirePermission('logs:delete')
   override async delete(): Promise<void> {
     throw new NotAcceptableException();
   }

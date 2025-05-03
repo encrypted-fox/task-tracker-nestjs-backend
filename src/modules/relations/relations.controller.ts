@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { RelationsService } from './relations.service';
 import { RelationsEntity } from './relations.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('relations')
 @Controller('api/relations')
@@ -64,6 +66,7 @@ export class RelationsController extends BaseController<
   @ApiOkResponse({ type: () => RelationsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('relations:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -78,6 +81,7 @@ export class RelationsController extends BaseController<
   @ApiOkResponse({ type: () => RelationsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('relations:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<RelationsEntity>> {
@@ -97,6 +101,7 @@ export class RelationsController extends BaseController<
   @ApiOkResponse({ type: () => RelationsEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('relations:get:one')
   override async get(@Param('id') id: number): Promise<RelationsEntity> {
     return super.get(id);
   }
@@ -113,6 +118,7 @@ export class RelationsController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'relations', action: 'CREATE' })
+  @RequirePermission('relations:create')
   override async create(
     @Body() relation: RelationsEntity,
   ): Promise<RelationsEntity> {
@@ -137,6 +143,7 @@ export class RelationsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'relations', action: 'UPDATE' })
+  @RequirePermission('relations:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: RelationsEntity,
@@ -158,6 +165,7 @@ export class RelationsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'relations', action: 'DELETE' })
+  @RequirePermission('relations:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

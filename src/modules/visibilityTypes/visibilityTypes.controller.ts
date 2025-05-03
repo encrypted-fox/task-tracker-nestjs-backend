@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { VisibilityTypesService } from './visibilityTypes.service';
 import { VisibilityTypesEntity } from './visibilityTypes.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('visibilityTypes')
 @Controller('api/visibilityTypes')
@@ -61,6 +63,7 @@ export class VisibilityTypesController extends BaseController<
   @ApiOkResponse({ type: () => VisibilityTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('visibilityTypes:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -75,6 +78,7 @@ export class VisibilityTypesController extends BaseController<
   @ApiOkResponse({ type: () => VisibilityTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('visibilityTypes:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<VisibilityTypesEntity>> {
@@ -94,6 +98,7 @@ export class VisibilityTypesController extends BaseController<
   @ApiOkResponse({ type: () => VisibilityTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('visibilityTypes:get:one')
   override async get(@Param('id') id: number): Promise<VisibilityTypesEntity> {
     return super.get(id);
   }
@@ -110,6 +115,7 @@ export class VisibilityTypesController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'visibilityTypes', action: 'CREATE' })
+  @RequirePermission('visibilityTypes:create')
   override async create(
     @Body() visibilityType: VisibilityTypesEntity,
   ): Promise<VisibilityTypesEntity> {
@@ -134,6 +140,7 @@ export class VisibilityTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'visibilityTypes', action: 'UPDATE' })
+  @RequirePermission('visibilityTypes:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: VisibilityTypesEntity,
@@ -155,6 +162,7 @@ export class VisibilityTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'visibilityTypes', action: 'DELETE' })
+  @RequirePermission('visibilityTypes:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

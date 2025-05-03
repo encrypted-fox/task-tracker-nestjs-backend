@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { UsersService } from './users.service';
 import { UsersEntity } from './users.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('api/users')
@@ -66,6 +68,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
   @ApiOkResponse({ type: () => UsersEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('users:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -80,6 +83,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
   @ApiOkResponse({ type: () => UsersEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('users:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<UsersEntity>> {
@@ -99,6 +103,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
   @ApiOkResponse({ type: () => UsersEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('users:get:one')
   override async get(@Param('id') id: number): Promise<UsersEntity> {
     return super.get(id);
   }
@@ -115,6 +120,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'users', action: 'CREATE' })
+  @RequirePermission('users:create')
   override async create(@Body() user: UsersEntity): Promise<UsersEntity> {
     return super.create(user);
   }
@@ -137,6 +143,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'users', action: 'UPDATE' })
+  @RequirePermission('users:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: UsersEntity,
@@ -158,6 +165,7 @@ export class UsersController extends BaseController<UsersEntity, UsersService> {
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'users', action: 'DELETE' })
+  @RequirePermission('users:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

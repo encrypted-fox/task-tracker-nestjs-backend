@@ -8,17 +8,14 @@ import { LogsEntity } from './logs.entity';
 
 import { JwtService } from '@nestjs/jwt';
 
-import { AuthGuard } from '../auth/auth.guard';
+import { PermissionsGuard } from '../permissions/permissions.guard';
+import { PERMISSIONS_KEY } from '../permissions/permissions.decorator';
 
 import { I18nContext } from 'nestjs-i18n';
 import { Reflector } from '@nestjs/core';
 
 import { BaseQueryParams } from '../../helpers/base/BaseController';
-import {
-  // GUARDS_METADATA,
-  HTTP_CODE_METADATA,
-  PATH_METADATA,
-} from '@nestjs/common/constants';
+import { HTTP_CODE_METADATA, PATH_METADATA } from '@nestjs/common/constants';
 
 describe('LogsController', () => {
   let controller: LogsController;
@@ -46,10 +43,10 @@ describe('LogsController', () => {
         },
         Reflector,
         {
-          provide: JwtService, // Добавляем провайдер для JwtService
+          provide: JwtService,
           useValue: mockJwtService,
         },
-        { provide: AuthGuard, useValue: { canActivate: () => true } },
+        { provide: PermissionsGuard, useValue: { canActivate: () => true } },
       ],
     }).compile();
 
@@ -80,11 +77,13 @@ describe('LogsController', () => {
       );
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.getList);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.getList,
+      );
+      expect(permissionDecorator).toContain('logs:get:list');
+    });
 
     it('should have /list path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.getList);
@@ -116,11 +115,13 @@ describe('LogsController', () => {
       expect(controller.getAll).toHaveBeenCalledWith(mockQueryParams);
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.getAll);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.getAll,
+      );
+      expect(permissionDecorator).toContain('logs:get:all');
+    });
 
     it('should have / path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.getAll);
@@ -149,11 +150,13 @@ describe('LogsController', () => {
       expect(controller.get).toHaveBeenCalledWith(mockId);
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.get);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.get,
+      );
+      expect(permissionDecorator).toContain('logs:get:one');
+    });
 
     it('should have /:id path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.get);
@@ -179,11 +182,13 @@ describe('LogsController', () => {
       expect(controller.create).toHaveBeenCalledWith(mockLog);
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.create);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.create,
+      );
+      expect(permissionDecorator).toContain('logs:create');
+    });
 
     it('should have / path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.create);
@@ -206,11 +211,13 @@ describe('LogsController', () => {
       );
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.update);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.update,
+      );
+      expect(permissionDecorator).toContain('logs:update');
+    });
 
     it('should have /:id path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.update);
@@ -233,11 +240,13 @@ describe('LogsController', () => {
       );
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.delete);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.delete,
+      );
+      expect(permissionDecorator).toContain('logs:delete');
+    });
 
     it('should have /:id path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.delete);

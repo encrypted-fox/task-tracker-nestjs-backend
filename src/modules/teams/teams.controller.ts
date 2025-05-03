@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { TeamsService } from './teams.service';
 import { TeamsEntity } from './teams.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('teams')
 @Controller('api/teams')
@@ -59,6 +61,7 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
   @ApiOkResponse({ type: () => TeamsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('teams:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -73,6 +76,7 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
   @ApiOkResponse({ type: () => TeamsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('teams:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<TeamsEntity>> {
@@ -92,6 +96,7 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
   @ApiOkResponse({ type: () => TeamsEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('teams:get:one')
   override async get(@Param('id') id: number): Promise<TeamsEntity> {
     return super.get(id);
   }
@@ -108,6 +113,7 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'teams', action: 'CREATE' })
+  @RequirePermission('teams:create')
   override async create(@Body() task: TeamsEntity): Promise<TeamsEntity> {
     return super.create(task);
   }
@@ -130,6 +136,7 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'teams', action: 'UPDATE' })
+  @RequirePermission('teams:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: TeamsEntity,
@@ -151,6 +158,7 @@ export class TeamsController extends BaseController<TeamsEntity, TeamsService> {
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'teams', action: 'DELETE' })
+  @RequirePermission('teams:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

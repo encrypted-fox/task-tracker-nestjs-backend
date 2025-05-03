@@ -4,7 +4,8 @@ import { HttpStatus } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
 
-import { AuthGuard } from '../../modules/auth/auth.guard';
+import { PermissionsGuard } from '../../modules/permissions/permissions.guard';
+import { PERMISSIONS_KEY } from '../../modules/permissions/permissions.decorator';
 
 import { I18nContext } from 'nestjs-i18n';
 import { Reflector } from '@nestjs/core';
@@ -62,7 +63,7 @@ export function createControllerSpec<
           provide: JwtService, // Добавляем провайдер для JwtService
           useValue: mockJwtService,
         },
-        { provide: AuthGuard, useValue: { canActivate: () => true } },
+        { provide: PermissionsGuard, useValue: { canActivate: () => true } },
       ],
     }).compile();
 
@@ -100,11 +101,13 @@ export function createControllerSpec<
       );
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.getList);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.getList,
+      );
+      expect(permissionDecorator).toContain(`${config.entityName}:get:list`);
+    });
 
     it('should have /list path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.getList);
@@ -143,11 +146,13 @@ export function createControllerSpec<
       expect(controller.getAll).toHaveBeenCalledWith(mockQueryParams);
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.getAll);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.getAll,
+      );
+      expect(permissionDecorator).toContain(`${config.entityName}:get:all`);
+    });
 
     it('should have / path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.getAll);
@@ -181,11 +186,13 @@ export function createControllerSpec<
       expect(controller.get).toHaveBeenCalledWith(mockId);
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.get);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.get,
+      );
+      expect(permissionDecorator).toContain(`${config.entityName}:get:one`);
+    });
 
     it('should have /:id path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.get);
@@ -226,11 +233,13 @@ export function createControllerSpec<
       });
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.create);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.create,
+      );
+      expect(permissionDecorator).toContain(`${config.entityName}:create`);
+    });
 
     it('should have / path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.create);
@@ -275,11 +284,13 @@ export function createControllerSpec<
       });
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.update);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.update,
+      );
+      expect(permissionDecorator).toContain(`${config.entityName}:update`);
+    });
 
     it('should have /:id path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.update);
@@ -321,11 +332,13 @@ export function createControllerSpec<
       });
     });
 
-    // it('should have AuthGuard', () => {
-    //   const guards = Reflect.getMetadata(GUARDS_METADATA, controller.delete);
-    //   expect(guards).toContain(AuthGuard);
-    // });
-    // TODO remake to should have roles guard
+    it('should have RequirePermission with correct permission option', () => {
+      const permissionDecorator = Reflect.getMetadata(
+        PERMISSIONS_KEY,
+        controller.delete,
+      );
+      expect(permissionDecorator).toContain(`${config.entityName}:delete`);
+    });
 
     it('should have /:id path', () => {
       const path = Reflect.getMetadata(PATH_METADATA, controller.delete);

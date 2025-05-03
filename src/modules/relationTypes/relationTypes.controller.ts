@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { RelationTypesService } from './relationTypes.service';
 import { RelationTypesEntity } from './relationTypes.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('relationTypes')
 @Controller('api/relationTypes')
@@ -61,6 +63,7 @@ export class RelationTypesController extends BaseController<
   @ApiOkResponse({ type: () => RelationTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('relationTypes:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -75,6 +78,7 @@ export class RelationTypesController extends BaseController<
   @ApiOkResponse({ type: () => RelationTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('relationTypes:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<RelationTypesEntity>> {
@@ -94,6 +98,7 @@ export class RelationTypesController extends BaseController<
   @ApiOkResponse({ type: () => RelationTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('relationTypes:get:one')
   override async get(@Param('id') id: number): Promise<RelationTypesEntity> {
     return super.get(id);
   }
@@ -110,6 +115,7 @@ export class RelationTypesController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'relationTypes', action: 'CREATE' })
+  @RequirePermission('relationTypes:create')
   override async create(
     @Body() relationType: RelationTypesEntity,
   ): Promise<RelationTypesEntity> {
@@ -134,6 +140,7 @@ export class RelationTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'relationTypes', action: 'UPDATE' })
+  @RequirePermission('relationTypes:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: RelationTypesEntity,
@@ -155,6 +162,7 @@ export class RelationTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'relationTypes', action: 'DELETE' })
+  @RequirePermission('relationTypes:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

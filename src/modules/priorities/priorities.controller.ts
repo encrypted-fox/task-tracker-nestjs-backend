@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { PrioritiesService } from './priorities.service';
 import { PrioritiesEntity } from './priorities.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('priorities')
 @Controller('api/priorities')
@@ -62,6 +64,7 @@ export class PrioritiesController extends BaseController<
   @ApiOkResponse({ type: () => PrioritiesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('priorities:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -76,6 +79,7 @@ export class PrioritiesController extends BaseController<
   @ApiOkResponse({ type: () => PrioritiesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('priorities:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<PrioritiesEntity>> {
@@ -95,6 +99,7 @@ export class PrioritiesController extends BaseController<
   @ApiOkResponse({ type: () => PrioritiesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('priorities:get:one')
   override async get(@Param('id') id: number): Promise<PrioritiesEntity> {
     return super.get(id);
   }
@@ -111,6 +116,7 @@ export class PrioritiesController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'priorities', action: 'CREATE' })
+  @RequirePermission('priorities:create')
   override async create(
     @Body() priority: PrioritiesEntity,
   ): Promise<PrioritiesEntity> {
@@ -135,6 +141,7 @@ export class PrioritiesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'priorities', action: 'UPDATE' })
+  @RequirePermission('priorities:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: PrioritiesEntity,
@@ -156,6 +163,7 @@ export class PrioritiesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'priorities', action: 'DELETE' })
+  @RequirePermission('priorities:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

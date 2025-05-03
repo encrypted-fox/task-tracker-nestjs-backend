@@ -35,6 +35,8 @@ import { LogAction } from '../logs/logs.decorator';
 import { ColumnsService } from './columns.service';
 import { ColumnsEntity } from './columns.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('columns')
 @Controller('api/columns')
@@ -64,6 +66,7 @@ export class ColumnsController extends BaseController<
   @ApiOkResponse({ type: () => ColumnsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('columns:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -78,6 +81,7 @@ export class ColumnsController extends BaseController<
   @ApiOkResponse({ type: () => ColumnsEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('columns:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<ColumnsEntity>> {
@@ -97,6 +101,7 @@ export class ColumnsController extends BaseController<
   @ApiOkResponse({ type: () => ColumnsEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('columns:get:one')
   override async get(@Param('id') id: number): Promise<ColumnsEntity> {
     return super.get(id);
   }
@@ -113,6 +118,7 @@ export class ColumnsController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'columns', action: 'CREATE' })
+  @RequirePermission('columns:create')
   override async create(@Body() column: ColumnsEntity): Promise<ColumnsEntity> {
     return super.create(column);
   }
@@ -135,6 +141,7 @@ export class ColumnsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'columns', action: 'UPDATE' })
+  @RequirePermission('columns:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: ColumnsEntity,
@@ -156,6 +163,7 @@ export class ColumnsController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'columns', action: 'DELETE' })
+  @RequirePermission('columns:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }

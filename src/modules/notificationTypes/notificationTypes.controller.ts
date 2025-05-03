@@ -36,6 +36,8 @@ import { NotificationTypesService } from './notificationTypes.service';
 import { NotificationTypesEntity } from './notificationTypes.entity';
 import { NotificationsEntity } from '../notifications/notifications.entity';
 
+import { RequirePermission } from '../permissions/permissions.decorator';
+
 @ApiBearerAuth()
 @ApiTags('notificationTypes')
 @Controller('api/notificationTypes')
@@ -62,6 +64,7 @@ export class NotificationTypesController extends BaseController<
   @ApiOkResponse({ type: () => NotificationTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('list')
+  @RequirePermission('notificationTypes:get:list')
   override async getList(
     @I18n() i18n: I18nContext,
     @Query() queryParams: BaseQueryParams,
@@ -76,6 +79,7 @@ export class NotificationTypesController extends BaseController<
   @ApiOkResponse({ type: () => NotificationTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get('')
+  @RequirePermission('notificationTypes:get:all')
   override async getAll(
     @Query() queryParams: BaseQueryParams,
   ): Promise<Response<NotificationTypesEntity>> {
@@ -95,6 +99,7 @@ export class NotificationTypesController extends BaseController<
   @ApiOkResponse({ type: () => NotificationTypesEntity })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
+  @RequirePermission('notificationTypes:get:one')
   override async get(
     @Param('id') id: number,
   ): Promise<NotificationTypesEntity> {
@@ -113,6 +118,7 @@ export class NotificationTypesController extends BaseController<
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   @LogAction({ entity: 'notificationTypes', action: 'CREATE' })
+  @RequirePermission('notificationTypes:create')
   override async create(
     @Body() notificationType: NotificationTypesEntity,
   ): Promise<NotificationTypesEntity> {
@@ -137,6 +143,7 @@ export class NotificationTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @LogAction({ entity: 'notificationTypes', action: 'UPDATE' })
+  @RequirePermission('notificationTypes:update')
   override async update(
     @Param('id') id: number,
     @Body() entity: NotificationTypesEntity,
@@ -158,6 +165,7 @@ export class NotificationTypesController extends BaseController<
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @LogAction({ entity: 'notificationTypes', action: 'DELETE' })
+  @RequirePermission('notificationTypes:delete')
   override async delete(@Param('id') id: number): Promise<void> {
     return super.delete(id);
   }
